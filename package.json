@@ -1,10 +1,11 @@
 {
   "name": "groupproject",
   "version": "1.0.0",
-  "description": "COSC2430 - Web Programmming Group Project",
-  "main": "index.js",
+  "description": "COSC2430 - Web Programmming Group Project - Group 5",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
   },
   "keywords": [],
   "author": "",

@@ -30,3 +30,5 @@
       - [https://source.unsplash.com/random](https://source.unsplash.com/random)
         `https://source.unsplash.com/random?name&1`
   - If are regularly used: add to `/public/resources/...`
+- Icon:
+  - Use [Font Awesome](https://fontawesome.com/)
