@@ -91,7 +91,7 @@ To add a screenshot, create an `assets/images` folder in your repository and upl
 | Tran Mai Nhung       | s3879954   | [Puppychan](https://github.com/Puppychan) | %                |
 | Tran Nguyen Ha Khanh | s3877707   | [hakhanhne](https://github.com/hakhanhne) | %                |
 | Nguyen Vinh Gia Bao  | s3986287   | [name](https://github.com/name)           | %                |
-| Ton That Huu Luan    | s3958304   | [name](https://github.com/name)           | %                |
+| Ton That Huu Luan    | s3958304   | [VNOsST](https://github.com/VNOsST)       | %                |
 | Ho Van Khoa          | s3997024   | [name](https://github.com/name)           | %                |
 
 ### Third-party Attributions
@@ -122,7 +122,8 @@ If you followed tutorials, include links to those here as well.
 
 - Ton That Huu Luan - s3958304:
 
-  - Email: s3958304@rmit.edu.vn
+  - Email: s3958304@rmit.edu.vn - chelseafc6170@gmail.com
+  - Github profile: [VNOsST](https://github.com/VNOsST)
 
 - Ho Van Khoa - s3997024:
   - Email: s3997024@rmit.edu.vn
