@@ -119,6 +119,7 @@ If you followed tutorials, include links to those here as well.
 - Nguyen Vinh Gia Bao - s3986287:
 
   - Email: s3986287@rmit.edu.vn
+  - Github profile: [VerstappenRB18](https://github.com/VerstappenRB18)
 
 - Ton That Huu Luan - s3958304:
 
