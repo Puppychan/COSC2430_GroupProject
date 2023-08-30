@@ -65,6 +65,28 @@ const getUserInfo = async (req, res) => {
   }
 }
 
+const getUser_no_verify = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.productid);
+    const role = user.role;
+    var info = null;
+    if (role == 'customer') {
+      info = await Customer.findOne({'userid': req.user._id})
+    }
+    else if (role == 'vendor') {
+      info = await Vendor.findOne({'userid': req.user._id})
+    }
+    else if (role == 'shipper') {
+      info = await Shipper.findOne({'userid': req.user._id})
+    }
+
+    sendResponse(res, 200, `ok`, {user, info, password:0});
+  } catch (err) {
+    console.log(err)
+    sendResponse(res, 500, `Error ${err}`);
+  }
+}
+
 const changePassword = async (req, res) => {
   const {current_pw, new_pw} = req.body;
   try {
@@ -82,4 +104,4 @@ const changePassword = async (req, res) => {
     sendResponse(res, 500, `Error ${err}`);
   }
 }
-module.exports = {register, login, getUserInfo, changePassword}
+module.exports = {register, login, getUserInfo, getUser_no_verify, changePassword}
