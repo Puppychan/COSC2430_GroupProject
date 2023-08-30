@@ -11,4 +11,4 @@ const getHubs = async (req, res) => {
 }
 
 
-module.exports = { getHub }
+module.exports = { getHubs }
