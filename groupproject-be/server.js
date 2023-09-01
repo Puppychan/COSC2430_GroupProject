@@ -1,15 +1,19 @@
 require("dotenv").config();
+const mongoose = require("mongoose");
 const express = require("express");
+const app = express();
 const cors = require("cors");
 const {connectDB} = require("./db/connectDB");
-
 const userRoutes = require("./routes/userRoutes");
 
-connectDB()
-const app = express();
+const mongoUrl =
+"mongodb+srv://s3877707:cosc2430group@groupwebprogramming.fnigakp.mongodb.net/test?retryWrites=true&w=majority"
 
-app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+// app.use(express.json());
+
+connectDB()
 
 app.get("/", (req, res) => {
   res.json({ message: "API running..." });
