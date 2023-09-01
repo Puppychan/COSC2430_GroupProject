@@ -8,7 +8,7 @@ const getProducts = async (req, res) => {
         const maxPrice = req.query.maxp;
         const minPrice = req.query.minp;
         // if params exist -> filter
-        if (maxPrice || minPrice) 
+        if (maxPrice || minPrice)
             // filter product by price range
             products = await Product.find({ price: { $gte: minPrice, $lte: maxPrice } });
         // if params not exist -> get all product
@@ -37,7 +37,7 @@ const getProductById = async (req, res) => {
             sendResponse(res, 400, 'Product Not Found');
         }
         sendResponse(res, 200, 'ok', renderedProduct);
-        
+
     } catch (err) {
         // get error status code
         const statusCode = err.statusCode || 500;
@@ -89,13 +89,41 @@ const updateProduct = async (req, res) => {
     }
 }
 
-const deleteProduct = async (req, res) => {
+const deleteProductById = async (req, res) => {
     try {
-
+        const deleteProduct = await Product.findByIdAndDelete(req.params.id);
+        // if delete product not found
+        if (!deleteProduct) {
+            sendResponse(res, '404', 'Product to delete not found');
+        }
+        // if found and succesfully deleted
+        else {
+            sendResponse(res, '200', 'Product deleted successfully');
+        }
     } catch (err) {
-
+        // get error status code
+        const statusCode = err.statusCode || 500;
+        // get error message
+        const message = err.message || `Error ${err}`;
+        // send response
+        sendResponse(res, statusCode, message);
     }
 }
+const deleteProductListId = async (req, res) => {
+    try {
+        const idsToDelete = req.body.ids;
+        const deleteProducts = await Product.deleteMany({ _id: {$in: idsToDelete }});
+        sendResponse(res, '200', 'Products deleted successfully');
+    } catch (err) {
+        // get error status code
+        const statusCode = err.statusCode || 500;
+        // get error message
+        const message = err.message || `Error ${err}`;
+        // send response
+        sendResponse(res, statusCode, message);
+    }
+}
+
 
 module.exports = {
     getProducts,
@@ -103,5 +131,6 @@ module.exports = {
     searchProducts,
     createProduct,
     updateProduct,
-    deleteProduct,
+    deleteProductById,
+    deleteProductListId
 }
