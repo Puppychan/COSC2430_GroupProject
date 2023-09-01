@@ -1,12 +1,24 @@
 const Product = require('../db/models/shopping/Product');
 const { sendResponse } = require('../routes/middleware');
-const { verifyUser } = require('./middleware')
-
 
 const getProducts = async (req, res) => {
     try {
-        const products = await Product.find();
-        sendResponse(res, 200, `ok`, products);
+        let products;
+        // get params
+        const maxPrice = req.query.maxp;
+        const minPrice = req.query.minp;
+        // if params exist -> filter
+        if (maxPrice || minPrice) 
+            // filter product by price range
+            products = await Product.find({ price: { $gte: minPrice, $lte: maxPrice } });
+        // if params not exist -> get all product
+        else
+            products = await Product.find();
+        // send response
+        // if no product
+        if (products.length == 0) sendResponse(res, 400, 'Not Product To Display');
+        // if have product
+        else sendResponse(res, 200, `ok`, products);
     } catch (err) {
         // get error status code
         const statusCode = err.statusCode || 500;
@@ -20,24 +32,12 @@ const getProducts = async (req, res) => {
 const getProductById = async (req, res) => {
     try {
         const renderedProduct = await Product.findById(req.params.id);
+        if (!renderedProduct) {
+            // return res.status(404).send('Product not found');
+            sendResponse(res, 400, 'Product Not Found');
+        }
         sendResponse(res, 200, 'ok', renderedProduct);
-    } catch (err) {
-        // get error status code
-        const statusCode = err.statusCode || 500;
-        // get error message
-        const message = err.message || `Error ${err}`;
-        // send response
-        sendResponse(res, statusCode, message);
-    }
-}
-
-const filterProducts = async (req, res) => {
-    try {
-        const maxPrice = req.query.max;
-        const minPrice = req.query.min;
-        // filter product by price range
-        const products = await Product.find({ price: { $gte: minPrice, $lte: maxPrice } });
-        sendResponse(res, 200, `ok`, products);
+        
     } catch (err) {
         // get error status code
         const statusCode = err.statusCode || 500;
@@ -50,7 +50,8 @@ const filterProducts = async (req, res) => {
 
 const searchProducts = async (req, res) => {
     try {
-        const search = req.query.search;
+        console.log("Called");
+        const search = req.query.name;
         // search products by name containing, insensitive case
         const products = await Product.find({ name: { $regex: '.*' + search + '.*', $options: 'i' } })
         sendResponse(res, 200, `ok`, products);
@@ -92,6 +93,15 @@ const deleteProduct = async (req, res) => {
     try {
 
     } catch (err) {
-        
+
     }
+}
+
+module.exports = {
+    getProducts,
+    getProductById,
+    searchProducts,
+    createProduct,
+    updateProduct,
+    deleteProduct,
 }
