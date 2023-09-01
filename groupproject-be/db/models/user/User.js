@@ -3,6 +3,7 @@ const {valid_username, valid_password} = require('../../../utils/validator')
 
 const userSchema = new mongoose.Schema(
   {
+    _id: mongoose.Schema.Types.ObjectId,
     username: {
       type: String, 
       required: true, 

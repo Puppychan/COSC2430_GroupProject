@@ -43,22 +43,25 @@ const login = async (req, res) => {
 
 
 const getUserInfo = async (req, res) => {
-  const role = req.user.role;
-  var info = null;
-
   try {
-    const user = User.findById(req.user._id);
-    if (role == 'customer') {
-      info = await Customer.findOne({'userid': req.user._id})
-    }
-    else if (role == 'vendor') {
-      info = await Vendor.findOne({'userid': req.user._id})
-    }
-    else if (role == 'shipper') {
-      info = await Shipper.findOne({'userid': req.user._id})
+    const role = req.user.role;
+    const id = req.user._id
+    const user = await User.findOne({_id: id});
+    var info = null;
+    if (user != null) {
+      user.password = 0;
+      if (role == 'customer') {
+        info = await Customer.findOne({'user': id})
+      }
+      else if (role == 'vendor') {
+        info = await Vendor.findOne({'user': id})
+      }
+      else if (role == 'shipper') {
+        info = await Shipper.findOne({'user': id})
+      }
     }
 
-    sendResponse(res, 200, `ok`, {user, info, password:0});
+    sendResponse(res, 200, `ok`, {user, info});
   } catch (err) {
     console.log(err)
     sendResponse(res, 500, `Error ${err}`);
@@ -67,20 +70,24 @@ const getUserInfo = async (req, res) => {
 
 const getUser_no_verify = async (req, res) => {
   try {
-    const user = await User.findById(req.params.productid);
-    const role = user.role;
+    var id = req.params.id
+    const user = await User.findOne({_id: id});
     var info = null;
-    if (role == 'customer') {
-      info = await Customer.findOne({'userid': req.user._id})
-    }
-    else if (role == 'vendor') {
-      info = await Vendor.findOne({'userid': req.user._id})
-    }
-    else if (role == 'shipper') {
-      info = await Shipper.findOne({'userid': req.user._id})
+    if (user != null) {
+      user.password = 0;
+      const role = user.role;
+      if (role == 'customer') {
+        info = await Customer.findOne({'user': id})
+      }
+      else if (role == 'vendor') {
+        info = await Vendor.findOne({'user': id})
+      }
+      else if (role == 'shipper') {
+        info = await Shipper.findOne({'user': id})
+      }
     }
 
-    sendResponse(res, 200, `ok`, {user, info, password:0});
+    sendResponse(res, 200, `ok`, {user, info});
   } catch (err) {
     console.log(err)
     sendResponse(res, 500, `Error ${err}`);

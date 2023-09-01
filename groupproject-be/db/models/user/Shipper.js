@@ -4,12 +4,17 @@ const Hub = require('../shopping/Hub');
 const shipperSchema = new mongoose.Schema(
   {
     user: {
-      type:mongoose.Types.ObjectId, 
+      type: mongoose.Schema.Types.ObjectId, 
       ref: 'User',
       required: true
     },
+    name: {
+      type: String, 
+      required: true,
+      minLength: [5, '5 characters at least']
+    },
     hub: {
-      type:mongoose.Types.ObjectId, 
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Hub',
       required: true
     }
