@@ -3,12 +3,12 @@ const Product = require('./Product');
 
 const cartItemSchema = new mongoose.Schema({
   customer: {
-    type:mongoose.Types.ObjectId, 
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
   product: {
-    type:mongoose.Types.ObjectId, 
+    type: mongoose.Schema.Types.ObjectId, 
     ref: 'Product',
     required: true
   },
@@ -22,12 +22,12 @@ const cartItemSchema = new mongoose.Schema({
 
 const cartSchema = new mongoose.Schema({
   customer: {
-    type: mongoose.Types.ObjectId, 
+    type: mongoose.Schema.Types.ObjectId, 
     ref: 'User',
     required: true
   },
   items: [{
-    type: mongoose.Types.ObjectId, 
+    type: mongoose.Schema.Types.ObjectId, 
     ref: 'CartItem',
   }]
 });

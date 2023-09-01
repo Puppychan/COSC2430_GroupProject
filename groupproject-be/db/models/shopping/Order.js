@@ -12,17 +12,17 @@ const orderItem = new mongoose.Schema({
 
 const orderSchema = new mongoose.Schema({
   customer: {
-    type: mongoose.Types.ObjectId, 
+    type: mongoose.Schema.Types.ObjectId, 
     ref: 'User',
     required: true
   },
   hub: {
-    type: mongoose.Types.ObjectId, 
+    type: mongoose.Schema.Types.ObjectId, 
     ref: 'Hub',
     required: true
   },
   shipper: {
-    type:mongoose.Types.ObjectId, 
+    type: mongoose.Schema.Types.ObjectId, 
     ref: 'User',
   },
   items: [orderItem],

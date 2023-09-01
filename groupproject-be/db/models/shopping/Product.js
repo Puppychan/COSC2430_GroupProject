@@ -8,11 +8,10 @@ const productSchema = new mongoose.Schema({
     maxLength: [20, '20 characters at most']
   },
   vendor: {
-    type:mongoose.Types.ObjectId, 
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
-  // vendor_username: {type: String, required: true},
   image: {
     type: String,
     default: 'https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png'

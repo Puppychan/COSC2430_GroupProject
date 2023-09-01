@@ -15,5 +15,4 @@ router.route('/account').get([verifyUser], getUserInfo)
 router.route('/:id').get(getUser_no_verify)
 router.route('/change-password').post([verifyUser], changePassword)
 
-
 module.exports = router
