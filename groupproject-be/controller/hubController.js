@@ -1,4 +1,5 @@
 const Hub = require('../db/models/shopping/Hub');
+const {sendResponse} = require('../routes/middleware');
 
 const getHubs = async (req, res) => {
     try {
