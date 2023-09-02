@@ -1,2 +1,4 @@
 # Ignore files related to API keys
-.env
+# .env
+
+node_modules/
