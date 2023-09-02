@@ -21,12 +21,8 @@ const getProducts = async (req, res) => {
         // if have product
         else sendResponse(res, 200, `ok`, products);
     } catch (err) {
-        // get error status code
-        const statusCode = err.statusCode || 500;
-        // get error message
-        const message = err.message || `Error ${err}`;
         // send response
-        sendResponse(res, statusCode, message);
+        sendResponse(res, err.statusCode, err.message ?? `Error`);
     }
 }
 
@@ -42,12 +38,8 @@ const getProductById = async (req, res) => {
         res.render('../view/product', { product: renderedProduct });
 
     } catch (err) {
-        // get error status code
-        const statusCode = err.statusCode || 500;
-        // get error message
-        const message = err.message || `Error ${err}`;
         // send response
-        sendResponse(res, statusCode, message);
+        sendResponse(res, err.statusCode, err.message ?? `Error`);
     }
 }
 
@@ -64,12 +56,8 @@ const searchProducts = async (req, res) => {
         }
         sendResponse(res, 200, `ok`, products);
     } catch (err) {
-        // get error status code
-        const statusCode = err.statusCode || 500;
-        // get error message
-        const message = err.message || `Error ${err}`;
         // send response
-        sendResponse(res, statusCode, message);
+        sendResponse(res, err.statusCode, err.message ?? `Error`);
     }
 }
 
@@ -92,12 +80,8 @@ const createProduct = async (req, res) => {
         sendResponse(res, 200, 'Product created successfully', newProduct);
 
     } catch (err) {
-        // get error status code
-        const statusCode = err.statusCode || 500;
-        // get error message
-        const message = err.message || `Error ${err}`;
         // send response
-        sendResponse(res, statusCode, message);
+        sendResponse(res, err.statusCode, err.message ?? `Error`);
     }
 }
 // TODO
@@ -123,12 +107,8 @@ const updateProduct = async (req, res) => {
             sendResponse(res, '200', 'Product updated successfully', updatedProduct);
         }
     } catch (err) {
-        // get error status code
-        const statusCode = err.statusCode || 500;
-        // get error message
-        const message = err.message || `Error ${err}`;
         // send response
-        sendResponse(res, statusCode, message);
+        sendResponse(res, err.statusCode, err.message ?? `Error`);
     }
 }
 
@@ -144,12 +124,8 @@ const deleteProductById = async (req, res) => {
             sendResponse(res, '200', 'Product deleted successfully');
         }
     } catch (err) {
-        // get error status code
-        const statusCode = err.statusCode || 500;
-        // get error message
-        const message = err.message || `Error ${err}`;
         // send response
-        sendResponse(res, statusCode, message);
+        sendResponse(res, err.statusCode, err.message ?? `Error`);
     }
 }
 const deleteProductListId = async (req, res) => {
@@ -158,12 +134,8 @@ const deleteProductListId = async (req, res) => {
         const deleteProducts = await Product.deleteMany({ _id: { $in: idsToDelete } });
         sendResponse(res, '200', 'Products deleted successfully');
     } catch (err) {
-        // get error status code
-        const statusCode = err.statusCode || 500;
-        // get error message
-        const message = err.message || `Error ${err}`;
         // send response
-        sendResponse(res, statusCode, message);
+        sendResponse(res, err.statusCode, err.message ?? `Error`);
     }
 }
 
