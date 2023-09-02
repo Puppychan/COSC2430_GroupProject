@@ -1,19 +1,24 @@
 require("dotenv").config();
-const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const path = require('path');
 const {connectDB} = require("./db/connectDB");
 const userRoutes = require("./routes/userRoutes");
 const hubRoutes = require("./routes/hubRoutes");
 const productRoutes = require("./routes/productRoutes");
 
-const mongoUrl =
-"mongodb+srv://s3877707:cosc2430group@groupwebprogramming.fnigakp.mongodb.net/test?retryWrites=true&w=majority"
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 // app.use(express.json());
+
+// for testing 
+app.set('view engine', 'ejs');
+
+// support getting local image files
+global.publicDirectory = path.resolve(__dirname, 'public');
+app.use(express.static('public'));
 
 connectDB()
 
