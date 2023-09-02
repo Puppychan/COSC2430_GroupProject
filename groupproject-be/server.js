@@ -18,7 +18,6 @@ app.set('view engine', 'ejs');
 
 // support getting local image files
 global.publicDirectory = path.resolve(__dirname, 'public');
-app.use(express.static('public'));
 
 connectDB()
 

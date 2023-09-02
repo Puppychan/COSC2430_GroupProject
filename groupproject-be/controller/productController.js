@@ -1,17 +1,6 @@
 const Product = require('../db/models/shopping/Product');
 const { sendResponse } = require('../routes/middleware');
-const mongoose = require("mongoose");
-const fs = require('fs');
-const path = require('path');
-
-
-let gfs;
-const conn = mongoose.connection;
-conn.once("open", function () {
-    gfs = new mongoose.mongo.GridFSBucket(conn.db, {
-        bucketName: "uploads"
-    });
-});
+const { convertImageToBin } = require('../utils/imageToBin');
 
 const getProducts = async (req, res) => {
     try {
@@ -88,19 +77,8 @@ const searchProducts = async (req, res) => {
 const createProduct = async (req, res) => {
     let newProduct;
     try {
-        // define image path
-        const imagePath = path.join(global.publicDirectory, '/uploads/', req.file.filename);
         // convert image to base64
-        const imageData = fs.readFileSync(imagePath);
-        // render image content
-        const imageContent = `data:image/${req.file.mimetype};base64,${imageData.toString('base64')}`
-        // delete image file
-        // use that path to delete file from public folder
-        fs.unlink(imagePath, (err) => {
-            if (err) {
-                console.error('Error deleting file:', err);
-            }
-        });
+        const imageContent = convertImageToBin(req);
 
         // get image attribute and the rest attributes
         const { image, ...restAttributes } = req.body;
@@ -125,9 +103,32 @@ const createProduct = async (req, res) => {
 // TODO
 const updateProduct = async (req, res) => {
     try {
-
+        // update product by id
+        // get image attribute and the rest attributes
+        const { image, ...restAttributes } = req.body;
+        // convert image to base64
+        const imageContent = convertImageToBin(req);
+        // update product
+        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {
+            ...restAttributes,
+            // get path + filename of image + format extension
+            image: imageContent,
+        });
+        // if update product not found
+        if (!updatedProduct) {
+            sendResponse(res, '404', 'Product to update not found');
+        }
+        // if found and succesfully updated
+        else {
+            sendResponse(res, '200', 'Product updated successfully', updatedProduct);
+        }
     } catch (err) {
-
+        // get error status code
+        const statusCode = err.statusCode || 500;
+        // get error message
+        const message = err.message || `Error ${err}`;
+        // send response
+        sendResponse(res, statusCode, message);
     }
 }
 
