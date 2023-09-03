@@ -6,10 +6,14 @@ const hubData = require('./data/shopping/hubs')
 const users_register = require('./data/user/user_register')
 const {register_sample} = require('../controller/userController');
 
-const insertUsers = () => {
-  users_register.forEach( async (user_register) => {
-    await register_sample(user_register);
-  })
+const insertUsers = async () => {
+  for (const user of users_register) {
+    try {
+      await register_sample(user)
+    } catch (error) {
+      console.error('Error import user', error)
+    }
+  }
 }
 
 const importData = async () => {
