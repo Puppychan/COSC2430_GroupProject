@@ -5,13 +5,46 @@ const Shipper = require('../db/models/user/Shipper')
 const User = require('../db/models/user/User')
 const {sendResponse} = require('../routes/middleware');
 const {checkPassword, newToken} = require('../utils/verification')
+const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Types;
+
+const register_sample = async (user_register) => {
+  try {
+    const {user, info} = user_register
+    const hash = await bcrypt.hash(user.password, 8);
+    const newuser = await User.create({...user, password: hash});
+    const role = newuser.role;
+    if (role == 'customer') {
+      await Customer.create({...info, user: newuser._id, _id: new ObjectId(newuser._id)})
+    }
+    else if (role == 'vendor') {
+      await Vendor.create({...info, user: newuser._id, _id: new ObjectId(newuser._id)})
+    }
+    else if (role == 'shipper') {
+      await Shipper.create({...info, user: newuser._id, _id: new ObjectId(newuser._id)})
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
 
 const register = async (req, res) => {
-  const {password} = req.body
   try {
-    const hash = await bcrypt.hash(password, 8)
-    const user = await User.create({...req.body, password: hash})
-    sendResponse(res, 200, 'Sucessfully register', {user, password:0});
+    const {user, info} = req.body
+    const hash = await bcrypt.hash(user.password, 8);
+    const newuser = await User.create({...user, _id: new ObjectId(), password: hash});
+    const role = newuser.role;
+    var newinfo = null
+    if (role == 'customer') {
+      newinfo = await Customer.create({...info, user: newuser._id, _id: new ObjectId(newuser._id)})
+    }
+    else if (role == 'vendor') {
+      newinfo = await Vendor.create({...info, user: newuser._id, _id: new ObjectId(newuser._id)})
+    }
+    else if (role == 'shipper') {
+      newinfo = await Shipper.create({...info, user: newuser._id, _id: new ObjectId(newuser._id)})
+    }
+    sendResponse(res, 200, 'Sucessfully register', {user: newuser, info: newinfo});
   } catch (err) {
     console.log(err)
     sendResponse(res, 500, `Error ${err}`);
@@ -44,24 +77,23 @@ const login = async (req, res) => {
 
 const getUserInfo = async (req, res) => {
   try {
-    const role = req.user.role;
-    const id = req.user._id
-    const user = await User.findOne({_id: id});
-    var info = null;
-    if (user != null) {
-      user.password = 0;
+    var full_info = null;
+    if (req.user != null) {
+      const role = req.user.role;
+      const id = req.user._id
       if (role == 'customer') {
-        info = await Customer.findOne({'user': id})
+        full_info = await Customer.findOne({'user': id}).populate('user');
       }
       else if (role == 'vendor') {
-        info = await Vendor.findOne({'user': id})
+        full_info = await Vendor.findOne({'user': id}).populate('user');
       }
       else if (role == 'shipper') {
-        info = await Shipper.findOne({'user': id})
+        full_info = await Shipper.findOne({'user': id}).populate('user');
       }
+      full_info.user.password = 0;
     }
 
-    sendResponse(res, 200, `ok`, {user, info});
+    sendResponse(res, 200, `ok`, full_info);
   } catch (err) {
     console.log(err)
     sendResponse(res, 500, `Error ${err}`);
@@ -72,22 +104,22 @@ const getUser_no_verify = async (req, res) => {
   try {
     var id = req.params.id
     const user = await User.findOne({_id: id});
-    var info = null;
+    var full_info = null;
     if (user != null) {
-      user.password = 0;
       const role = user.role;
       if (role == 'customer') {
-        info = await Customer.findOne({'user': id})
+        full_info = await Customer.findOne({'user': id}).populate('user');
       }
       else if (role == 'vendor') {
-        info = await Vendor.findOne({'user': id})
+        full_info = await Vendor.findOne({'user': id}).populate('user');
       }
       else if (role == 'shipper') {
-        info = await Shipper.findOne({'user': id})
+        full_info = await Shipper.findOne({'user': id}).populate('user');
       }
+      full_info.user.password = 0;
     }
 
-    sendResponse(res, 200, `ok`, {user, info});
+    sendResponse(res, 200, `ok`, full_info);
   } catch (err) {
     console.log(err)
     sendResponse(res, 500, `Error ${err}`);
@@ -97,7 +129,8 @@ const getUser_no_verify = async (req, res) => {
 const changePassword = async (req, res) => {
   const {current_pw, new_pw} = req.body;
   try {
-    var user = User.findById(req.user._id);
+    var user = await User.findOne({_id: req.user._id});
+    console.log(user)
     const same = await checkPassword(current_pw, user.password);
     if (same) {
       const hash = await bcrypt.hash(new_pw, 8);
@@ -111,4 +144,4 @@ const changePassword = async (req, res) => {
     sendResponse(res, 500, `Error ${err}`);
   }
 }
-module.exports = {register, login, getUserInfo, getUser_no_verify, changePassword}
+module.exports = {register_sample, register, login, getUserInfo, getUser_no_verify, changePassword}

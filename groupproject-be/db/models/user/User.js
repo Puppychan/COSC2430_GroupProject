@@ -16,10 +16,10 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String, 
       required: true,
-      validate: {
-        validator: valid_password,
-        message: props => `${props.value} is not a valid password!`
-      }
+      // validate: {
+      //   validator: valid_password,
+      //   message: props => `${props.value} is not a valid password!`
+      // }
     },
     role: {
       type: String, 

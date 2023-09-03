@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Hub = require('../shopping/Hub');
 
 const shipperSchema = new mongoose.Schema(
   {
