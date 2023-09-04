@@ -1,4 +1,2 @@
 # Ignore files related to API keys
-node_modules/
-package-lock.json
 .env
