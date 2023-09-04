@@ -6,6 +6,12 @@
             <%= title %>
         </title>
 </head>
-<h1 class="bg-red-500 text-center">Hello Tailwind!</h1>
+<%- include ('./partials/nav') %>
+    <main>
+
+        <h1 class="bg-red-500 text-center">Hello Tailwind!</h1>
+        <h2 class="shadow-lg rounded-md text-blue-400">This is a test</h2>
+    </main>
+    <%- include ('./partials/footer') %>
 
 </html>
