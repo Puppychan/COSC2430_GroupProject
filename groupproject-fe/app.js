@@ -33,13 +33,13 @@ app.locals.navigatePage = navigatePage;
 // const example = require('./modules/example.module.js');
 // app.use('/', user)
 
-// full route to Home page: /
+// full route to Home page:
 app.get("/", function (req, res) {
   res.render("layout.ejs", {
     title: "1080p Technology",
   });
 });
-
+// login and signup routes
 app.get("/login", (req, res) => {
   res.render("others/login", {
     title: "Login",
