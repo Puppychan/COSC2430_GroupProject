@@ -36,9 +36,15 @@ app.locals.navigatePage = navigatePage;
 // full route to Home page: /
 app.get("/", function (req, res) {
   res.render("layout.ejs", {
-    title: "Home",
+    title: "1080p Technology",
   });
 });
+
+app.get('/login', (req, res) => {
+  res.render('others/login', {
+    title: 'Login',
+  });
+ });
 
 app.listen(PORT, function () {
   console.log(`Server started on port ${PORT}`);
