@@ -15,7 +15,7 @@ const productMulter = require('../db/defineMulter');
 // post
 router.post('/', [verifyUser], productMulter.single('image'), createProduct);
 // update
-router.put('/', [verifyUser], updateProduct);
+router.put('/:id', [verifyUser], productMulter.single('image'), updateProduct);
 // get
 router.route("/").get(getProducts);
 router.route("/search").get(searchProducts);
