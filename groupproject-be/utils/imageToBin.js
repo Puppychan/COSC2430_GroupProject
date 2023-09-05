@@ -3,6 +3,10 @@ const path = require('path');
 
 // convert image to base64
 const convertImageToBin = (req) => {
+    // if image is not https or http
+    if (!req.file) {
+        return req.body.image;
+    }
     // define image path
     const imagePath = path.join(global.publicDirectory, '/uploads/', req.file.filename);
     // convert image to base64
