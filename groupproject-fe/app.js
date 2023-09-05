@@ -40,12 +40,17 @@ app.get("/", function (req, res) {
   });
 });
 
-app.get('/login', (req, res) => {
-  res.render('others/login', {
-    title: 'Login',
+app.get("/login", (req, res) => {
+  res.render("others/login", {
+    title: "Login",
   });
- });
+});
 
+app.get("/signup", (req, res) => {
+  res.render("others/signup", {
+    title: "Sign Up",
+  });
+});
 app.listen(PORT, function () {
   console.log(`Server started on port ${PORT}`);
 });
