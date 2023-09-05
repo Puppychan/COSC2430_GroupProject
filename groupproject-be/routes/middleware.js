@@ -27,7 +27,8 @@ const verifyUser = async (req, res, next) => {
     const payload = await verifyToken(authorization.split(' ')[1])
     console.log(payload)
     if (payload) {
-      const user = await User.findById(payload.id, { password: 0 })
+      const user =  await User.findOne({_id: payload.id});
+      user.password = 0;
       req['user'] = user
       next()
     } else {

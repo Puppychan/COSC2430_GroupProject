@@ -8,10 +8,9 @@ const userRoutes = require("./routes/userRoutes");
 const hubRoutes = require("./routes/hubRoutes");
 const productRoutes = require("./routes/productRoutes");
 
-
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
-// app.use(express.json());
+app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 // for testing 
 app.set('view engine', 'ejs');
