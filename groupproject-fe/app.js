@@ -1,33 +1,20 @@
 const express = require("express");
 const path = require("path");
-const { CONNECT_URI, PORT } = require("./common/constants");
-const { default: mongoose } = require("mongoose");
-const { navigatePage } = require("./common/helpers");
+const { PORT } = require("./common/constants");
 
 require("dotenv").config();
 const app = express();
 
-async function connect() {
-  try {
-    await mongoose.connect(CONNECT_URI);
-    console.log("Connected to MongoDB");
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-connect();
-
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 // to apply css styles
-app.use(express.static("public"));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // reusable function for all ejs
-app.locals.navigatePage = navigatePage;
+// app.locals.navigatePage = navigatePage;
 
 // Modules
 // const example = require('./modules/example.module.js');
@@ -35,20 +22,24 @@ app.locals.navigatePage = navigatePage;
 
 // full route to Home page:
 app.get("/", function (req, res) {
+
   res.render("layout.ejs", {
     title: "1080p Technology",
+    bodyFile: "./home/index"
   });
 });
 // login and signup routes
 app.get("/login", (req, res) => {
-  res.render("others/login", {
+  res.render("layout.ejs", {
     title: "Login",
+    bodyFile: "./auth/login"
   });
 });
 
 app.get("/signup", (req, res) => {
-  res.render("others/signup", {
+  res.render("layout.ejs", {
     title: "Sign Up",
+    bodyFile: "./auth/signup"
   });
 });
 app.listen(PORT, function () {
