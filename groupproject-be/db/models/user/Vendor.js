@@ -7,13 +7,13 @@ const vendorSchema = new mongoose.Schema(
       ref: 'User',
       required: true
     },
-    business_name: {
+    name: {
       type: String, 
       required: true,
       unique: true,
       minLength: [5, '5 characters at least']
     },
-    business_address: {
+    address: {
       type: String, 
       required: true,
       unique: true,

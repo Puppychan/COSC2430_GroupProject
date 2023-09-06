@@ -33,8 +33,8 @@ const users_register = [
       role: "vendor"
     },
     info: {
-      business_name: "Vendor 1",
-      business_address: "Vendor 1 address"
+      name: "Vendor 1",
+      address: "Vendor 1 address"
     }
   },
   {
@@ -45,8 +45,8 @@ const users_register = [
       role: "vendor"
     },
     info: {
-      business_name: "Vendor 2",
-      business_address: "Vendor 2 address"
+      name: "Vendor 2",
+      address: "Vendor 2 address"
     }
   },
   {
