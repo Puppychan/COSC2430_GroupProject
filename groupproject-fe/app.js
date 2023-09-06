@@ -43,6 +43,15 @@ app.get("/signup", (req, res) => {
     bodyFile: "./auth/signup",
   });
 });
+
+// full route to About page:
+app.get("/about", function (req, res) {
+  res.render("layout.ejs", {
+    title: "About Us",
+    bodyFile: "./others/about",
+  });
+});
+
 app.listen(PORT, function () {
   console.log(`Server started on port ${PORT}`);
 });
