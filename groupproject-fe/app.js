@@ -1,8 +1,9 @@
 const express = require("express");
 const path = require("path");
-const { PORT } = require("./common/constants");
 
 require("dotenv").config();
+const { PORT, BACKEND_URL } = require("./common/constants");
+
 const app = express();
 
 // view engine setup
@@ -21,6 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Modules
 // const example = require('./modules/example.module.js');
 // app.use('/', user)
+// const router = express.Router();
 
 // full route to Home page:
 app.get("/", function (req, res) {
@@ -32,6 +34,7 @@ app.get("/", function (req, res) {
 });
 // login and signup routes
 app.get("/login", (req, res) => {
+
   res.render("auth-layout.ejs", {
     title: "Login",
     bodyFile: "./auth/login"
@@ -39,6 +42,7 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/signup", (req, res) => {
+
   res.render("auth-layout.ejs", {
     title: "Sign Up",
     bodyFile: "./auth/signup"
