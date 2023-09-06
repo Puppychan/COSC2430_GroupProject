@@ -3,7 +3,7 @@ const HOME_ROUTE = '/';
 
 // Environment constants
 const CONNECTED_URI = process.env.CONNECTED_URI;
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.FRONT_PORT || 3000;
 
 module.exports = {
     HOME_ROUTE,

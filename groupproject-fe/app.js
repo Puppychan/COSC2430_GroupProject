@@ -8,6 +8,8 @@ const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.set('layout', 'auth-layout');
+
 app.use(express.urlencoded({ extended: true }));
 // to apply css styles
 app.use(express.static('public'));
@@ -30,14 +32,14 @@ app.get("/", function (req, res) {
 });
 // login and signup routes
 app.get("/login", (req, res) => {
-  res.render("layout.ejs", {
+  res.render("auth-layout.ejs", {
     title: "Login",
     bodyFile: "./auth/login"
   });
 });
 
 app.get("/signup", (req, res) => {
-  res.render("layout.ejs", {
+  res.render("auth-layout.ejs", {
     title: "Sign Up",
     bodyFile: "./auth/signup"
   });
