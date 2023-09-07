@@ -44,7 +44,7 @@ app.get("/signup", (req, res) => {
   });
 });
 
-// full route to About page:
+// full route to footer pages:
 app.get("/about", function (req, res) {
   res.render("layout.ejs", {
     title: "About Us",
@@ -52,6 +52,24 @@ app.get("/about", function (req, res) {
   });
 });
 
+app.get("/copyright", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Copyright",
+    bodyFile: "./others/copyright",
+  });
+});
+app.get("/privacy", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Privacy Policy",
+    bodyFile: "./others/privacy",
+  });
+});
+app.get("/terms", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Terms & Conditions",
+    bodyFile: "./others/terms",
+  });
+});
 app.listen(PORT, function () {
   console.log(`Server started on port ${PORT}`);
 });
