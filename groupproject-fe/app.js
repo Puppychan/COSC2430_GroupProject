@@ -1,7 +1,6 @@
 const express = require("express");
 const path = require("path");
 const products = require("./public/javascript/products");
-const { PORT } = require("./common/constants");
 
 require("dotenv").config();
 const { PORT, BACKEND_URL } = require("./common/constants");
@@ -36,7 +35,6 @@ app.get("/", function (req, res) {
 });
 // login and signup routes
 app.get("/login", (req, res) => {
-
   res.render("auth-layout.ejs", {
     title: "Login",
     bodyFile: "./auth/login",
