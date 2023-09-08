@@ -2,3 +2,5 @@
 ./node_modules
 package-lock.json
 .env
+
+public/style/output.css
