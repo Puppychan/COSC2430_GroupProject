@@ -1,8 +1,11 @@
 const express = require("express");
 const path = require("path");
+const products = require("./public/javascript/products");
 const { PORT } = require("./common/constants");
 
 require("dotenv").config();
+const { PORT, BACKEND_URL } = require("./common/constants");
+
 const app = express();
 
 // view engine setup
@@ -21,16 +24,19 @@ app.use(express.static(path.join(__dirname, "public")));
 // Modules
 // const example = require('./modules/example.module.js');
 // app.use('/', user)
+// const router = express.Router();
 
 // full route to Home page:
 app.get("/", function (req, res) {
   res.render("layout.ejs", {
     title: "Home",
     bodyFile: "./home/index",
+    products: products,
   });
 });
 // login and signup routes
 app.get("/login", (req, res) => {
+
   res.render("auth-layout.ejs", {
     title: "Login",
     bodyFile: "./auth/login",
