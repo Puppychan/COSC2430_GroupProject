@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // full route to Home page:
 app.get("/", function (req, res) {
   res.render("layout.ejs", {
-    title: "1080p Technology",
+    title: "Home",
     bodyFile: "./home/index",
   });
 });
@@ -37,10 +37,22 @@ app.get("/login", (req, res) => {
   });
 });
 
-app.get("/signup", (req, res) => {
+app.get("/signup-customer", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Sign Up",
-    bodyFile: "./auth/signup",
+    bodyFile: "./auth/signup-customer",
+  });
+});
+app.get("/signup-vendor", (req, res) => {
+  res.render("auth-layout.ejs", {
+    title: "Vendor Sign Up",
+    bodyFile: "./auth/signup-vendor",
+  });
+});
+app.get("/signup-shipper", (req, res) => {
+  res.render("auth-layout.ejs", {
+    title: "Shipper Sign Up",
+    bodyFile: "./auth/signup-shipper",
   });
 });
 
@@ -70,6 +82,14 @@ app.get("/terms", function (req, res) {
     bodyFile: "./others/terms",
   });
 });
+// My Account routes
+app.get("/my-account", function (req, res) {
+  res.render("layout.ejs", {
+    title: "My Account",
+    bodyFile: "./users/profile",
+  });
+});
+// Start the server
 app.listen(PORT, function () {
   console.log(`Server started on port ${PORT}`);
 });
