@@ -2,15 +2,17 @@
 
 <head>
   <%- include ('./partials/head') %>
-  <title><%= title %></title>
+    <title>
+      <%= title %> | 1080p Technology
+    </title>
 </head>
 
-<body>
+<body class="dark:bg-gray-700 dark:text-white flex flex-col h-screen justify-between">
   <%- include ('./partials/nav') %>
-  <!-- Pass bodyFile as filename -->
-  <%- include(bodyFile) %>
-  <%- include ('./partials/footer') %>
-  <script src="javascript/script.js"></script>
+    <!-- Pass bodyFile as filename -->
+    <%- include(bodyFile) %>
+      <%- include ('./partials/footer') %>
+        <script src="javascript/script.js"></script>
 </body>
 
 </html>

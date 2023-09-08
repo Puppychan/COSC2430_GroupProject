@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // full route to Home page:
 app.get("/", function (req, res) {
   res.render("layout.ejs", {
-    title: "1080p Technology",
+    title: "Home",
     bodyFile: "./home/index",
   });
 });
@@ -40,15 +40,26 @@ app.get("/login", (req, res) => {
   });
 });
 
-app.get("/signup", (req, res) => {
-
+app.get("/signup-customer", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Sign Up",
-    bodyFile: "./auth/signup",
+    bodyFile: "./auth/signup-customer",
+  });
+});
+app.get("/signup-vendor", (req, res) => {
+  res.render("auth-layout.ejs", {
+    title: "Vendor Sign Up",
+    bodyFile: "./auth/signup-vendor",
+  });
+});
+app.get("/signup-shipper", (req, res) => {
+  res.render("auth-layout.ejs", {
+    title: "Shipper Sign Up",
+    bodyFile: "./auth/signup-shipper",
   });
 });
 
-// full route to About page:
+// full route to footer pages:
 app.get("/about", function (req, res) {
   res.render("layout.ejs", {
     title: "About Us",
@@ -56,6 +67,32 @@ app.get("/about", function (req, res) {
   });
 });
 
+app.get("/copyright", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Copyright",
+    bodyFile: "./others/copyright",
+  });
+});
+app.get("/privacy", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Privacy Policy",
+    bodyFile: "./others/privacy",
+  });
+});
+app.get("/terms", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Terms & Conditions",
+    bodyFile: "./others/terms",
+  });
+});
+// My Account routes
+app.get("/my-account", function (req, res) {
+  res.render("layout.ejs", {
+    title: "My Account",
+    bodyFile: "./users/profile",
+  });
+});
+// Start the server
 app.listen(PORT, function () {
   console.log(`Server started on port ${PORT}`);
 });
