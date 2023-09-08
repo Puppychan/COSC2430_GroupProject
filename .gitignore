@@ -3,3 +3,5 @@ node_modules/
 package-lock.json
 .env
 groupproject-fe/public/style/output.css
+
+.vscode/settings.json

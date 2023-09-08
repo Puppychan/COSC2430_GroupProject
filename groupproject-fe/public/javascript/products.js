@@ -13,7 +13,7 @@ const products = [
         name: "Product 1",
         category: "Mobile Phones",
         price: 149.00,
-        description: "A mobile phone with 4GB RAM and much more features"
+        description: "A mobile phone with 4GB RAM and much more features. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellendus ipsa laudantium optio quo ratione nam iure consequuntur"
     },
     {
         id: 3,
@@ -45,7 +45,7 @@ const products = [
         name: "Product 1",
         category: "Mobile Phones",
         price: 149.00,
-        description: "Beautifully handmade laptop case/sleeve made in the Nepal Himalaya. It can be slipped inside your backpack or carried alone with space for all your work bits and pieces!"
+        description: "Beautifully handmade laptop case/sleeve made in the Nepal Himalaya. It can be slipped inside your backpack or carried alone with space for all your work bits and pieces! Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repellendus ipsa laudantium optio quo ratione nam iure consequuntur sapiente cumque repudiandae assumenda perferendis repellat sit illo rerum nesciunt, perspiciatis adipisci consectetur!"
     }
 ];
 
