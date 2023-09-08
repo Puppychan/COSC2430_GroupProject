@@ -3,6 +3,7 @@ const path = require("path");
 const { CONNECT_URI, PORT } = require("./common/constants");
 const { default: mongoose } = require("mongoose");
 const { navigatePage } = require("./common/helpers");
+const products = require("./public/javascript/products");
 
 require("dotenv").config();
 const app = express();
@@ -37,6 +38,7 @@ app.locals.navigatePage = navigatePage;
 app.get("/", function (req, res) {
   res.render("layout.ejs", {
     title: "1080p Technology",
+    products: products,
   });
 });
 // login and signup routes
