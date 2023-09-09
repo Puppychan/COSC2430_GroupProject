@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // app.use('/', user)
 // const router = express.Router();
 
-// full route to Home page:
+// Home page route:
 app.get("/", function (req, res) {
   res.render("layout.ejs", {
     title: "Home",
@@ -33,17 +33,17 @@ app.get("/", function (req, res) {
     products: products,
   });
 });
-// login and signup routes
+// login routes
 app.get("/login", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Login",
     bodyFile: "./auth/login",
   });
 });
-
+// Signup routes
 app.get("/signup-customer", (req, res) => {
   res.render("auth-layout.ejs", {
-    title: "Sign Up",
+    title: " Customer Sign Up",
     bodyFile: "./auth/signup-customer",
   });
 });
@@ -67,7 +67,6 @@ app.get("/about", function (req, res) {
     bodyFile: "./others/about",
   });
 });
-
 app.get("/copyright", function (req, res) {
   res.render("layout.ejs", {
     title: "Copyright",
@@ -86,11 +85,25 @@ app.get("/terms", function (req, res) {
     bodyFile: "./others/terms",
   });
 });
-// My Account routes
+// My Account route
 app.get("/my-account", function (req, res) {
   res.render("layout.ejs", {
     title: "My Account",
     bodyFile: "./users/profile",
+  });
+});
+// New Product route
+app.get("/new-product", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Add New Product",
+    bodyFile: "./vendors/product",
+  });
+});
+// Shipper Dashboard route
+app.get("/shipper-dashboard", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Shipper Dashboard",
+    bodyFile: "./shipper/dashboard",
   });
 });
 // Start the server

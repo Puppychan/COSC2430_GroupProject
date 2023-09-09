@@ -17,15 +17,26 @@
                         <label for="username"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
                         <input type="text" name="username" id="username"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="userName123" required="">
+                            class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="userName123" pattern="[a-zA-Z0-9]{8,15}" required>
+                        <p class="text-xs pt-2 text-gray-400">Must be 8 to 15 characters</p>
                     </div>
                     <div>
                         <label for="password"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
                         <input type="password" id="password"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            required placeholder="••••••••">
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm  invalid:border-red-500 invalid:text-red-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            required placeholder="••••••••"
+                            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,20}$">
+                        <div class="text-xs pt-2 text-gray-400">
+                            <ul>
+                                <li>At least one upper case letter</li>
+                                <li>At least one lower case letter</li>
+                                <li>At least one digit</li>
+                                <li>At least one special letter in this set "!@#$%^&*"</li>
+                                <li>Must be 8 to 20 characters</li>
+                            </ul>
+                        </div>
                     </div>
                     <!-- Additional field for shipper -->
                     <div class="shipper-info role-info" id="hub">
