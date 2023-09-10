@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // full route to Home page:
 app.get("/", function (req, res) {
   res.render("layout.ejs", {
-    title: "1080p Technology",
+    title: "Home",
     bodyFile: "./home/index",
     products: products,
   });
