@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Create Product
+    </title>
+</head>
+<form action="/product" method="post" enctype="multipart/form-data">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" required><br>
+
+    <label for="vendor">Vendor:</label><br>
+    <input type="text" id="vendor" name="vendor" required><br>
+
+    <label for="image">Image:</label><br>
+    <input type="file" id="image" name="image" required><br>
+
+    <label for="price">Price:</label><br>
+    <input type="number" id="price" name="price" required><br>
+
+    <label for="stock">Stock:</label><br>
+    <input type="number" id="stock" name="stock" required><br>
+
+    <label for="description">Description:</label><br>
+    <textarea id="description" name="description" required></textarea><br><br>
+
+    <button type="submit">Create Product</button>
+</form>
+
+</html>

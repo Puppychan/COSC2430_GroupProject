@@ -1,9 +1,10 @@
 const express = require("express");
 const path = require("path");
 const products = require("./public/javascript/products");
-const { PORT } = require("./common/constants");
 
 require("dotenv").config();
+const { PORT, BACKEND_URL } = require("./common/constants");
+
 const app = express();
 
 // view engine setup
@@ -22,8 +23,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // Modules
 // const example = require('./modules/example.module.js');
 // app.use('/', user)
+// const router = express.Router();
 
-// full route to Home page:
+// Home page route:
 app.get("/", function (req, res) {
   res.render("layout.ejs", {
     title: "Home",
@@ -31,18 +33,30 @@ app.get("/", function (req, res) {
     products: products,
   });
 });
-// login and signup routes
+// login routes
 app.get("/login", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Login",
     bodyFile: "./auth/login",
   });
 });
-
-app.get("/signup", (req, res) => {
+// Signup routes
+app.get("/signup-customer", (req, res) => {
   res.render("auth-layout.ejs", {
-    title: "Sign Up",
-    bodyFile: "./auth/signup",
+    title: " Customer Sign Up",
+    bodyFile: "./auth/signup-customer",
+  });
+});
+app.get("/signup-vendor", (req, res) => {
+  res.render("auth-layout.ejs", {
+    title: "Vendor Sign Up",
+    bodyFile: "./auth/signup-vendor",
+  });
+});
+app.get("/signup-shipper", (req, res) => {
+  res.render("auth-layout.ejs", {
+    title: "Shipper Sign Up",
+    bodyFile: "./auth/signup-shipper",
   });
 });
 
@@ -53,7 +67,6 @@ app.get("/about", function (req, res) {
     bodyFile: "./others/about",
   });
 });
-
 app.get("/copyright", function (req, res) {
   res.render("layout.ejs", {
     title: "Copyright",
@@ -72,6 +85,28 @@ app.get("/terms", function (req, res) {
     bodyFile: "./others/terms",
   });
 });
+// My Account route
+app.get("/my-account", function (req, res) {
+  res.render("layout.ejs", {
+    title: "My Account",
+    bodyFile: "./users/profile",
+  });
+});
+// New Product route
+app.get("/new-product", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Add New Product",
+    bodyFile: "./vendors/product",
+  });
+});
+// Shipper Dashboard route
+app.get("/shipper-dashboard", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Shipper Dashboard",
+    bodyFile: "./shipper/dashboard",
+  });
+});
+// Start the server
 app.listen(PORT, function () {
   console.log(`Server started on port ${PORT}`);
 });
