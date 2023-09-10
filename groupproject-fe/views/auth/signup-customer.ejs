@@ -1,29 +1,29 @@
-<section class="bg-gray-50 dark:bg-gray-900 h-auto">
+<section class="bg-gray-900 h-auto">
   <div class="flex justify-center md:justify-start w-full p-10"> <a href="/"><button type="button"
-        class="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 p-10 "><i
-          class="fa-solid fa-house mr-1"></i>Home</button></a></div>
-  <div class="flex flex-col items-center justify-center px-6 py-6 mx-auto md:h-screen lg:py-0">
-    <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+        class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-5 mb-5 focus:outline-none p-10"><i
+          class="fa-solid fa-house mr-2"></i>Home</button></a></div>
+  <div class="flex flex-col items-center justify-center px-6 py-6 mx-auto -mt-20 mb-5 lg:py-0">
+    <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-white">
       <img class="w-40 mr-2" src="img/1.png" alt="logo">
     </a>
     <div
-      class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+      class="w-full rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700">
       <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-        <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+        <h1 class="text-xl font-bold leading-tight tracking-tight md:text-2xl text-white">
           Sign up for a Customer account
         </h1>
         <form class="space-y-3" action="#">
           <div>
-            <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
+            <label for="username" class="block mb-2 text-sm font-medium text-white">Username</label>
             <input type="text" name="username" id="username"
-              class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-700 border border-gray-600 placeholder-gray-400 text-white invalid:border-red-500 invalid:text-red-600 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               placeholder="userName123" pattern="[a-zA-Z0-9]{8,15}" required>
             <p class="text-xs pt-2 text-gray-400">Must be 8 to 15 characters</p>
           </div>
           <div>
             <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
             <input type="password" id="password"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm  invalid:border-red-500 invalid:text-red-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="bg-gray-700 border border-gray-600 placeholder-gray-400 text-white invalid:border-red-500 invalid:text-red-600 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               required placeholder="••••••••"
               pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,20}$">
             <div class="text-xs pt-2 text-gray-400">
@@ -39,12 +39,9 @@
           <!-- Additional field for customer -->
           <div class="customer-info role-info" id="name-field">
             <div class="inputBox">
-              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+              <label for="name" class="block mb-2 text-sm font-medium text-white">Your
                 Name</label>
-              <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900
-                                    sm:text-sm rounded-lg invalid:border-red-500 invalid:text-red-600 focus:ring-primary-600 focus:border-primary-600 block
-                                    w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                    dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="name"
+              <input type="text" class="bg-gray-700 border border-gray-600 placeholder-gray-400 text-white invalid:border-red-500 invalid:text-red-600 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" id="name"
                 name="name" placeholder="John Doe" minlength="5">
               <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
             </div>
@@ -52,26 +49,23 @@
 
           <div class="customer-info role-info" id="name-field">
             <div class="inputBox">
-              <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+              <label for="address" class="block mb-2 text-sm font-medium text-white">Your
                 Address</label>
-              <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600
-                                    sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
-                                    w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                    dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="address"
+              <input type="text" class="bg-gray-700 border border-gray-600 placeholder-gray-400 text-white invalid:border-red-500 invalid:text-red-600 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" id="address"
                 name="address" placeholder="615 Magnolia Blvd" minlength="5">
               <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
             </div>
           </div>
           <!-- Image upload field -->
           <div class="inputBox">
-            <label for="avatar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Profile
+            <label for="avatar" class="block mb-2 text-sm font-medium text-white">Your Profile
               Picture</label>
             <input type="file"
-              class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 py-2"
+              class="block w-full text-sm text-gray-400 border border-gray-600 rounded-lg cursor-pointer bg-gray-700 focus:outline-none placeholder-gray-400 py-2"
               id="avatar" name="avatar">
           </div>
           <button type="submit"
-            class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 mt-5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign
+            class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-800 font-medium rounded-lg text-sm px-5 py-2.5 mt-5 text-center">Sign
             up</button>
         </form>
       </div>
