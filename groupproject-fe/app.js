@@ -31,6 +31,15 @@ app.get("/", function (req, res) {
     title: "Home",
     bodyFile: "./home/index",
     products: products,
+    activePage: 'home'
+  });
+});
+// Product page route:
+app.get("/detail", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Product Details",
+    bodyFile: "./detail/detail",
+    activePage: 'detail'
   });
 });
 // login routes
@@ -38,8 +47,10 @@ app.get("/login", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Login",
     bodyFile: "./auth/login",
+    activePage: 'login'
   });
 });
+
 // Signup routes
 app.get("/signup-customer", (req, res) => {
   res.render("auth-layout.ejs", {
@@ -65,8 +76,10 @@ app.get("/about", function (req, res) {
   res.render("layout.ejs", {
     title: "About Us",
     bodyFile: "./others/about",
+    activePage: 'about'
   });
 });
+
 app.get("/copyright", function (req, res) {
   res.render("layout.ejs", {
     title: "Copyright",
