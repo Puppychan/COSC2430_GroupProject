@@ -56,18 +56,21 @@ app.get("/signup-customer", (req, res) => {
   res.render("auth-layout.ejs", {
     title: " Customer Sign Up",
     bodyFile: "./auth/signup-customer",
+    activePage: 'customer'
   });
 });
 app.get("/signup-vendor", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Vendor Sign Up",
     bodyFile: "./auth/signup-vendor",
+    activePage: 'vendor'
   });
 });
 app.get("/signup-shipper", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Shipper Sign Up",
     bodyFile: "./auth/signup-shipper",
+    activePage: 'shipper'
   });
 });
 
@@ -84,18 +87,21 @@ app.get("/copyright", function (req, res) {
   res.render("layout.ejs", {
     title: "Copyright",
     bodyFile: "./others/copyright",
+    activePage: 'copyright'
   });
 });
 app.get("/privacy", function (req, res) {
   res.render("layout.ejs", {
     title: "Privacy Policy",
     bodyFile: "./others/privacy",
+    activePage: 'privacy'
   });
 });
 app.get("/terms", function (req, res) {
   res.render("layout.ejs", {
     title: "Terms & Conditions",
     bodyFile: "./others/terms",
+    activePage: 'terms'
   });
 });
 // My Account route
@@ -103,6 +109,7 @@ app.get("/my-account", function (req, res) {
   res.render("layout.ejs", {
     title: "My Account",
     bodyFile: "./users/profile",
+    activePage: 'profile'
   });
 });
 // New Product route
@@ -110,6 +117,7 @@ app.get("/new-product", function (req, res) {
   res.render("layout.ejs", {
     title: "Add New Product",
     bodyFile: "./vendors/addProduct",
+    activePage: 'addProduct'
   });
 });
 
@@ -118,6 +126,7 @@ app.get("/update-product", function (req, res) {
   res.render("layout.ejs", {
     title: "Update Product",
     bodyFile: "./vendors/updateProduct",
+    activePage: 'updateProduct'
   });
 });
 // Vendor Dashboard route
@@ -126,6 +135,7 @@ app.get("/vendor-dashboard", function (req, res) {
     title: "Vendor Dashboard",
     bodyFile: "./vendors/viewProducts",
     products: products,
+    activePage: 'viewProducts'
   });
 });
 
@@ -134,6 +144,7 @@ app.get("/shipper-dashboard", function (req, res) {
   res.render("layout.ejs", {
     title: "Shipper Dashboard",
     bodyFile: "./shipper/dashboard",
+    activePage: 'dashboard'
   });
 });
 // Start the server
