@@ -96,9 +96,26 @@ app.get("/my-account", function (req, res) {
 app.get("/new-product", function (req, res) {
   res.render("layout.ejs", {
     title: "Add New Product",
-    bodyFile: "./vendors/product",
+    bodyFile: "./vendors/addProduct",
   });
 });
+
+// Update Product Route
+app.get("/update-product", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Update Product",
+    bodyFile: "./vendors/updateProduct",
+  });
+});
+// Vendor Dashboard route
+app.get("/vendor-dashboard", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Vendor Dashboard",
+    bodyFile: "./vendors/viewProducts",
+    products: products,
+  });
+});
+
 // Shipper Dashboard route
 app.get("/shipper-dashboard", function (req, res) {
   res.render("layout.ejs", {

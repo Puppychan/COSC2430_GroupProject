@@ -1,0 +1,37 @@
+<div class="flex justify-center">
+    <!-- Bao -->
+    <section
+        class="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 items-center justify-items-center gap-y-10 mt-2 mb-5 mx-auto md:max-w-xl lg:max-w-full lg:mx-0">
+        <h1 class="col-span-full text-center text-4xl my-4 md:text-5xl font-bold md:mb-8">
+            <%= title %>
+        </h1>
+        <% products.forEach(function(product){ %>
+            <div class="bg-gray-100 shadow-sm rounded-lg w-3/4 md:max-w-sm flex flex-col relative">
+                <img src="<%= product.image %>" alt="<%= product.name %>" class="w-full h-48 object-cover rounded-t-lg">
+                <div class="p-3 flex flex-col gap-2 h-auto flex-grow">
+                    <h3 class="text-lg font-bold line-clamp-1 text-gray-800">
+                        <%= product.name %>
+                    </h3>
+                    <p class="text-sm text-gray-500 line-clamp-1 mt-0">
+                        <%= product.category %>
+                    </p>
+                    <h4 class="text-red-600 line-clamp-1 font-semibold mt-0">
+                        <%= product.price %>₫
+                            <span class="<%= product.stock > 0 ? 'text-green-600' : 'text-red-600' %> font-semibold">
+                                - <%= product.stock> 0 ? product.stock + ' In Stock' : 'Out of Stock' %>
+                            </span>
+                    </h4>
+                    <p class="text-sm text-gray-800 mb-10 line-clamp-1 md:line-clamp-2">
+                        <%= product.description %>
+                    </p>
+                </div>
+                <div class="absolute bottom-4 left-4 text-blue-600 hover:text-blue-800 cursor-pointer">
+                    Details →
+                </div>
+                <div class="absolute bottom-7 right-6 text-blue-600">
+                    <a href="/update-product"><i class="fa-solid fa-pen-to-square fa-xl"></i></a>
+                </div>
+            </div>
+            <% }); %>
+    </section>
+</div>
