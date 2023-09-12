@@ -35,11 +35,14 @@ app.get("/", function (req, res) {
   });
 });
 // Product page route:
-app.get("/detail", function (req, res) {
+app.get("/detail/:id", function (req, res) {
+  const id = req.params.id;
+  const matchedProduct = products.find((product) => product._id == id);
   res.render("layout.ejs", {
-    title: "Product Details",
+    title: "Product Detail",
     bodyFile: "./detail/detail",
     activePage: "detail",
+    product: matchedProduct,
   });
 });
 // login routes
