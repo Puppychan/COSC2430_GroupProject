@@ -44,10 +44,10 @@ app.get("/phones", function (req, res) {
   });
 });
 // Product page route:
-app.get("/detail", function (req, res) {
+app.get("/product", function (req, res) {
   res.render("layout.ejs", {
     title: "Product Details",
-    bodyFile: "./detail/detail",
+    bodyFile: "./product/product",
     activePage: 'laptops'
   });
 });
