@@ -67,7 +67,11 @@ Provide a <b>short</b> description explaining the what, why, and how of your pro
 - Run `npm install` to install the package.json
 - Run `npm start` to start running the project
 - Open [http://localhost:3000/](http://localhost:3000/)
-
+### For Frontend
+- From `root`, run `cd groupproject-fe`
+- Run `npm install` to install all dependencies
+- Run `npm run buildcss` to import css file from tailwind
+- Run `npm run start` to start the website
 ## Features
 
 If your project has a lot of features, list them here.

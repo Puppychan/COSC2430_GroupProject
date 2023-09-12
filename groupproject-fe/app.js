@@ -34,17 +34,6 @@ app.get("/", function (req, res) {
     activePage: "home",
   });
 });
-// Product page route:
-app.get("/detail/:id", function (req, res) {
-  const id = req.params.id;
-  const matchedProduct = products.find((product) => product._id == id);
-  res.render("layout.ejs", {
-    title: "Product Detail",
-    bodyFile: "./detail/detail",
-    activePage: "detail",
-    product: matchedProduct,
-  });
-});
 // login routes
 app.get("/login", (req, res) => {
   res.render("auth-layout.ejs", {
@@ -60,6 +49,18 @@ app.get("/signup-customer", (req, res) => {
     title: " Customer Sign Up",
     bodyFile: "./auth/signup-customer",
     activePage: "signup",
+  });
+});
+
+// Product page route:
+app.get("/product/:id", function (req, res) {
+  const id = req.params.id;
+  const matchedProduct = products.find((product) => product._id == id);
+  res.render("layout.ejs", {
+    title: "Product Detail",
+    bodyFile: "./product/product",
+    activePage: "product",
+    product: matchedProduct,
   });
 });
 app.get("/signup-vendor", (req, res) => {
