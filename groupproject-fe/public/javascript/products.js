@@ -45,8 +45,8 @@ const products = [
       "https://images.unsplash.com/photo-1518444065439-e933c06ce9cd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80",
     description:
       "It is capable of voice interaction, music playback, making to-do lists, setting alarms, streaming podcasts, playing audiobooks, and providing weather, traffic, sports, and other real-time information, such as news. Alexa can also control several smart devices using itself as a home automation system.",
-    price: 50,
-    stock: 2500000,
+    price: 5000000,
+    stock: 0,
     vendor: "00000001db42a4ac30ff65a2",
   },
   {

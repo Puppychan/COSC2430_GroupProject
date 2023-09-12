@@ -34,12 +34,21 @@ app.get("/", function (req, res) {
     activePage: 'home'
   });
 });
+// Category page route:
+app.get("/phones", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Smartphones",
+    bodyFile: "./category/phones",
+    products: products,
+    activePage: 'phones'
+  });
+});
 // Product page route:
 app.get("/detail", function (req, res) {
   res.render("layout.ejs", {
     title: "Product Details",
     bodyFile: "./detail/detail",
-    activePage: 'detail'
+    activePage: 'laptops'
   });
 });
 // login routes
