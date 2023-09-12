@@ -19,6 +19,9 @@ app.set('view engine', 'ejs');
 global.publicDirectory = path.resolve(__dirname, 'public');
 
 connectDB()
+.catch((error) => {
+  console.log(error)
+});
 
 app.get("/", (req, res) => {
   res.json({ message: "API running..." });

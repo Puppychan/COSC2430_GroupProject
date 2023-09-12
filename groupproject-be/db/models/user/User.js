@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
-const {valid_username, valid_password} = require('../../../utils/validator')
+const {valid_username} = require('../../../utils/validator')
 
 const userSchema = new mongoose.Schema(
   {
-    _id: mongoose.Schema.Types.ObjectId,
     username: {
       type: String, 
       required: true, 
@@ -16,10 +15,6 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String, 
       required: true,
-      // validate: {
-      //   validator: valid_password,
-      //   message: props => `${props.value} is not a valid password!`
-      // }
     },
     role: {
       type: String, 

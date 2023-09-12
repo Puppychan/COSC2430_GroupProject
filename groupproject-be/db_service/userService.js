@@ -1,90 +1,59 @@
 const bcrypt = require('bcrypt')
-const Customer = require('../db/models/user/Customer')
-const Vendor = require('../db/models/user/Vendor')
-const Shipper = require('../db/models/user/Shipper')
-const User = require('../db/models/user/User')
+const {User, Customer, Vendor, Shipper} = require('../db/models/modelCollection')
 const {sendResponse} = require('../routes/middleware');
 const {checkPassword, newToken} = require('../utils/verification')
-const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Types;
 
-const register_sample = async (user_register) => {
+/*  this function register user (in both User collection and role's collection) 
+  - example of all_info for customer:
+{
+  username: "hakhanhne",
+  password: "password",
+  role: "customer",
+  avatar: "
+  name: "Ha Khanh",
+  address: "123 RMIT"
+}
+  - example of all_info for vendor:
+{
+  username: "hakhanhne",
+  password: "password",
+  role: "vendor",
+  name: "Ha Khanh",
+  address: "123 RMIT"
+}
+  - example of all_info for shipper:
+{
+  username: "hakhanhne",
+  password: "password",
+  role: "shipper",
+  name: "Ha Khanh",
+  hubid: "465937280q38296"
+}
+
+*/
+const register = async (all_info) => {
   try {
-    const {user, info} = user_register
-    const hash = await bcrypt.hash(user.password, 8);
-    const newuser = await User.create({...user, password: hash});
-    const role = newuser.role;
+    const {username, password, role, avatar, name, address, hubid} = all_info
+    
+    const hash = await bcrypt.hash(password, 8);
+    const newuser = await User.create({username: username, password: hash, role: role, avatar: avatar})
+    
+    let info = null;
     if (role == 'customer') {
-      await Customer.create({...info, user: newuser._id, _id: new ObjectId(newuser._id)})
+      info = await Customer.create({user: newuser._id, name: name, address: address})
     }
     else if (role == 'vendor') {
-      await Vendor.create({...info, user: newuser._id, _id: new ObjectId(newuser._id)})
+      info = await Vendor.create({ user: newuser._id, name: name, address: address})
     }
     else if (role == 'shipper') {
-      await Shipper.create({...info, user: newuser._id, _id: new ObjectId(newuser._id)})
+      info = await Shipper.create({user: newuser._id, name: name, hub: hubid})
     }
-  } catch (err) {
-    console.log(err)
-  }
-}
+    else throw new Error("Role can only be customer, vendor, shipper")
 
-// this function return register user status: true if success, false if fail
-const register_user = async (username, password, role, avatar) => {
-  try {
-    // info is a json object that contains specific infomation of that role
-    const hash = await bcrypt.hash(password, 8);
-    let newuser = new User;
-    newuser.username = username;
-    newuser.password = hash;
-    newuser.role = role;
-    if (avatar) newuser.avatar = avatar;
-
-    newuser = await newuser.save();
-    return newuser;
+    return {user: newuser, role_info: info};
   } catch (err) {
     console.log("cannot create user: ", err)
-    return null
-  }
-}
-
-// this function return register status: true if success, false if fail
-const register_customer_vendor = async (username, password, role, avatar, name, address) => {
-  try {
-    const newuser = register_user(username, password, role, avatar);
-    if (newuser == null) return false;
-
-    let newaccount = null;
-    if (role == 'customer') {
-      newaccount = await Customer.create({_id: new ObjectId(newuser._id), user: newuser._id, name: name, address: address})
-    }
-    else if (role == 'vendor') {
-      newaccount = await Vendor.create({_id: new ObjectId(newuser._id), user: newuser._id, name: name, address: address})
-    }
-    else return false
-
-    return true;
-  } catch (err) {
-    console.log("cannot create customer/vendor: ", err)
-    return false
-  }
-}
-
-// register_shippper() returns register status: true if success, false if fail
-const register_shippper = async (username, password, role, avatar, name, hubid) => {
-  try {
-    const newuser = register_user(username, password, role, avatar);
-    if (newuser == null) return false;
-
-    let newaccount = null;
-    if (role == 'shipper') {
-      newaccount = await Shipper.create({_id: new ObjectId(newuser._id), user: newuser._id, name: name, hub: hubid})
-    }
-    else return false
-
-    return true;
-  } catch (err) {
-    console.log("cannot create shipper: ", err)
-    return false
+    throw(err)
   }
 }
 
@@ -182,4 +151,27 @@ const changePassword = async (current_pw, new_pw) => {
     return {status: false, message: `Update password failed: ${err}`}
   }
 }
-module.exports = {register_sample, register_user, register_customer_vendor, register_shippper, login, getUserInfo, getUser_no_verify, changePassword}
+
+
+// dont care this function, it is used to import sample data
+const register_sample = async (user_register) => {
+  try {
+    const {user, info} = user_register
+    const hash = await bcrypt.hash(user.password, 8);
+    const newuser = await User.create({...user, password: hash});
+    const role = newuser.role;
+    if (role == 'customer') {
+      await Customer.create({...info, user: newuser._id})
+    }
+    else if (role == 'vendor') {
+      await Vendor.create({...info, user: newuser._id})
+    }
+    else if (role == 'shipper') {
+      await Shipper.create({...info, user: newuser._id})
+    }
+  } catch (err) {
+    throw(err)
+  }
+}
+
+module.exports = {register_sample, register, login, getUserInfo, getUser_no_verify, changePassword}

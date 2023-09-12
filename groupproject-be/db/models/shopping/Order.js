@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const Product = require('./Product');
+const Product = require('./Product').schema;
 
-const orderItem = new mongoose.Schema({
+const orderItemSchema = new mongoose.Schema({
   product: {type: Product, required: true},
   quantiy: {
     type: Number, 
@@ -16,20 +16,21 @@ const orderSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
+  shipper: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User',
+  },
   hub: {
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Hub',
     required: true
   },
-  shipper: {
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'User',
-  },
-  items: [orderItem],
-  items_mapped_by_vendor: {
-    type: Map, // `items_by_vendor` is a key/value store for string keys
-    of: [orderItem],
-  },
+  items: [{
+    type: orderItemSchema,
+    validate: [function (v) {
+      return (v != null && v !== undefined && v.length != 0)
+    }, 'Order item list cannot be empty']
+  }],
   total_price: {
     type: Number, 
     required: true,
@@ -44,7 +45,7 @@ const orderSchema = new mongoose.Schema({
     },
     default: 'active'
   },
-  createAt: {type: Date, required: true, default: Date.now },
+  createAt: {type: Date,  default: Date.now, required: true },
 });
 
 const Order = mongoose.model('Order', orderSchema);

@@ -5,7 +5,8 @@ const customerSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'User',
-      required: true
+      required: true,
+      unique: [true, 'This user has been added to Customer before']
     },
     name: {
       type: String, 

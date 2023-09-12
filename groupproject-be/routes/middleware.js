@@ -2,10 +2,9 @@ const User = require('../db/models/user/User')
 const { verifyToken } = require('../utils/verification')
 
 const sendResponse = (res, statusCode, msg, data) => {
-  res.status(!!statusCode ? statusCode : 200).json({
-    message: !!msg ? msg : 'ok',
-    statusCode: statusCode ?? 500,
-    data: data
+  res.status(statusCode ?? 200).json({
+    message: msg ?? 'ok',
+    statusCode: statusCode ?? 200,
   });
 }
 
