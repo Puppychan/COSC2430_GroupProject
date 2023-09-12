@@ -150,7 +150,18 @@ app.get("/shipper-dashboard", function (req, res) {
     activePage: "shipper-dashboard",
   });
 });
+
+// Cart route
+app.get("/customer", function (req, res) {
+  res.render("layout.ejs", {
+    title: "My Account",
+    bodyFile: "./cart/cart",
+  });
+});
+
 // Start the server
 app.listen(PORT, function () {
   console.log(`Server started on port ${PORT}`);
 });
+
+
