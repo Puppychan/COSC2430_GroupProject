@@ -152,10 +152,11 @@ app.get("/shipper-dashboard", function (req, res) {
 });
 
 // Cart route
-app.get("/customer", function (req, res) {
+app.get("/cart", function (req, res) {
   res.render("layout.ejs", {
-    title: "My Account",
-    bodyFile: "./cart/cart",
+    title: "Cart",
+    bodyFile: "./customer/cart",
+    activePage: "cart",
   });
 });
 
@@ -163,5 +164,3 @@ app.get("/customer", function (req, res) {
 app.listen(PORT, function () {
   console.log(`Server started on port ${PORT}`);
 });
-
-
