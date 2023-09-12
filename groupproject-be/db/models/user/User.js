@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       enum: {
         values: ['customer', 'vendor', 'shipper'],
-        message: '{VALUE} is not supported'
+        message: 'Role "{VALUE}" is not supported'
       },
       default: 'customer'
     },
