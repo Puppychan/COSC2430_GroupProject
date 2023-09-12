@@ -8,9 +8,9 @@
         <button id="searchBtn" class="flex items-center justify-center p-2">
           <i class="fa fa-search text-2xl hover:text-gray-200"></i>
         </button>
-        <a href="/my-account"><i class="fa-solid fa-user fa-2xl"></i></a>
-        <a href="/cart"><i class="fa-solid fa-cart-shopping fa-2xl"></i></a>
-        <a href="/login"
+        <a href="<%= navigatePage("my-account") %>"><i class="fa-solid fa-user fa-2xl"></i></a>
+        <a href="<%= navigatePage("cart") %>"><i class="fa-solid fa-cart-shopping fa-2xl"></i></a>
+        <a href="<%= navigatePage("login") %>"
           class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2  bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Log
           in</a>
         <button data-collapse-toggle="mobile-menu-2" type="button"

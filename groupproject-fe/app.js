@@ -4,6 +4,7 @@ const products = require("./public/javascript/products");
 
 require("dotenv").config();
 const { PORT, BACKEND_URL } = require("./common/constants");
+const { navigatePage } = require("./common/helperFuncs");
 
 const app = express();
 
@@ -18,7 +19,7 @@ app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, "public")));
 
 // reusable function for all ejs
-// app.locals.navigatePage = navigatePage;
+app.locals.navigatePage = navigatePage;
 
 // Modules
 // const example = require('./modules/example.module.js');
@@ -34,6 +35,19 @@ app.get("/", function (req, res) {
     activePage: "home",
   });
 });
+
+// Product page route:
+app.get("/product/:id", function (req, res) {
+  const id = req.params.id;
+  const matchedProduct = products.find((product) => product._id == id);
+  res.render("layout.ejs", {
+    title: "Product Detail",
+    bodyFile: "./product/product",
+    activePage: "product",
+    product: matchedProduct,
+  });
+});
+
 // login routes
 app.get("/login", (req, res) => {
   res.render("auth-layout.ejs", {
@@ -52,17 +66,6 @@ app.get("/signup-customer", (req, res) => {
   });
 });
 
-// Product page route:
-app.get("/product/:id", function (req, res) {
-  const id = req.params.id;
-  const matchedProduct = products.find((product) => product._id == id);
-  res.render("layout.ejs", {
-    title: "Product Detail",
-    bodyFile: "./product/product",
-    activePage: "product",
-    product: matchedProduct,
-  });
-});
 app.get("/signup-vendor", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Vendor Sign Up",
