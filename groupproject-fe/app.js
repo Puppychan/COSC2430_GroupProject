@@ -152,10 +152,10 @@ app.get("/shipper-dashboard", function (req, res) {
 });
 
 // Cart route
-app.get("/customer", function (req, res) {
+app.get("/cart", function (req, res) {
   res.render("layout.ejs", {
-    title: "My Account",
-    bodyFile: "./cart/cart",
+    title: "My Cart",
+    bodyFile: "./customer/cart",
   });
 });
 
