@@ -38,15 +38,27 @@ module.exports = {
         'monospace'
       ],
       'open-sans': [
-        'Open Sans',
+        '"Open Sans"',
         'sans-serif'
       ]
       },
       screens: {
       'xs': '475px',
-      ...defaultTheme.screens,
+      'lg': '992px',
       },
     },    
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities(
+        {
+          '.center-and-half': {
+            width: '50%',
+            margin: '0 auto',
+          },
+        },
+        ['responsive', 'hover']
+      );
+    },
+  ],
 };
