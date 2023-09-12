@@ -1,57 +1,62 @@
 <header>
-  <nav class="bg-primary-400 border-gray-200 px-4 py-4 lg:px-6  dark:bg-gray-800 rounded-b-3xl">
-    <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+  <nav class="border-gray-200 px-4 py-4 lg:px-6 bg-gray-800 rounded-b-3xl">
+    <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl space-x-4">
       <a href="/" class="flex items-center">
-        <img src="img/1.png" class="mr-3 w-32 hidden dark:block" alt="1080P Logo" />
+        <img src="img/1.png" class="mr-3 w-32 block" alt="1080P Logo" />
       </a>
-      <a href="/" class="flex items-center">
-        <img src="img/2.png" class="mr-3 w-32 block dark:hidden " alt="1080P Logo" />
-      </a>
-      <div class="flex items-center lg:order-2">
-        <a href="/my-account" class="w-10 h-10"><img
-            src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
-            alt="Profile Picture" class=" rounded-full"></a>
-        <a href="/cart"><i class="fa-solid fa-cart-shopping fa-xl"></i></a>
-
+      <div class="flex items-center gap-4 lg:order-2">
+        <button id="searchBtn" class="flex items-center justify-center p-2">
+          <i class="fa fa-search text-2xl hover:text-gray-200"></i>
+        </button>
+        <a href="/my-account"><i class="fa-solid fa-user fa-2xl"></i></a>
+        <a href="/cart"><i class="fa-solid fa-cart-shopping fa-2xl"></i></a>
         <a href="/login"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Log
+          class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2  bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Log
           in</a>
         <button data-collapse-toggle="mobile-menu-2" type="button"
-          class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          class="inline-flex items-center p-2 ml-1 text-sm rounded-lg lg:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
           aria-controls="mobile-menu-2" aria-expanded="false" id="navBarButton">
           <i class="fa-solid fa-bars fa-2x"></i>
         </button>
       </div>
-      <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
-        <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+      <div class="hidden flex-grow justify-center items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
+        <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-2 lg:space-y-0 space-y-4 lg:mt-0">
           <li>
-            <a href="#"
-              class="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white"
-              aria-current="page">HOME</a>
+            <a href="/"
+              class="block py-2 px-4 mr-6 rounded
+              <%= activePage === 'home' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400' %>"
+              <%= activePage === 'home' ? 'aria-current="page"' : '' %>>HOME</a>
           </li>
           <li>
             <a href="#"
-              class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">MOBILE
-              PHONES</a>
+              class="block py-2 px-4 border-b lg:border-0  text-gray-400 lg:hover:text-white hover:bg-gray-700 hover:text-white lg:hover:bg-transparent border-gray-700">SMARTPHONES</a>
           </li>
           <li>
             <a href="#"
-              class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">TABLETS</a>
+              class="block py-2 px-4 border-b lg:border-0  text-gray-400 lg:hover:text-white hover:bg-gray-700 hover:text-white lg:hover:bg-transparent border-gray-700">TABLETS</a>
           </li>
           <li>
             <a href="#"
-              class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">LAPTOPS</a>
+              class="block py-2 px-4 border-b lg:border-0  text-gray-400 lg:hover:text-white hover:bg-gray-700 hover:text-white lg:hover:bg-transparent border-gray-700">LAPTOPS</a>
           </li>
           <li>
             <a href="#"
-              class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">ACCESSORIES</a>
-          </li>
-          <li>
-            <a href="#"
-              class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">CONTACT</a>
+              class="block py-2 px-4 border-b lg:border-0  text-gray-400 lg:hover:text-white hover:bg-gray-700 hover:text-white lg:hover:bg-transparent border-gray-700">ACCESSORIES</a>
           </li>
         </ul>
       </div>
     </div>
+    <div id="searchBar" class="hidden w-full bg-gray-800 px-4 py-4 rounded-b-3xl">
+      <div class="mx-auto max-w-screen-xl flex items-center">
+        <input type="text" class="outline-none border-none flex-grow rounded-l-lg text-sm h-12 pl-4 text-black"
+          placeholder="Search..." />
+        <button
+          class="active:bg-blue-800 bg-blue-600 hover:bg-blue-700 text-white h-12 w-20 text-sm font-medium rounded-r-lg py-2.5 focus:outline-none focus:ring-blue-800">Search</button>
+        <button id="closeSearchBtn" class="p-2 ml-4 text-white h-10 w-10">
+          <i class="fas fa-times text-2xl hover:text-gray-200" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
   </nav>
+
 </header>

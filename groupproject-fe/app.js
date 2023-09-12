@@ -1,7 +1,6 @@
 const express = require("express");
 const path = require("path");
 const products = require("./public/javascript/products");
-const { PORT } = require("./common/constants");
 
 require("dotenv").config();
 const { PORT, BACKEND_URL } = require("./common/constants");
@@ -26,39 +25,55 @@ app.use(express.static(path.join(__dirname, "public")));
 // app.use('/', user)
 // const router = express.Router();
 
-// full route to Home page:
+// Home page route:
 app.get("/", function (req, res) {
   res.render("layout.ejs", {
     title: "Home",
     bodyFile: "./home/index",
     products: products,
+    activePage: "home",
   });
 });
-// login and signup routes
+// Product page route:
+app.get("/detail/:id", function (req, res) {
+  const id = req.params.id;
+  const matchedProduct = products.find((product) => product._id == id);
+  res.render("layout.ejs", {
+    title: "Product Detail",
+    bodyFile: "./detail/detail",
+    activePage: "detail",
+    product: matchedProduct,
+  });
+});
+// login routes
 app.get("/login", (req, res) => {
-
   res.render("auth-layout.ejs", {
     title: "Login",
     bodyFile: "./auth/login",
+    activePage: "login",
   });
 });
 
+// Signup routes
 app.get("/signup-customer", (req, res) => {
   res.render("auth-layout.ejs", {
-    title: "Sign Up",
+    title: " Customer Sign Up",
     bodyFile: "./auth/signup-customer",
+    activePage: "signup",
   });
 });
 app.get("/signup-vendor", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Vendor Sign Up",
     bodyFile: "./auth/signup-vendor",
+    activePage: "signup",
   });
 });
 app.get("/signup-shipper", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Shipper Sign Up",
     bodyFile: "./auth/signup-shipper",
+    activePage: "signup",
   });
 });
 
@@ -67,6 +82,7 @@ app.get("/about", function (req, res) {
   res.render("layout.ejs", {
     title: "About Us",
     bodyFile: "./others/about",
+    activePage: "about",
   });
 });
 
@@ -74,27 +90,76 @@ app.get("/copyright", function (req, res) {
   res.render("layout.ejs", {
     title: "Copyright",
     bodyFile: "./others/copyright",
+    activePage: "copyright",
   });
 });
 app.get("/privacy", function (req, res) {
   res.render("layout.ejs", {
     title: "Privacy Policy",
     bodyFile: "./others/privacy",
+    activePage: "privacy",
   });
 });
 app.get("/terms", function (req, res) {
   res.render("layout.ejs", {
     title: "Terms & Conditions",
     bodyFile: "./others/terms",
+    activePage: "terms",
   });
 });
-// My Account routes
+// My Account route
 app.get("/my-account", function (req, res) {
   res.render("layout.ejs", {
     title: "My Account",
     bodyFile: "./users/profile",
+    activePage: "my-account",
   });
 });
+// New Product route
+app.get("/new-product", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Add New Product",
+    bodyFile: "./vendors/addProduct",
+    activePage: "new-product",
+  });
+});
+
+// Update Product Route
+app.get("/update-product", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Update Product",
+    bodyFile: "./vendors/updateProduct",
+    activePage: "update-product",
+  });
+});
+// Vendor Dashboard route
+app.get("/vendor-dashboard", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Vendor Dashboard",
+    bodyFile: "./vendors/viewProducts",
+    activePage: "vendor-dashboard",
+    products: products,
+  });
+});
+
+// Shipper Dashboard route
+app.get("/shipper-dashboard", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Shipper Dashboard",
+    bodyFile: "./shipper/dashboard",
+    activePage: "shipper-dashboard",
+  });
+});
+
+// Cart route
+app.get("/cart", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Cart",
+    bodyFile: "./customer/cart",
+    activePage: "cart",
+  });
+});
+
 // Start the server
 app.listen(PORT, function () {
   console.log(`Server started on port ${PORT}`);
