@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema({
   customer: {
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'User',
-    required: true
+    required: true,
   },
   shipper: {
     type: mongoose.Schema.Types.ObjectId, 
@@ -36,12 +36,12 @@ const orderSchema = new mongoose.Schema({
     required: true,
     min: [0, 'Total price must be positive number']
   },
-  state: {
+  status: {
     type: String, 
     required: true,
     enum: {
       values: ['active', 'delivered', 'canceled'],
-      message: '{VALUE} is not supported'
+      message: 'Order status {VALUE} is not supported'
     },
     default: 'active'
   },

@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt')
-const {User, Customer, Vendor, Shipper} = require('../db/models/modelCollection')
+const {User, Customer, Vendor, Shipper, Cart} = require('../db/models/modelCollection')
 const {sendResponse} = require('../routes/middleware');
 const {checkPassword, newToken} = require('../utils/verification')
 
@@ -34,6 +34,7 @@ const register = async (req, res) => {
     let info = null;
     if (role == 'customer') {
       info = await Customer.create({user: newuser._id, name: name, address: address})
+      await Cart.create({customer: newuser._id})
     }
     else if (role == 'vendor') {
       info = await Vendor.create({ user: newuser._id, name: name, address: address})
@@ -76,8 +77,8 @@ const getUserInfo = async (req, res) => {
   try {
     var full_info = null;
     if (req.user != null) {
-      const role = req.user.role;
-      const id = req.user._id
+      let role = req.user.role;
+      let id = req.user._id
       if (role == 'customer') {
         full_info = await Customer.findOne({'user': id}).populate('user');
       }
@@ -99,9 +100,9 @@ const getUserInfo = async (req, res) => {
 
 const getUser_no_verify = async (req, res) => {
   try {
-    var id = req.params.id
+    let id = req.params.id
     const user = await User.findOne({_id: id});
-    var full_info = null;
+    let full_info = null;
     if (user != null) {
       const role = user.role;
       if (role == 'customer') {
@@ -126,8 +127,7 @@ const getUser_no_verify = async (req, res) => {
 const changePassword = async (req, res) => {
   const {current_pw, new_pw} = req.body;
   try {
-    var user = await User.findOne({_id: req.user._id});
-    console.log(user)
+    let user = await User.findOne({_id: req.user._id});
     const same = await checkPassword(current_pw, user.password);
     if (same) {
       const hash = await bcrypt.hash(new_pw, 8);
@@ -135,10 +135,10 @@ const changePassword = async (req, res) => {
       sendResponse(res, 200, 'Updated password');
       return
     }
-    sendResponseError(400, 'Invalid password', res)
+    sendResponse(res, 400, 'Invalid password')
   } catch (err) {
     console.log(err)
     sendResponse(res, 500, `Error ${err}`);
   }
 }
-module.exports = {register_sample, register, register1, login, getUserInfo, getUser_no_verify, changePassword}
+module.exports = {register_sample, register, login, getUserInfo, getUser_no_verify, changePassword}

@@ -5,6 +5,8 @@ const cors = require("cors");
 const path = require('path');
 const {connectDB} = require("./db/connectDB");
 const userRoutes = require("./routes/userRoutes");
+const cartRoutes = require("./routes/cartRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 const hubRoutes = require("./routes/hubRoutes");
 const productRoutes = require("./routes/productRoutes");
 
@@ -28,6 +30,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/user", userRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/order", orderRoutes);
 app.use("/api/hub", hubRoutes);
 app.use("/api/product", productRoutes);
 

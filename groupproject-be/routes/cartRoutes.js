@@ -1,25 +1,15 @@
-const express = require('express');
-const {
-    getProducts,
-    getProductById,
-    searchProducts,
-    createProduct,
-    updateProduct,
-    deleteProductById,
-    deleteProductListId
-} = require('../controller/productController');
-const { verifyUser } = require('./middleware');
-const router = express.Router();
+const express = require('express')
+const cart = require('../controller/cartController')
+const {verifyUser, verifyAction} = require('./middleware')
+const router = express.Router()
 
-// post
-// router.post('/', [verifyUser], productMulter.single('image'), createProduct);
-// update
-// router.put('/:id', [verifyUser], productMulter.single('image'), updateProduct);
-// get
-router.route("/").get(getProducts);
-router.route("/:id").get(getProductById);
-// delete
-router.route("/").delete([verifyUser], deleteProductListId);
-router.route("/:id").delete([verifyUser], deleteProductById);
+router
+.route('/:userid')
+.post(verifyUser, verifyAction, cart.addProductToCart)
+.get(verifyUser, verifyAction, cart.getCart)
 
-module.exports = router;
+router
+.route('/:userid/:productid')
+.delete(verifyUser, verifyAction, cart.deleteProductInCart)
+
+module.exports = router

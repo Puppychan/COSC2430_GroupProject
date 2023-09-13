@@ -8,7 +8,7 @@ const cartItemSchema = new mongoose.Schema(
       ref: 'Product',
       required: true
     },
-    quantiy: {
+    quantity: {
       type: Number, 
       required: true,
       default: 1,

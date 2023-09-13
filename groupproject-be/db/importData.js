@@ -1,6 +1,6 @@
 require('dotenv').config()
 const {connectDB} = require('./connectDB');
-const {User, Customer, Shipper, Vendor, Hub, Product} = require('./models/modelCollection');
+const {User, Customer, Shipper, Vendor, Hub, Product, Cart, Order} = require('./models/modelCollection');
 const productData = require('./data/shopping/products')
 const hubData = require('./data/shopping/hubs')
 const users_register = require('./data/user/user_register')
@@ -19,13 +19,19 @@ const insertUsers = async () => {
 const importData = async () => {
   try {
     console.log("importing data")
+    // drop all collections
     await Promise.all([   
-      User.collection.drop(),
-      Customer.collection.drop(),
-      Vendor.collection.drop(),
-      Shipper.collection.drop(),
-      Product.collection.drop(),
-      Hub.collection.drop(),
+      User.deleteMany({}),
+      Customer.deleteMany({}),
+      Vendor.deleteMany({}),
+      Shipper.deleteMany({}),
+      Product.deleteMany({}),
+      Cart.deleteMany({}),
+      Order.deleteMany({}),
+      Hub.deleteMany({}),
+    ]);
+    // drop all collections
+    await Promise.all([   
       Hub.insertMany(hubData),
       insertUsers(),
       Product.insertMany(productData)
@@ -38,8 +44,8 @@ const importData = async () => {
 }
 
 connectDB()
-.then( async () => {
-  await importData()
+.then( () => {
+  importData()
 })
 .catch((error) => {
   console.log(error)
