@@ -31,7 +31,7 @@ app.get("/", function (req, res) {
     title: "Home",
     bodyFile: "./home/index",
     products: products,
-    activePage: 'home'
+    activePage: "home",
   });
 });
 // Category page route:
@@ -56,7 +56,7 @@ app.get("/login", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Login",
     bodyFile: "./auth/login",
-    activePage: 'login'
+    activePage: "login",
   });
 });
 
@@ -65,21 +65,21 @@ app.get("/signup-customer", (req, res) => {
   res.render("auth-layout.ejs", {
     title: " Customer Sign Up",
     bodyFile: "./auth/signup-customer",
-    activePage: 'customer'
+    activePage: "signup",
   });
 });
 app.get("/signup-vendor", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Vendor Sign Up",
     bodyFile: "./auth/signup-vendor",
-    activePage: 'vendor'
+    activePage: "signup",
   });
 });
 app.get("/signup-shipper", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Shipper Sign Up",
     bodyFile: "./auth/signup-shipper",
-    activePage: 'shipper'
+    activePage: "signup",
   });
 });
 
@@ -88,7 +88,7 @@ app.get("/about", function (req, res) {
   res.render("layout.ejs", {
     title: "About Us",
     bodyFile: "./others/about",
-    activePage: 'about'
+    activePage: "about",
   });
 });
 
@@ -96,21 +96,21 @@ app.get("/copyright", function (req, res) {
   res.render("layout.ejs", {
     title: "Copyright",
     bodyFile: "./others/copyright",
-    activePage: 'copyright'
+    activePage: "copyright",
   });
 });
 app.get("/privacy", function (req, res) {
   res.render("layout.ejs", {
     title: "Privacy Policy",
     bodyFile: "./others/privacy",
-    activePage: 'privacy'
+    activePage: "privacy",
   });
 });
 app.get("/terms", function (req, res) {
   res.render("layout.ejs", {
     title: "Terms & Conditions",
     bodyFile: "./others/terms",
-    activePage: 'terms'
+    activePage: "terms",
   });
 });
 // My Account route
@@ -118,7 +118,7 @@ app.get("/my-account", function (req, res) {
   res.render("layout.ejs", {
     title: "My Account",
     bodyFile: "./users/profile",
-    activePage: 'profile'
+    activePage: "my-account",
   });
 });
 // New Product route
@@ -126,7 +126,7 @@ app.get("/new-product", function (req, res) {
   res.render("layout.ejs", {
     title: "Add New Product",
     bodyFile: "./vendors/addProduct",
-    activePage: 'addProduct'
+    activePage: "new-product",
   });
 });
 
@@ -135,7 +135,7 @@ app.get("/update-product", function (req, res) {
   res.render("layout.ejs", {
     title: "Update Product",
     bodyFile: "./vendors/updateProduct",
-    activePage: 'updateProduct'
+    activePage: "update-product",
   });
 });
 // Vendor Dashboard route
@@ -143,6 +143,7 @@ app.get("/vendor-dashboard", function (req, res) {
   res.render("layout.ejs", {
     title: "Vendor Dashboard",
     bodyFile: "./vendors/viewProducts",
+    activePage: "vendor-dashboard",
     products: products,
     activePage: 'viewProducts'
   });
@@ -153,7 +154,7 @@ app.get("/shipper-dashboard", function (req, res) {
   res.render("layout.ejs", {
     title: "Shipper Dashboard",
     bodyFile: "./shipper/dashboard",
-    activePage: 'dashboard'
+    activePage: "shipper-dashboard",
   });
 });
 // Start the server
