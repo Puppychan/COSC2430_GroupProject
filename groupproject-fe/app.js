@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require('path');
 const {connectDB} = require("./backend/db/connectDB");
+const UserService = require("./backend/db_service/userService");
 
 const products = require("./public/javascript/products");
 
@@ -70,12 +71,20 @@ app.get("/product/:id", function (req, res) {
 });
 
 // login routes
-app.get("/login", (req, res) => {
+app.get("/login", async (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Login",
     bodyFile: "./auth/login",
     activePage: "login",
   });
+});
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  const result = await UserService.login(username, password);
+  console.log("User", result);
+  if (result.status) {
+    res.redirect('/');
+  }
 });
 
 // Signup routes
