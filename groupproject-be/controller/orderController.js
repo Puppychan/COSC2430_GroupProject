@@ -1,10 +1,10 @@
 const cart = require("./cartController");
-const {Order, Product, Hub, User} = require("../db/models/modelCollection");
+const {Order, Product, Cart} = require("../db/models/modelCollection");
 const {sendResponse} = require("../routes/middleware");
 
 const getOrderHistory = async (req, res) => {
   try {
-    const orders = await Order.find({customer: req.parms._userid});
+    const orders = await Order.find({customer: req.params.userid});
     sendResponse(res, 200, 'ok', orders);
   } catch (err) {
     console.error(err);
@@ -61,11 +61,11 @@ const assignShipper = async (req, res) => {
   }
 };
 
-const updateOrderStatus = async (orderid, status) => {
+const updateOrderStatus = async (req, res) => {
   try {
     const {status} = req.body;
     const order = await Order.findOneAndUpdate(
-        {_id: orderid}, 
+        {_id: req.params.orderid}, 
         { $set: 
           {status : status}
         }

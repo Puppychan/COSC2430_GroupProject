@@ -1,5 +1,5 @@
 const cart = require("./cartController");
-const {Order, Product} = require("../db/models/modelCollection");
+const {Order, Product, Cart} = require("../db/models/modelCollection");
 
 
 const placeOrder = async (customerid, hubid) => {

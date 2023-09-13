@@ -3,7 +3,7 @@ const Product = require('./Product').schema;
 
 const orderItemSchema = new mongoose.Schema({
   product: {type: Product, required: true},
-  quantiy: {
+  quantity: {
     type: Number, 
     required: true,
     min: [1, 'Quantity must be at least 1, got {VALUE}']
@@ -19,6 +19,7 @@ const orderSchema = new mongoose.Schema({
   shipper: {
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'User',
+    default: null
   },
   hub: {
     type: mongoose.Schema.Types.ObjectId, 
