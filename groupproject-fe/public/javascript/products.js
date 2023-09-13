@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Types;
 const products = [
   {
-    _id: new ObjectId('00000001db42a4ac30ff65e1'),
+    _id: new ObjectId("00000001db42a4ac30ff65e1"),
     name: "PlayStation 5",
     category: "Accessories",
     image:
@@ -14,7 +14,7 @@ const products = [
     vendor: "00000001db42a4ac30ff65a1",
   },
   {
-    _id: new ObjectId('00000001db42a4ac30ff65e2'),
+    _id: new ObjectId("00000001db42a4ac30ff65e2"),
     name: "Iphone 12 Black",
     category: "Smartphones",
     image:
@@ -26,7 +26,7 @@ const products = [
     vendor: "00000001db42a4ac30ff65a2",
   },
   {
-    _id: new ObjectId('00000001db42a4ac30ff65e3'),
+    _id: new ObjectId("00000001db42a4ac30ff65e3"),
     name: "Cannon EOS-1D",
     category: "Accessories",
     image:
@@ -38,19 +38,19 @@ const products = [
     vendor: "00000001db42a4ac30ff65a1",
   },
   {
-    _id: new ObjectId('00000001db42a4ac30ff65e4'),
+    _id: new ObjectId("00000001db42a4ac30ff65e4"),
     name: "Amazon Alexa",
     category: "Accessories",
     image:
       "https://images.unsplash.com/photo-1518444065439-e933c06ce9cd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80",
     description:
       "It is capable of voice interaction, music playback, making to-do lists, setting alarms, streaming podcasts, playing audiobooks, and providing weather, traffic, sports, and other real-time information, such as news. Alexa can also control several smart devices using itself as a home automation system.",
-    price: 5000000,
-    stock: 0,
+    price: 2500000,
+    stock: 50,
     vendor: "00000001db42a4ac30ff65a2",
   },
   {
-    _id: new ObjectId('00000001db42a4ac30ff65e5'),
+    _id: new ObjectId("00000001db42a4ac30ff65e5"),
     name: "Apple Headphones",
     category: "Accessories",
     image:
@@ -62,7 +62,7 @@ const products = [
     vendor: "00000001db42a4ac30ff65a2",
   },
   {
-    _id: new ObjectId('00000001db42a4ac30ff65e6'),
+    _id: new ObjectId("00000001db42a4ac30ff65e6"),
     name: "JBL FLIP 4",
     category: "Accessories",
     image:
@@ -75,10 +75,8 @@ const products = [
   },
 ];
 
-
-products.forEach(product => {
-    product.price = product.price.toLocaleString('de-DE');
+products.forEach((product) => {
+  product.price = product.price.toLocaleString("de-DE");
 });
-
 
 module.exports = products;

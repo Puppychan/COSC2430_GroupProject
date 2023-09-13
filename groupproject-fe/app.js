@@ -4,6 +4,7 @@ const products = require("./public/javascript/products");
 
 require("dotenv").config();
 const { PORT, BACKEND_URL } = require("./common/constants");
+const { navigatePage } = require("./common/helperFuncs");
 
 const app = express();
 
@@ -18,7 +19,7 @@ app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, "public")));
 
 // reusable function for all ejs
-// app.locals.navigatePage = navigatePage;
+app.locals.navigatePage = navigatePage;
 
 // Modules
 // const example = require('./modules/example.module.js');
@@ -40,17 +41,22 @@ app.get("/phones", function (req, res) {
     title: "Smartphones",
     bodyFile: "./category/phones",
     products: products,
-    activePage: 'phones'
+    activePage: "phones",
   });
 });
+
 // Product page route:
-app.get("/product", function (req, res) {
+app.get("/product/:id", function (req, res) {
+  const id = req.params.id;
+  const matchedProduct = products.find((product) => product._id == id);
   res.render("layout.ejs", {
-    title: "Product Details",
+    title: "Product Detail",
     bodyFile: "./product/product",
-    activePage: 'laptops'
+    activePage: "product",
+    product: matchedProduct,
   });
 });
+
 // login routes
 app.get("/login", (req, res) => {
   res.render("auth-layout.ejs", {
@@ -65,21 +71,22 @@ app.get("/signup-customer", (req, res) => {
   res.render("auth-layout.ejs", {
     title: " Customer Sign Up",
     bodyFile: "./auth/signup-customer",
-    activePage: "signup",
+    activePage: "signup-customer",
   });
 });
+
 app.get("/signup-vendor", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Vendor Sign Up",
     bodyFile: "./auth/signup-vendor",
-    activePage: "signup",
+    activePage: "signup-vendor",
   });
 });
 app.get("/signup-shipper", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Shipper Sign Up",
     bodyFile: "./auth/signup-shipper",
-    activePage: "signup",
+    activePage: "signup-shipper",
   });
 });
 
@@ -96,21 +103,21 @@ app.get("/copyright", function (req, res) {
   res.render("layout.ejs", {
     title: "Copyright",
     bodyFile: "./others/copyright",
-    activePage: "copyright",
+    activePage: "about",
   });
 });
 app.get("/privacy", function (req, res) {
   res.render("layout.ejs", {
     title: "Privacy Policy",
     bodyFile: "./others/privacy",
-    activePage: "privacy",
+    activePage: "about",
   });
 });
 app.get("/terms", function (req, res) {
   res.render("layout.ejs", {
     title: "Terms & Conditions",
     bodyFile: "./others/terms",
-    activePage: "terms",
+    activePage: "about",
   });
 });
 // My Account route
@@ -126,7 +133,7 @@ app.get("/new-product", function (req, res) {
   res.render("layout.ejs", {
     title: "Add New Product",
     bodyFile: "./vendors/addProduct",
-    activePage: "new-product",
+    activePage: "newProduct",
   });
 });
 
@@ -135,7 +142,7 @@ app.get("/update-product", function (req, res) {
   res.render("layout.ejs", {
     title: "Update Product",
     bodyFile: "./vendors/updateProduct",
-    activePage: "update-product",
+    activePage: "updateProduct",
   });
 });
 // Vendor Dashboard route
@@ -145,7 +152,6 @@ app.get("/vendor-dashboard", function (req, res) {
     bodyFile: "./vendors/viewProducts",
     activePage: "vendor-dashboard",
     products: products,
-    activePage: 'viewProducts'
   });
 });
 
@@ -157,6 +163,17 @@ app.get("/shipper-dashboard", function (req, res) {
     activePage: "shipper-dashboard",
   });
 });
+
+// Cart route
+app.get("/cart", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Shopping Cart",
+    bodyFile: "./customer/cart",
+    activePage: "cart",
+    product: products,
+  });
+});
+
 // Start the server
 app.listen(PORT, function () {
   console.log(`Server started on port ${PORT}`);
