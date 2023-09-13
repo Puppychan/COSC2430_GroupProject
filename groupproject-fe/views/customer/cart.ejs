@@ -49,109 +49,26 @@
                     </div>
                   </div>
                 </li>
+                <% }); %>
+            </ul>
+          </div>
+          <div class="mt-6 flex items-center justify-between">
+            <p class="text-xl font-bold text-white-900">Total</p>
+            <p class="text-2xl font-semibold text-white-900"><span class="text-xs font-normal text-white-400">VND</span>
 
-
-                <li class="flex flex-col space-y-3 border-solid border-2 border-slate-500 rounded-xl py-1 text-left sm:flex-row sm:space-x-5 sm:space-y-0 mb-6 p-4">
-                  <div class="shrink-0 py-3.5 pl-4 justify-center flex">
-                    <img class="h-28 w-28 max-w-full rounded-lg object-cover mt-1 " src="https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/t/_/t_m_12.png" alt="" />
-                  </div>
-  
-                  <div class="relative flex flex-1 flex-col justify-between p-4">
-                    <div class="sm:col-gap-5 sm:grid sm:grid-cols-2">
-                      <div class="lg:pr-0 sm:pr-5">
-                        <p class="text-2xl font-semibold text-white-900 pb-1.5">Iphone 14 Pro Max</p>
-                        <p class="mx-0 mt-1 mb-0 text-sm text-gray-400">The iPhone is a smartphone made by Apple that combines a computer, iPod, digital camera and cellular phone into one device with a </p>
-                      </div>
-  
-                      <div class="mt-4 pt-4 flex items-end justify-between sm:mt-0 sm:items-start sm:justify-end">
-                        <p class="shrink-0 w-20 text-xl font-semibold text-white-900 sm:order-2 sm:ml-8 sm:text-right">$259.00</p>
-  
-                        <div class="sm:order-1 sm:px1">
-                          <div class="mx-auto flex lg:h-8 sm:h-6 items-stretch text-black">
-
-                            
-                            <button data-action="decrement" class="font-semibold flex items-center justify-center rounded-l-md bg-stone-300 px-3 transition hover:bg-stone-600 hover:text-white">-</button>
-                    
-                            <input type="number" class=" focus:outline-none text-center w-10 bg-stone-200 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none" name="custom-input-number" value="0"></input>
-                            <button data-action="increment" class="font-semibold flex items-center justify-center rounded-r-md bg-stone-300 px-3 transition hover:bg-stone-600 hover:text-white">+</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-  
-                    <div class="absolute top-0 right-0 flex sm:bottom-0 sm:top-auto">
-                      <button type="button" class="flex rounded p-2 text-center text-white transition-all duration-200 ease-in-out focus:shadow hover:text-blue-400" onclick="removeItem(this)">
-                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" class=""></path>
-                        </svg>
-                      </button>
-                    </div>
-              
-                  </div>
-                </li>
-              </ul>
+            </p>
+          </div>
+          <div class="mt-6 text-center">
+            <div class="p-10">
+              <button type="button"
+                class="p-10 inline-flex w-full items-center justify-center rounded-md px-6 py-4 text-lg font-semibold text-white bg-blue-500 hover:bg-blue-600">
+                Order
+              </button>
             </div>
-            <div class="p-8">
-              <p class="mt-8 text-lg font-medium text-white">Shipping Methods</p>
-              <form class="mt-5 grid gap-6">
-                <div class="relative">
-                  <input class="peer hidden" id="radio_1" type="radio" name="radio" checked />
-                  <span class="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-0 w-0 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
-                  <label class="peer-checked:border-4 peer-checked:border-slate-400 peer-checked:bg-grey-700 flex cursor-pointer select-none rounded-lg border-2 border-slate-600 p-4" for="radio_1">
-                    <img class="w-14 object-contain" src="https://eddycam.com/wp-content/uploads/2022/11/Fedex-logo.png" alt="ghtl" />
-                    <div class="ml-5">
-                      <span class="mt-2 font-semibold text-white">Delivery</span>
-                      <p class="text-slate-400 text-sm leading-6">Delivery: 2-5 Days</p>  
-                    </div>
-                  </label>
-                </div>
-                <div class="relative">
-                  <input class="peer hidden" id="radio_2" type="radio" name="radio" checked />
-                  <span class="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-0 w-0 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
-                  <label class="peer-checked:border-4 peer-checked:border-slate-400 peer-checked:bg-grey-600 flex cursor-pointer select-none rounded-lg border-2 border-slate-600 p-4" for="radio_2">
-                    <img class="w-14 object-contain" src="https://eddycam.com/wp-content/uploads/2022/11/Fedex-logo.png" alt="ghtl" />
-                    <div class="ml-5">
-                      <span class="mt-2 font-semibold text-white">Delivery</span>
-                      <p class="text-slate-400 text-sm leading-6">Delivery: 3-7 Days</p>  
-                    </div>
-                  </label>
-                </div>
-              </form> 
-            </div>
-              <div class="mt-6 border-t border-b py-2">
-                <div class="flex items-center justify-between">
-                  <p class="text-sm text-gray-400">Subtotal</p>
-                  <p class="text-lg font-semibold text-white-900">$399.00</p>
-                </div>
-                <div class="flex items-center justify-between">
-                  <p class="text-sm text-gray-400">Shipping</p>
-                  <p class="text-lg font-semibold text-white-900">$8.00</p>
-                </div>
-              </div>
-              <div class="mt-6 flex items-center justify-between">
-                <p class="text-xl font-bold text-white-900">Total</p>
-                <p class="text-2xl font-semibold text-white-900"><span class="text-xs font-normal text-white-400">USD</span> 408.00</p>
-              </div>
-    
-              <div class="mt-6 text-center">
-              
-             
-                
-                <div class="p-10">
-                  <button type="button" class="p-10 inline-flex w-full items-center justify-center rounded-md bg-white px-6 py-4 text-lg font-semibold text-black transiti  on ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-105 hover:bg-black hover:text-white duration-300 ...">
-                    Order
-                  </button>
-                </div>
-            
-           
-           
-            </div>
-            
           </div>
         </div>
       </div>
     </div>
-  </section>
-
-  <script src="javascript/cart.js"</script>
-  
+  </div>
+</section>
+<script src="javascript/cart.js"></script>
