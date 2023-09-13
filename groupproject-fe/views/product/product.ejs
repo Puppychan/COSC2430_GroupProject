@@ -3,8 +3,8 @@
     <div class="flex flex-wrap -mx-4">
       <div class="w-full mb-8 md:w-1/2 md:mb-0">
         <div class="sticky top-0 z-50 overflow-hidden ">
-          <div class="relative mb-6 lg:mb-10 lg:h-2/4 ">
-            <img src="<%= product.image %>" alt="Main Product Image" class="object-cover w-full lg:h-full ">
+          <div class="relative mb-6 lg:mb-10 aspect-square">
+            <img src="<%= product.image %>" alt="Main Product Image" class="object-cover w-full h-full">
           </div>
         </div>
       </div>
@@ -16,7 +16,7 @@
             </h2>
             <p class="inline-block mb-6 text-4xl font-bold text-gray-400 ">
               <span>
-                <%= product.price %>
+                <%= product.price %>₫
               </span>
             </p>
             <p class="max-w-md text-gray-400">
@@ -37,7 +37,7 @@
                 <span class="border-b border-gray-600">Quantity</span>
               </label>
               <input type="number"
-                class="flex items-center w-full font-semibold text-center placeholder-gray-400 bg-gray-900 outline-none text-gray-400 focus:outline-none text-md hover:text-black"
+                class="flex items-center w-full font-semibold text-center placeholder-gray-400 bg-gray-700 outline-none text-gray-400 focus:outline-none text-md "
                 placeholder="1" min="1">
             </div>
             <button
