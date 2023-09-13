@@ -7,12 +7,14 @@
     </title>
 </head>
 
-<body class="dark:bg-gray-700 dark:text-white flex flex-col h-screen justify-between">
+<body class="bg-gray-900 text-white font-sans flex flex-col h-screen justify-between">
   <%- include ('./partials/nav') %>
     <!-- Pass bodyFile as filename -->
-    <%- include(bodyFile) %>
-      <%- include ('./partials/footer') %>
-        <script src="javascript/script.js"></script>
+    <div class="flex-grow">
+      <%- include(bodyFile) %>
+    </div>
+    <%- include ('./partials/footer') %>
+      <script src="javascript/script.js"></script>
 </body>
 
 </html>
