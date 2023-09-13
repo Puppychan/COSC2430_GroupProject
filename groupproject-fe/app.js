@@ -35,6 +35,15 @@ app.get("/", function (req, res) {
     activePage: "home",
   });
 });
+// Category page route:
+app.get("/phones", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Smartphones",
+    bodyFile: "./category/phones",
+    products: products,
+    activePage: "phones",
+  });
+});
 
 // Product page route:
 app.get("/product/:id", function (req, res) {
@@ -62,7 +71,7 @@ app.get("/signup-customer", (req, res) => {
   res.render("auth-layout.ejs", {
     title: " Customer Sign Up",
     bodyFile: "./auth/signup-customer",
-    activePage: "signup",
+    activePage: "signup-customer",
   });
 });
 
@@ -70,14 +79,14 @@ app.get("/signup-vendor", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Vendor Sign Up",
     bodyFile: "./auth/signup-vendor",
-    activePage: "signup",
+    activePage: "signup-vendor",
   });
 });
 app.get("/signup-shipper", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Shipper Sign Up",
     bodyFile: "./auth/signup-shipper",
-    activePage: "signup",
+    activePage: "signup-shipper",
   });
 });
 
@@ -94,21 +103,21 @@ app.get("/copyright", function (req, res) {
   res.render("layout.ejs", {
     title: "Copyright",
     bodyFile: "./others/copyright",
-    activePage: "copyright",
+    activePage: "about",
   });
 });
 app.get("/privacy", function (req, res) {
   res.render("layout.ejs", {
     title: "Privacy Policy",
     bodyFile: "./others/privacy",
-    activePage: "privacy",
+    activePage: "about",
   });
 });
 app.get("/terms", function (req, res) {
   res.render("layout.ejs", {
     title: "Terms & Conditions",
     bodyFile: "./others/terms",
-    activePage: "terms",
+    activePage: "about",
   });
 });
 // My Account route
@@ -124,7 +133,7 @@ app.get("/new-product", function (req, res) {
   res.render("layout.ejs", {
     title: "Add New Product",
     bodyFile: "./vendors/addProduct",
-    activePage: "new-product",
+    activePage: "newProduct",
   });
 });
 
@@ -133,7 +142,7 @@ app.get("/update-product", function (req, res) {
   res.render("layout.ejs", {
     title: "Update Product",
     bodyFile: "./vendors/updateProduct",
-    activePage: "update-product",
+    activePage: "updateProduct",
   });
 });
 // Vendor Dashboard route
@@ -158,9 +167,10 @@ app.get("/shipper-dashboard", function (req, res) {
 // Cart route
 app.get("/cart", function (req, res) {
   res.render("layout.ejs", {
-    title: "Cart",
+    title: "Shopping Cart",
     bodyFile: "./customer/cart",
     activePage: "cart",
+    product: products,
   });
 });
 
