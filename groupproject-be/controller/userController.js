@@ -1,12 +1,7 @@
 const bcrypt = require('bcrypt')
-const Customer = require('../db/models/user/Customer')
-const Vendor = require('../db/models/user/Vendor')
-const Shipper = require('../db/models/user/Shipper')
-const User = require('../db/models/user/User')
+const {User, Customer, Vendor, Shipper, Cart} = require('../db/models/modelCollection')
 const {sendResponse} = require('../routes/middleware');
 const {checkPassword, newToken} = require('../utils/verification')
-const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Types;
 
 const register_sample = async (user_register) => {
   try {
@@ -15,38 +10,42 @@ const register_sample = async (user_register) => {
     const newuser = await User.create({...user, password: hash});
     const role = newuser.role;
     if (role == 'customer') {
-      await Customer.create({...info, user: newuser._id, _id: new ObjectId(newuser._id)})
+      await Customer.create({...info, user: newuser._id})
     }
     else if (role == 'vendor') {
-      await Vendor.create({...info, user: newuser._id, _id: new ObjectId(newuser._id)})
+      await Vendor.create({...info, user: newuser._id})
     }
     else if (role == 'shipper') {
-      await Shipper.create({...info, user: newuser._id, _id: new ObjectId(newuser._id)})
+      await Shipper.create({...info, user: newuser._id})
     }
   } catch (err) {
-    console.log(err)
+    throw(err)
   }
 }
 
+// this function return register user status: true if success, false if fail
 const register = async (req, res) => {
   try {
-    const {user, info} = req.body
-    const hash = await bcrypt.hash(user.password, 8);
-    const newuser = await User.create({...user, _id: new ObjectId(), password: hash});
-    const role = newuser.role;
-    var newinfo = null
+    const {username, password, role, avatar, name, address, hubid} = req.body
+    // info is a json object that contains specific infomation of that role
+    const hash = await bcrypt.hash(password, 8);
+    const newuser = await User.create({username: username, password: hash, role: role, avatar: avatar})
+    
+    let info = null;
     if (role == 'customer') {
-      newinfo = await Customer.create({...info, user: newuser._id, _id: new ObjectId(newuser._id)})
+      info = await Customer.create({user: newuser._id, name: name, address: address})
+      await Cart.create({customer: newuser._id})
     }
     else if (role == 'vendor') {
-      newinfo = await Vendor.create({...info, user: newuser._id, _id: new ObjectId(newuser._id)})
+      info = await Vendor.create({ user: newuser._id, name: name, address: address})
     }
     else if (role == 'shipper') {
-      newinfo = await Shipper.create({...info, user: newuser._id, _id: new ObjectId(newuser._id)})
+      info = await Shipper.create({user: newuser._id, name: name, hub: hubid})
     }
-    sendResponse(res, 200, 'Sucessfully register', {user: newuser, info: newinfo});
+    else throw new Error("Role can only be customer, vendor, shipper")
+    sendResponse(res, 200, 'Sucessfully register', {user: newuser, info: info});
   } catch (err) {
-    console.log(err)
+    console.log("cannot create user: ", err)
     sendResponse(res, 500, `Error ${err}`);
   }
 }
@@ -74,13 +73,12 @@ const login = async (req, res) => {
   }
 }
 
-
 const getUserInfo = async (req, res) => {
   try {
     var full_info = null;
     if (req.user != null) {
-      const role = req.user.role;
-      const id = req.user._id
+      let role = req.user.role;
+      let id = req.user._id
       if (role == 'customer') {
         full_info = await Customer.findOne({'user': id}).populate('user');
       }
@@ -90,7 +88,7 @@ const getUserInfo = async (req, res) => {
       else if (role == 'shipper') {
         full_info = await Shipper.findOne({'user': id}).populate('user');
       }
-      full_info.user.password = 0;
+      full_info.user.password = 0; // password is unrevealed
     }
 
     sendResponse(res, 200, `ok`, full_info);
@@ -102,9 +100,9 @@ const getUserInfo = async (req, res) => {
 
 const getUser_no_verify = async (req, res) => {
   try {
-    var id = req.params.id
+    let id = req.params.id
     const user = await User.findOne({_id: id});
-    var full_info = null;
+    let full_info = null;
     if (user != null) {
       const role = user.role;
       if (role == 'customer') {
@@ -116,7 +114,7 @@ const getUser_no_verify = async (req, res) => {
       else if (role == 'shipper') {
         full_info = await Shipper.findOne({'user': id}).populate('user');
       }
-      full_info.user.password = 0;
+      full_info.user.password = 0; // password is unrevealed
     }
 
     sendResponse(res, 200, `ok`, full_info);
@@ -129,8 +127,7 @@ const getUser_no_verify = async (req, res) => {
 const changePassword = async (req, res) => {
   const {current_pw, new_pw} = req.body;
   try {
-    var user = await User.findOne({_id: req.user._id});
-    console.log(user)
+    let user = await User.findOne({_id: req.user._id});
     const same = await checkPassword(current_pw, user.password);
     if (same) {
       const hash = await bcrypt.hash(new_pw, 8);
@@ -138,7 +135,7 @@ const changePassword = async (req, res) => {
       sendResponse(res, 200, 'Updated password');
       return
     }
-    sendResponseError(400, 'Invalid password', res)
+    sendResponse(res, 400, 'Invalid password')
   } catch (err) {
     console.log(err)
     sendResponse(res, 500, `Error ${err}`);

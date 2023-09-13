@@ -5,6 +5,8 @@ const cors = require("cors");
 const path = require('path');
 const {connectDB} = require("./db/connectDB");
 const userRoutes = require("./routes/userRoutes");
+const cartRoutes = require("./routes/cartRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 const hubRoutes = require("./routes/hubRoutes");
 const productRoutes = require("./routes/productRoutes");
 
@@ -19,12 +21,17 @@ app.set('view engine', 'ejs');
 global.publicDirectory = path.resolve(__dirname, 'public');
 
 connectDB()
+.catch((error) => {
+  console.log(error)
+});
 
 app.get("/", (req, res) => {
   res.json({ message: "API running..." });
 });
 
 app.use("/api/user", userRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/order", orderRoutes);
 app.use("/api/hub", hubRoutes);
 app.use("/api/product", productRoutes);
 
