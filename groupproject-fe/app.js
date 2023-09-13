@@ -41,7 +41,7 @@ app.get("/phones", function (req, res) {
     title: "Smartphones",
     bodyFile: "./category/phones",
     products: products,
-    activePage: 'phones'
+    activePage: "phones",
   });
 });
 
@@ -49,15 +49,11 @@ app.get("/phones", function (req, res) {
 app.get("/product/:id", function (req, res) {
   const id = req.params.id;
   const matchedProduct = products.find((product) => product._id == id);
-app.get("/product", function (req, res) {
   res.render("layout.ejs", {
     title: "Product Detail",
     bodyFile: "./product/product",
     activePage: "product",
     product: matchedProduct,
-    title: "Product Details",
-    bodyFile: "./product/product",
-    activePage: 'laptops'
   });
 });
 
@@ -138,8 +134,7 @@ app.get("/update-product", function (req, res) {
   res.render("layout.ejs", {
     title: "Update Product",
     bodyFile: "./vendors/updateProduct",
-    activePage: 'updateProduct'
-
+    activePage: "updateProduct",
   });
 });
 // Vendor Dashboard route
@@ -149,7 +144,6 @@ app.get("/vendor-dashboard", function (req, res) {
     bodyFile: "./vendors/viewProducts",
     activePage: "vendor-dashboard",
     products: products,
-    activePage: 'viewProducts'
   });
 });
 
