@@ -1,12 +1,19 @@
 const express = require("express");
-const path = require("path");
+const cors = require("cors");
+const path = require('path');
+const {connectDB} = require("./db/connectDB");
+
 const products = require("./public/javascript/products");
 
-require("dotenv").config();
 const { PORT, BACKEND_URL } = require("./common/constants");
 const { navigatePage } = require("./common/helperFuncs");
 
+require("dotenv").config();
 const app = express();
+
+app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -21,13 +28,18 @@ app.use(express.static(path.join(__dirname, "public")));
 // reusable function for all ejs
 app.locals.navigatePage = navigatePage;
 
+connectDB()
+.catch((error) => {
+  console.log(error)
+});
+
 // Modules
 // const example = require('./modules/example.module.js');
 // app.use('/', user)
 // const router = express.Router();
 
 // Home page route:
-app.get("/", function (req, res) {
+app.get("/", async function (req, res) {
   res.render("layout.ejs", {
     title: "Home",
     bodyFile: "./home/index",
