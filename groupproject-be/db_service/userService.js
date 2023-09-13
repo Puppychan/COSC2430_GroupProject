@@ -98,7 +98,7 @@ const getUserInfo = async (req) => {
       else if (role == 'shipper') {
         full_info = await Shipper.findOne({'user': id}).populate('user');
       }
-      full_info.user.password = 0;
+      full_info.user.password = 0; // password is unrevealed
     }
     return full_info
   } catch (err) {
@@ -122,7 +122,7 @@ const getUser_no_verify = async (id) => {
       else if (role == 'shipper') {
         full_info = await Shipper.findOne({'user': id}).populate('user');
       }
-      full_info.user.password = 0;
+      full_info.user.password = 0; // password is unrevealed
     }
     return full_info
   } catch (err) {

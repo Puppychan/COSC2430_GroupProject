@@ -88,7 +88,7 @@ const getUserInfo = async (req, res) => {
       else if (role == 'shipper') {
         full_info = await Shipper.findOne({'user': id}).populate('user');
       }
-      full_info.user.password = 0;
+      full_info.user.password = 0; // password is unrevealed
     }
 
     sendResponse(res, 200, `ok`, full_info);
@@ -114,7 +114,7 @@ const getUser_no_verify = async (req, res) => {
       else if (role == 'shipper') {
         full_info = await Shipper.findOne({'user': id}).populate('user');
       }
-      full_info.user.password = 0;
+      full_info.user.password = 0; // password is unrevealed
     }
 
     sendResponse(res, 200, `ok`, full_info);

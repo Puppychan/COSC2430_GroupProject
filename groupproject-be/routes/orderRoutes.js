@@ -8,6 +8,8 @@ router
 .post(verifyUser, verifyAction, order.placeOrder)
 .get(verifyUser, verifyAction, order.getOrderHistory)
 
+router.post('/update-status/:orderid', order.updateOrderStatus)
+router.post('/assign-shipper/:orderid/:shipperid', order.assignShipper)
 router.get("/:orderid", order.getOrderById);
 
 module.exports = router;

@@ -3,7 +3,7 @@ const {sendResponse} = require("../routes/middleware");
 
 const getCart = async (req, res) => {
   try {
-    const cart = await Cart.findOne({customer: req.user._id});
+    const cart = await Cart.findOne({customer: req.params.userid});
     sendResponse(res, 200, 'ok', cart);
   } catch (err) {
     console.log(err)
@@ -14,7 +14,7 @@ const getCart = async (req, res) => {
 const addProductToCart = async (req, res) => {
   try {
     const {product, quantity} = req.body
-    let cart = await Cart.findOne({customer: req.user._id});
+    let cart = await Cart.findOne({customer: req.params.userid});
     let exist = false
     for (let i=0; i<cart.items.length; i++) {
       if (cart.items[i].product == product) {

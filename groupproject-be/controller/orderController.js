@@ -1,9 +1,10 @@
+const cart = require("./cartController");
 const {Order, Product, Hub, User} = require("../db/models/modelCollection");
 const {sendResponse} = require("../routes/middleware");
 
 const getOrderHistory = async (req, res) => {
   try {
-    const orders = await Order.find({customer: req.user._id});
+    const orders = await Order.find({customer: req.parms._userid});
     sendResponse(res, 200, 'ok', orders);
   } catch (err) {
     console.error(err);
@@ -23,25 +24,58 @@ const getOrderById = async (req, res) => {
 
 const placeOrder = async (req, res) => {
   try {
-    if (req.user.role != 'customer') throw new Error('Only customer user can make order')
-
-    const {items, hub} = req.body;
+    const customerid = req.params.userid
+    const cart = await Cart.findOne({customer: customerid});
+    const {hub} = req.body;
     let items_final = []
     let total_price = 0;
-    for (item of items) {
+    for (item of cart.items) {
       let product = await Product.findById(item.product);
       if (product) {
         items_final.push({product: product, quantity: item.quantity});
         total_price += product.price*item.quantity;
       }
     }
-    const order = await Order.create({customer: req.user._id, items: items_final, total_price: total_price, hub: hub, status: 'active'})
+    const order = await Order.create({customer: customerid, items: items_final, total_price: total_price, hub: hub, status: 'active'})
     sendResponse(res, 200, 'ok', order);
   } catch (err) {
     console.error(err);    
     sendResponse(res, 500, `Error ${err}`);
   }
 }
+
+
+const assignShipper = async (req, res) => {
+  try {
+    const {shipper} = req.body
+    const order = await Order.findOneAndUpdate(
+        {_id: req.params.orderid}, 
+        { $set: 
+          {shipper : shipper}
+        }
+      );
+    sendResponse(res, 200, 'ok', order);
+  } catch (err) {
+    console.error(err);
+    sendResponse(res, 500, `Error ${err}`);
+  }
+};
+
+const updateOrderStatus = async (orderid, status) => {
+  try {
+    const {status} = req.body;
+    const order = await Order.findOneAndUpdate(
+        {_id: orderid}, 
+        { $set: 
+          {status : status}
+        }
+      );
+    sendResponse(res, 200, 'ok', order);
+  } catch (err) {
+    console.error(err);
+    sendResponse(res, 500, `Error ${err}`);
+  }
+};
 
 // const randomHub = async () => {
 //   try {
@@ -56,5 +90,7 @@ const placeOrder = async (req, res) => {
 module.exports = {
   getOrderHistory,
   getOrderById,
-  placeOrder
+  placeOrder,
+  updateOrderStatus,
+  assignShipper
 };
