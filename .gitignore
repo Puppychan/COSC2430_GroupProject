@@ -4,4 +4,5 @@ package-lock.json
 groupproject-fe/public/style/output.css
 .vscode/settings.json
 groupproject-fe/node_modules/
-*.ejs
+
+groupproject-be/node_modules/
