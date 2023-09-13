@@ -71,6 +71,7 @@ app.get("/signup-customer", (req, res) => {
   res.render("auth-layout.ejs", {
     title: " Customer Sign Up",
     bodyFile: "./auth/signup-customer",
+    activePage: "signup-customer",
   });
 });
 
@@ -78,12 +79,14 @@ app.get("/signup-vendor", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Vendor Sign Up",
     bodyFile: "./auth/signup-vendor",
+    activePage: "signup-vendor",
   });
 });
 app.get("/signup-shipper", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Shipper Sign Up",
     bodyFile: "./auth/signup-shipper",
+    activePage: "signup-shipper",
   });
 });
 
@@ -100,18 +103,21 @@ app.get("/copyright", function (req, res) {
   res.render("layout.ejs", {
     title: "Copyright",
     bodyFile: "./others/copyright",
+    activePage: "about",
   });
 });
 app.get("/privacy", function (req, res) {
   res.render("layout.ejs", {
     title: "Privacy Policy",
     bodyFile: "./others/privacy",
+    activePage: "about",
   });
 });
 app.get("/terms", function (req, res) {
   res.render("layout.ejs", {
     title: "Terms & Conditions",
     bodyFile: "./others/terms",
+    activePage: "about",
   });
 });
 // My Account route
@@ -119,6 +125,7 @@ app.get("/my-account", function (req, res) {
   res.render("layout.ejs", {
     title: "My Account",
     bodyFile: "./users/profile",
+    activePage: "my-account",
   });
 });
 // New Product route
@@ -126,6 +133,7 @@ app.get("/new-product", function (req, res) {
   res.render("layout.ejs", {
     title: "Add New Product",
     bodyFile: "./vendors/addProduct",
+    activePage: "newProduct",
   });
 });
 
@@ -152,6 +160,17 @@ app.get("/shipper-dashboard", function (req, res) {
   res.render("layout.ejs", {
     title: "Shipper Dashboard",
     bodyFile: "./shipper/dashboard",
+    activePage: "shipper-dashboard",
+  });
+});
+
+// Cart route
+app.get("/cart", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Shopping Cart",
+    bodyFile: "./customer/cart",
+    activePage: "cart",
+    product: products,
   });
 });
 

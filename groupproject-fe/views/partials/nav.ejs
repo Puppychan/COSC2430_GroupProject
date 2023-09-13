@@ -4,14 +4,15 @@
       <a href="/" class="flex items-center">
         <img src="/img/1.png" class="mr-3 w-32 block" alt="1080P Logo" />
       </a>
-      <div class="flex items-center lg:order-2">
+      <div class="flex items-center gap-3 lg:order-2">
         <button id="searchBtn" class="flex items-center justify-center p-2">
           <i class="fa fa-search text-2xl hover:text-gray-200"></i>
         </button>
-        <a href="<%= navigatePage("my-account") %>"><i class="fa-solid fa-user fa-2xl"></i></a>
-        <a href="<%= navigatePage("cart") %>"><i class="fa-solid fa-cart-shopping fa-2xl"></i></a>
-        <a href="<%= navigatePage("login") %>"
-          class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2  bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800">Log
+        <a href="<%= navigatePage(" my-account") %>"><i class="fa-solid fa-user fa-2xl"></i></a>
+        <a href="<%= navigatePage(" cart") %>"><i class="fa-solid fa-cart-shopping fa-2xl"></i></a>
+        <a href="<%= navigatePage(" login") %>"
+          class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2 bg-blue-600 hover:bg-blue-700
+          focus:outline-none focus:ring-blue-800">Log
           in</a>
         <button data-collapse-toggle="mobile-menu-2" type="button"
           class="inline-flex items-center p-2 ml-1 text-sm rounded-lg lg:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
@@ -28,27 +29,27 @@
           </li>
           <li>
             <a href="/phones"
-            class="block py-2 px-4 rounded
+              class="block py-2 px-4 rounded
             <%= activePage === 'phones' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400 hover:text-white' %>"
-            <%= activePage === 'phones' ? 'aria-current="page"' : '' %>>SMARTPHONES</a>
+              <%=activePage==='phones' ? 'aria-current="page"' : '' %>>SMARTPHONES</a>
           </li>
           <li>
             <a href="#"
-            class="block py-2 px-4 rounded
+              class="block py-2 px-4 rounded
             <%= activePage === 'tablets' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400 hover:text-white' %>"
-            <%= activePage === 'tablets' ? 'aria-current="page"' : '' %>>TABLETS</a>
+              <%=activePage==='tablets' ? 'aria-current="page"' : '' %>>TABLETS</a>
           </li>
           <li>
             <a href="#"
-            class="block py-2 px-4 rounded
+              class="block py-2 px-4 rounded
             <%= activePage === 'laptops' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400 hover:text-white' %>"
-            <%= activePage === 'laptops' ? 'aria-current="page"' : '' %>>LAPTOPS</a>
+              <%=activePage==='laptops' ? 'aria-current="page"' : '' %>>LAPTOPS</a>
           </li>
           <li>
             <a href="#"
-            class="block py-2 px-4 rounded
+              class="block py-2 px-4 rounded
             <%= activePage === 'accessories' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400 hover:text-white' %>"
-            <%= activePage === 'accessories' ? 'aria-current="page"' : '' %>>ACCESSORIES</a>
+              <%=activePage==='accessories' ? 'aria-current="page"' : '' %>>ACCESSORIES</a>
           </li>
         </ul>
       </div>
