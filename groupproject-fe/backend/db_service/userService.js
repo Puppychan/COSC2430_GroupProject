@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt')
 const {User, Customer, Vendor, Shipper} = require('../db/models/modelCollection')
+const HttpStatus = require('../utils/commonHttpStatus')
 // const {sendResponse} = require('../../groupproject-be/routes/middleware');
 const {checkPassword, newToken} = require('../utils/verification')
 
@@ -68,18 +69,18 @@ const login = async (username, password) => {
   try {
     const user = await User.findOne({'username': username})
     if (!!!user) {
-      return {status: false, message: "Username does not exist"}
+      return {status: HttpStatus.NOT_FOUND_STATUS, message: "Username does not exist"}
     }
 
     const same = await checkPassword(password, user.password)
     if (same) {
       let token = newToken(user)
-      return {status: true, message: "Login successfully", token: token}
+      return {status: HttpStatus.OK_STATUS, message: "Login successfully", token: token}
     }
-    return {status: false, message: "Login failed. Wrong password"}
+    return {status: HttpStatus.UNAUTHORIZED_STATUS, message: "Login failed. Wrong password"}
   } catch (err) {
     console.log(err)
-    return {status: false, message: `Login failed: ${err}`}
+    return {status: HttpStatus.INTERNAL_SERVER_ERROR_STATUS, message: `Login failed: ${err}`}
   }
 }
 
