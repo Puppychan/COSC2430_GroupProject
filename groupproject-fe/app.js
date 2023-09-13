@@ -186,6 +186,15 @@ app.get("/cart", function (req, res) {
   });
 });
 
+app.get("/order", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Shopping order",
+    bodyFile: "./customer/order",
+    activePage: "order",
+    product: products,
+  });
+});
+
 // Start the server
 app.listen(PORT, function () {
   console.log(`Server started on port ${PORT}`);

@@ -1,0 +1,54 @@
+
+<div class="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32">
+    <div class="px-4 py-16 pt-8">
+        <p class="text-3xl font-medium">Order Summary</p>
+        <p class="text-lg text-gray-400">Check your items before finish your order</p>
+
+
+        <div class="mt-8 space-y-3 rounded-2xl border-[3px] border-gray-600 px-2 py-20 sm:px-11">
+            <div class="flow-root">
+                <ul class="-my-8">
+                    <% product.forEach(product=> {%>
+                        <li
+                            class="flex flex-col space-y-1 border-solid border-0 border-w-700 bg-gray-800 rounded-xl py-1 text-left sm:flex-row sm:space-x-5 sm:space-y-0 mb-7 p-4">
+                            <div class="shrink-0 py-3.5 pl-4 justify-center flex">
+                                <img class="h-20 w-20 max-w-full rounded-lg object-cover mt-1 "
+                                    src="<%= product.image %>" alt="" />
+                            </div>
+
+                            <div class="relative flex flex-1 flex-col justify-between p-4">
+                                <div class="sm:col-gap-5 sm:grid sm:grid-cols-2">
+                                    <div class="lg:pr-0 sm:pr-5">
+                                        <p class=" text-white-900 flex items-center">
+                                            <div class="text-lg font-semibold line-clamp-2">
+                                                <%= product.name %>
+                                            </div>
+
+
+                                        </p>
+
+                                    </div>
+                                    <div
+                                        class="mt-4 pt-4 flex items-end justify-between sm:mt-0 sm:items-start sm:justify-end">
+                                        <p
+                                            class="shrink-0 w-20 text-xl font-semibold text-white-900 sm:order-2 sm:ml-8 sm:text-right">
+                                            <%= product.price %>
+                                        </p>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </li>
+                    <% }); %>
+                </ul>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+</div>
