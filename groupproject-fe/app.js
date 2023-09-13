@@ -35,16 +35,29 @@ app.get("/", function (req, res) {
     activePage: "home",
   });
 });
+// Category page route:
+app.get("/phones", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Smartphones",
+    bodyFile: "./category/phones",
+    products: products,
+    activePage: 'phones'
+  });
+});
 
 // Product page route:
 app.get("/product/:id", function (req, res) {
   const id = req.params.id;
   const matchedProduct = products.find((product) => product._id == id);
+app.get("/product", function (req, res) {
   res.render("layout.ejs", {
     title: "Product Detail",
     bodyFile: "./product/product",
     activePage: "product",
     product: matchedProduct,
+    title: "Product Details",
+    bodyFile: "./product/product",
+    activePage: 'laptops'
   });
 });
 
@@ -62,7 +75,6 @@ app.get("/signup-customer", (req, res) => {
   res.render("auth-layout.ejs", {
     title: " Customer Sign Up",
     bodyFile: "./auth/signup-customer",
-    activePage: "signup",
   });
 });
 
@@ -70,14 +82,12 @@ app.get("/signup-vendor", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Vendor Sign Up",
     bodyFile: "./auth/signup-vendor",
-    activePage: "signup",
   });
 });
 app.get("/signup-shipper", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Shipper Sign Up",
     bodyFile: "./auth/signup-shipper",
-    activePage: "signup",
   });
 });
 
@@ -94,21 +104,18 @@ app.get("/copyright", function (req, res) {
   res.render("layout.ejs", {
     title: "Copyright",
     bodyFile: "./others/copyright",
-    activePage: "copyright",
   });
 });
 app.get("/privacy", function (req, res) {
   res.render("layout.ejs", {
     title: "Privacy Policy",
     bodyFile: "./others/privacy",
-    activePage: "privacy",
   });
 });
 app.get("/terms", function (req, res) {
   res.render("layout.ejs", {
     title: "Terms & Conditions",
     bodyFile: "./others/terms",
-    activePage: "terms",
   });
 });
 // My Account route
@@ -116,7 +123,6 @@ app.get("/my-account", function (req, res) {
   res.render("layout.ejs", {
     title: "My Account",
     bodyFile: "./users/profile",
-    activePage: "my-account",
   });
 });
 // New Product route
@@ -124,7 +130,6 @@ app.get("/new-product", function (req, res) {
   res.render("layout.ejs", {
     title: "Add New Product",
     bodyFile: "./vendors/addProduct",
-    activePage: "new-product",
   });
 });
 
@@ -133,7 +138,8 @@ app.get("/update-product", function (req, res) {
   res.render("layout.ejs", {
     title: "Update Product",
     bodyFile: "./vendors/updateProduct",
-    activePage: "update-product",
+    activePage: 'updateProduct'
+
   });
 });
 // Vendor Dashboard route
@@ -143,6 +149,7 @@ app.get("/vendor-dashboard", function (req, res) {
     bodyFile: "./vendors/viewProducts",
     activePage: "vendor-dashboard",
     products: products,
+    activePage: 'viewProducts'
   });
 });
 
@@ -151,16 +158,6 @@ app.get("/shipper-dashboard", function (req, res) {
   res.render("layout.ejs", {
     title: "Shipper Dashboard",
     bodyFile: "./shipper/dashboard",
-    activePage: "shipper-dashboard",
-  });
-});
-
-// Cart route
-app.get("/cart", function (req, res) {
-  res.render("layout.ejs", {
-    title: "Cart",
-    bodyFile: "./customer/cart",
-    activePage: "cart",
   });
 });
 

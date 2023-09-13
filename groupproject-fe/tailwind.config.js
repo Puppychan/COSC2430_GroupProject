@@ -45,10 +45,22 @@ module.exports = {
         ],
       },
       screens: {
-        xs: "475px",
-        ...defaultTheme.screens,
+      'xs': '475px',
+      'lg': '992px',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities(
+        {
+          '.center-and-half': {
+            width: '50%',
+            margin: '0 auto',
+          },
+        },
+        ['responsive', 'hover']
+      );
+    },
+  ],
 };
