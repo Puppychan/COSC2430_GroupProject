@@ -90,6 +90,7 @@ app.get("/terms", function (req, res) {
 });
 // My Account routes
 app.get("/my-account", function (req, res) {
+  
   res.render("layout.ejs", {
     title: "My Account",
     bodyFile: "./users/profile",
