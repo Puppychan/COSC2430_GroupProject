@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const {User, Customer, Vendor, Shipper} = require('../db/models/modelCollection')
 // const {sendResponse} = require('../../groupproject-be/routes/middleware');
-const {checkPassword, newToken} = require('../utils/verification')
+const {checkPassword, newToken} = require('../../utils/verification')
 
 /*  this function register user (in both User collection and role's collection) 
   - example of all_info for customer:
