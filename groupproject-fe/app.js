@@ -156,7 +156,6 @@ app.get("/cart", function (req, res) {
   res.render("layout.ejs", {
     title: "My Cart",
     bodyFile: "./customer/cart",
-    activePage: "login",
   });
 });
 
