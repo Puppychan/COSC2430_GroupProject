@@ -10,6 +10,7 @@ const MY_ACCOUNT_ROUTE = `${USER_ROUTE}/my-account`;
 const GET_USER_ROUTE = `${USER_ROUTE}/`;
 const CHANGE_PASSWORD_ROUTE = `${USER_ROUTE}/change-password`;
 
+
 // Environment constants
 const PORT = process.env.FRONT_PORT || 3001;
 
