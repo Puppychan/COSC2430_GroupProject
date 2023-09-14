@@ -1,17 +1,17 @@
 const bcrypt = require('bcrypt')
 const {User, Customer, Vendor, Shipper} = require('../db/models/modelCollection')
-// const {sendResponse} = require('../../groupproject-be/routes/middleware');
+const {sendResponse} = require('../routes/middleware');
 const {checkPassword, newToken} = require('../utils/verification')
 
 /*  this function register user (in both User collection and role's collection) 
   - example of all_info for customer:
 {
-  username: "customer01",
-  password: "User123@",
+  username: "hakhanhne",
+  password: "password",
   role: "customer",
   avatar: "
   name: "Ha Khanh",
-  address: "Customer"
+  address: "123 RMIT"
 }
   - example of all_info for vendor:
 {
@@ -127,7 +127,7 @@ const getUser_no_verify = async (id) => {
     return full_info
   } catch (err) {
     console.log(`cannot get user with id ${id}: `, err)
-    // sendResponse(res, 500, `Error ${err}`);
+    sendResponse(res, 500, `Error ${err}`);
   }
 }
 

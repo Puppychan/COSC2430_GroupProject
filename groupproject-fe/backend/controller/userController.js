@@ -141,4 +141,23 @@ const changePassword = async (req, res) => {
     sendResponse(res, 500, `Error ${err}`);
   }
 }
+
+const updateUserInfo = async (req, res) => {
+  try {
+
+    let user = await User.findOne({_id: req.user._id});
+    const same = await checkPassword(current_pw, user.password);
+    if (same) {
+      const hash = await bcrypt.hash(new_pw, 8);
+      user = await User.findByIdAndUpdate(user._id, {password: hash});
+      sendResponse(res, 200, 'Updated password');
+      return
+    }
+    sendResponse(res, 400, 'Invalid password')
+  } catch (err) {
+    console.log(err)
+    sendResponse(res, 500, `Error ${err}`);
+  }
+
+}
 module.exports = {register_sample, register, login, getUserInfo, getUser_no_verify, changePassword}

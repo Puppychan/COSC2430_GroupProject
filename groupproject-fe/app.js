@@ -9,6 +9,9 @@ const products = require("./public/javascript/products");
 const { PORT, BACKEND_URL } = require("./common/constants");
 const { navigatePage } = require("./common/helperFuncs");
 
+const { PORT, BACKEND_URL } = require("./common/constants");
+const { navigatePage } = require("./common/helperFuncs");
+
 require("dotenv").config();
 const app = express();
 
@@ -38,6 +41,8 @@ connectDB().catch((error) => {
 // app.use('/', user)
 // const router = express.Router();
 
+// Home page route:
+app.get("/", async function (req, res) {
 // Home page route:
 app.get("/", async function (req, res) {
   res.render("layout.ejs", {
@@ -82,6 +87,7 @@ app.get("/login", async (req, res) => {
     title: "Login",
     bodyFile: "./auth/login",
     activePage: "login",
+    activePage: "login",
   });
 });
 app.post("/login", async (req, res) => {
@@ -97,7 +103,9 @@ app.post("/login", async (req, res) => {
 app.get("/signup-customer", (req, res) => {
   res.render("auth-layout.ejs", {
     title: " Customer Sign Up",
+    title: " Customer Sign Up",
     bodyFile: "./auth/signup-customer",
+    activePage: "signup-customer",
     activePage: "signup-customer",
   });
 });
@@ -274,8 +282,55 @@ app.post("/cart/delete", async function (req, res) {
     bodyFile: "./customer/cart",
     activePage: "cart",
     product: products,
+    activePage: "my-account",
   });
 });
+// New Product route
+app.get("/new-product", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Add New Product",
+    bodyFile: "./vendors/addProduct",
+    activePage: "newProduct",
+  });
+});
+
+// Update Product Route
+app.get("/update-product", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Update Product",
+    bodyFile: "./vendors/updateProduct",
+    activePage: "updateProduct",
+  });
+});
+// Vendor Dashboard route
+app.get("/vendor-dashboard", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Vendor Dashboard",
+    bodyFile: "./vendors/viewProducts",
+    activePage: "vendor-dashboard",
+    products: products,
+  });
+});
+
+// Shipper Dashboard route
+app.get("/shipper-dashboard", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Shipper Dashboard",
+    bodyFile: "./shipper/dashboard",
+    activePage: "shipper-dashboard",
+  });
+});
+
+// Cart route
+app.get("/cart", function (req, res) {
+  res.render("layout.ejs", {
+    title: "Shopping Cart",
+    bodyFile: "./customer/cart",
+    activePage: "cart",
+    product: products,
+  });
+});
+
 // Start the server
 app.listen(PORT, function () {
   console.log(`Server started on port ${PORT}`);
