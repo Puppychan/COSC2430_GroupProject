@@ -9,9 +9,6 @@ const products = require("./public/javascript/products");
 const { PORT, BACKEND_URL } = require("./common/constants");
 const { navigatePage } = require("./common/helperFuncs");
 
-const { PORT, BACKEND_URL } = require("./common/constants");
-const { navigatePage } = require("./common/helperFuncs");
-
 require("dotenv").config();
 const app = express();
 
