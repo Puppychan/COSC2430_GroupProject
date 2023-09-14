@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="flex items-center gap-4 lg:pl-20">
-          <form action="/cart" method="">
+          <form action="/cart" method="POST">
             <input type="hidden" name="id" value="<%= product.id %>
               ">
             <input type="hidden" name="name" value="<%= product.name %>
@@ -33,7 +33,7 @@
             <input type="hidden" name="price" value="<%= product.price %>
               ">
             <div class="w-32 mb-8">
-              <label for="" class="block text-xl font-semibold text-gray-400">
+              <label for="quantity" class="block text-xl font-semibold text-gray-400">
                 <span class="border-b border-gray-600">Quantity</span>
               </label>
               <div class="inline-flex mt-2">
