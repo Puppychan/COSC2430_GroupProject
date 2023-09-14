@@ -45,8 +45,10 @@ const register = async (req, res) => {
     else throw new Error("Role can only be customer, vendor, shipper")
     sendResponse(res, 200, 'Sucessfully register', {user: newuser, info: info});
   } catch (err) {
-    console.log("cannot create user: ", err)
-    sendResponse(res, 500, `Error ${err}`);
+    if (err.include('E11000 duplicate key error'))
+      sendResponse(res, 500, `This username has been used`);
+    else
+      sendResponse(res, 500, `Error ${err}`);
   }
 }
 
@@ -124,6 +126,70 @@ const getUser_no_verify = async (req, res) => {
   }
 }
 
+const updateProfile = async (req, res) => {
+  try {
+    let userid = req.user._id
+    const {username, avatar, name, address} = req.body
+
+    let updated_user = await User.findOneAndUpdate(
+        {_id: userid},
+        {
+          username: username,
+          avatar: avatar
+        },
+        {new: true}
+      )
+
+    if (!!!updated_user) {
+      sendResponse(res, 404, `No user account with given id`);
+    }
+
+    let role = updated_user.role;
+    let updated_role_info = null;
+
+    if (role == 'customer') {
+      updated_role_info = await Customer.findOneAndUpdate(
+        {user: userid},
+        {
+          name: name,
+          address: address
+        },
+        {new: true}
+      )
+    }
+    else if (role == 'vendor') {
+      updated_role_info = await Customer.findOneAndUpdate(
+        {user: userid},
+        {
+          name: name,
+          address: address
+        },
+        {new: true}
+      )
+    }
+    else if (role == 'shipper') {
+      updated_role_info = await Customer.findOneAndUpdate(
+          {user: userid},
+          {
+            name: name
+          },
+          {new: true}
+        )
+    }
+
+    if (!!!updated_role_info) {
+      sendResponse(res, 404, `No ${role} with given id`);
+    }
+
+    sendResponse(res, 200, `ok`,  {user_info: updated_user, role_info: updated_role_info});
+  } catch (err) {
+    if (err.include('E11000 duplicate key error'))
+      sendResponse(res, 500, `This username has been used`);
+    else
+      sendResponse(res, 500, `Error ${err}`);
+  }
+}
+
 const changePassword = async (req, res) => {
   const {current_pw, new_pw} = req.body;
   try {
@@ -142,22 +208,4 @@ const changePassword = async (req, res) => {
   }
 }
 
-const updateUserInfo = async (req, res) => {
-  try {
-
-    let user = await User.findOne({_id: req.user._id});
-    const same = await checkPassword(current_pw, user.password);
-    if (same) {
-      const hash = await bcrypt.hash(new_pw, 8);
-      user = await User.findByIdAndUpdate(user._id, {password: hash});
-      sendResponse(res, 200, 'Updated password');
-      return
-    }
-    sendResponse(res, 400, 'Invalid password')
-  } catch (err) {
-    console.log(err)
-    sendResponse(res, 500, `Error ${err}`);
-  }
-
-}
-module.exports = {register_sample, register, login, getUserInfo, getUser_no_verify, changePassword}
+module.exports = {register_sample, register, login, getUserInfo, getUser_no_verify, updateProfile, changePassword}

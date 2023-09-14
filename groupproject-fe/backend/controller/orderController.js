@@ -52,7 +52,8 @@ const assignShipper = async (req, res) => {
         {_id: req.params.orderid}, 
         { $set: 
           {shipper : shipper}
-        }
+        },
+        {new: true}
       );
     sendResponse(res, 200, 'ok', order);
   } catch (err) {
@@ -68,7 +69,8 @@ const updateOrderStatus = async (req, res) => {
         {_id: req.params.orderid}, 
         { $set: 
           {status : status}
-        }
+        },
+        {new: true}
       );
     sendResponse(res, 200, 'ok', order);
   } catch (err) {

@@ -43,7 +43,8 @@ const assignShipper = async (orderid, shipperid) => {
         {_id: orderid}, 
         { $set: 
           {shipper : shipperid}
-        }
+        },
+        {new: true}
       );
 
     if (order) return sendResponse(HttpStatus.OK_STATUS, "Assigned shipper successfully", {order});
@@ -61,7 +62,8 @@ const updateOrderStatus = async (orderid, status) => {
         {_id: orderid}, 
         { $set: 
           {status : status}
-        }
+        },
+        {new: true}
       );
     if (order) return sendResponse(HttpStatus.OK_STATUS, "Update status successfully", {order});
     

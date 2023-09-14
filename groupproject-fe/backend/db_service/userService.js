@@ -52,9 +52,12 @@ const register = async (all_info) => {
     }
     else return sendResponse(HttpStatus.BAD_REQUEST_STATUS, "Register failed. Role can only be customer, vendor, shipper");
 
-    return sendResponse(HttpStatus.OK_STATUS, "Register successfully", {user_info: user, role_info: info});
+    return sendResponse(HttpStatus.OK_STATUS, "Register successfully", {user_info: newuser, role_info: info});
   } catch (err) {
-    return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Register failed: ${err}`);
+    if (err.include('E11000 duplicate key error'))
+      return sendResponse(HttpStatus.FORBIDDEN_STATUS, `Register failed: this username has been used by another account.`);
+    else
+      return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Register failed: ${err}`);
   }
 }
 
@@ -84,10 +87,80 @@ const login = async (username, password) => {
   }
 }
 
+
+// login(sername, password) returns login status in the following format
+// {status, message, token}
+// where:
+//  - status: true if login succeed, false if fail
+//  - message: more details on the cause of such login status 
+//  - token: if login succeed -> return a token (the frontend should store token to localstorage)
+const updateProfile = async (userid, update_info) => {
+  try {
+    const {username, avatar, name, address} = update_info
+
+    let updated_user = await User.findOneAndUpdate(
+        {_id: userid},
+        {
+          username: username,
+          avatar: avatar
+        },
+        {new: true}
+      )
+
+    if (!!!updated_user) {
+      return sendResponse(HttpStatus.NOT_FOUND_STATUS, "Not found user with given id");
+    }
+
+    let role = updated_user.role;
+    let updated_role_info = null;
+
+    if (role == 'customer') {
+      updated_role_info = await Customer.findOneAndUpdate(
+        {user: userid},
+        {
+          name: name,
+          address: address
+        },
+        {new: true}
+      )
+    }
+    else if (role == 'vendor') {
+      updated_role_info = await Customer.findOneAndUpdate(
+        {user: userid},
+        {
+          name: name,
+          address: address
+        },
+        {new: true}
+      )
+    }
+    else if (role == 'shipper') {
+      updated_role_info = await Customer.findOneAndUpdate(
+          {user: userid},
+          {
+            name: name
+          },
+          {new: true}
+        )
+    }
+
+    if (!!!updated_role_info) {
+      return sendResponse(HttpStatus.NOT_FOUND_STATUS, `Not found ${role} info with given id`);
+    }
+
+    return sendResponse(HttpStatus.OK_STATUS, "Updated profile successfully", {user_info: updated_user, role_info: updated_role_info});
+  } catch (err) {
+    if (err.include('E11000 duplicate key error'))
+      return sendResponse(HttpStatus.FORBIDDEN_STATUS, `Update failed: this username has been used by another account.`);
+    else
+      return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Update failed: ${err}`);
+  }
+}
+
 const getUserInfo = async (userid) => {
   try {
     let user = await User.findOne({_id: userid})
-    if (user == null) return sendResponse(HttpStatus.NOT_FOUND_STATUS, `Not found user`);
+    if (user == null) return sendResponse(HttpStatus.NOT_FOUND_STATUS, `Not found user with given id`);
 
     let user_data = null;
 
@@ -102,7 +175,7 @@ const getUserInfo = async (userid) => {
     }
 
     if (user_data == null) 
-      return sendResponse(HttpStatus.NOT_FOUND_STATUS, `Not found ${role}'s info`);
+      return sendResponse(HttpStatus.NOT_FOUND_STATUS, `Not found ${role} info with given id`);
 
     user_data.user.password = 0; // password is unrevealed
     return sendResponse(HttpStatus.OK_STATUS, "ok",  {user_data});
@@ -127,7 +200,7 @@ const changePassword = async (current_pw, new_pw) => {
       return sendResponse(HttpStatus.OK_STATUS, "Password is updated");
     }
 
-    return sendResponse(HttpStatus.BAD_REQUEST_STATUS, "Current password is wrong");
+    return sendResponse(HttpStatus.FORBIDDEN_STATUS, "Current password is wrong");
   } catch (err) {
     return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Update password failed: ${err}`);
   }
@@ -156,4 +229,4 @@ const register_sample = async (user_register) => {
   }
 }
 
-module.exports = {register_sample, register, login, getUserInfo, changePassword}
+module.exports = {register_sample, register, login, getUserInfo, updateProfile, changePassword}
