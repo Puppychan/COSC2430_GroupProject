@@ -41,8 +41,7 @@ connectDB().catch((error) => {
 // app.use('/', user)
 // const router = express.Router();
 
-// Home page route:
-app.get("/", async function (req, res) {
+
 // Home page route:
 app.get("/", async function (req, res) {
   res.render("layout.ejs", {
