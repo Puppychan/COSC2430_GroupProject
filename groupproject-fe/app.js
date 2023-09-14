@@ -36,12 +36,19 @@ app.get("/", function (req, res) {
   });
 });
 // Category page route:
-app.get("/phones", function (req, res) {
+app.get("/viewAll", function (req, res) {
+  const { pag } = req.query;
+  // const result =
+  /**
+   * pageIndex: 1,2,3
+   * data: productList
+   * totalPage: 10
+   */
   res.render("layout.ejs", {
-    title: "Smartphones",
-    bodyFile: "./category/phones",
+    title: "Explore All Products",
+    bodyFile: "./category/viewAll",
     products: products,
-    activePage: "phones",
+    activePage: "viewAll",
   });
 });
 
