@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt')
-const {User, Customer, Vendor, Shipper} = require('../db/models/modelCollection')
-const {sendResponse} = require('../routes/middleware');
+const {User, Customer, Vendor, Shipper, Cart} = require('../db/models/modelCollection')
 const {checkPassword, newToken} = require('../utils/verification')
+const {sendResponse} = require('../middleware/middleware');
+const HttpStatus = require('../utils/commonHttpStatus')
 
 /*  this function register user (in both User collection and role's collection) 
   - example of all_info for customer:
@@ -41,6 +42,7 @@ const register = async (all_info) => {
     let info = null;
     if (role == 'customer') {
       info = await Customer.create({user: newuser._id, name: name, address: address})
+      await Cart.create({customer: newuser._id})
     }
     else if (role == 'vendor') {
       info = await Vendor.create({ user: newuser._id, name: name, address: address})
@@ -48,12 +50,11 @@ const register = async (all_info) => {
     else if (role == 'shipper') {
       info = await Shipper.create({user: newuser._id, name: name, hub: hubid})
     }
-    else throw new Error("Role can only be customer, vendor, shipper")
+    else return sendResponse(HttpStatus.BAD_REQUEST_STATUS, "Register failed. Role can only be customer, vendor, shipper");
 
-    return {user: newuser, role_info: info};
+    return sendResponse(HttpStatus.OK_STATUS, "Register successfully", {user_info: user, role_info: info});
   } catch (err) {
-    console.log("cannot create user: ", err)
-    throw(err)
+    return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Register failed: ${err}`);
   }
 }
 
@@ -68,66 +69,46 @@ const login = async (username, password) => {
   try {
     const user = await User.findOne({'username': username})
     if (!!!user) {
-      return {status: false, message: "Username does not exist"}
+      return sendResponse(HttpStatus.BAD_REQUEST_STATUS, "Login failed. Username does not exist");
     }
 
     const same = await checkPassword(password, user.password)
     if (same) {
       let token = newToken(user)
-      return {status: true, message: "Login successfully", token: token}
+      return sendResponse(HttpStatus.OK_STATUS, "Login successfully", {token});
     }
-    return {status: false, message: "Login failed. Wrong password"}
+    return sendResponse(HttpStatus.BAD_REQUEST_STATUS, "Login failed. Wrong password");
+  
   } catch (err) {
-    console.log(err)
-    return {status: false, message: `Login failed: ${err}`}
+    return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Login failed: ${err}`); 
   }
 }
 
-const getUserInfo = async (req) => {
+const getUserInfo = async (userid) => {
   try {
-    var full_info = null;
-    if (req.user != null) {
-      const role = req.user.role;
-      const id = req.user._id
-      if (role == 'customer') {
-        full_info = await Customer.findOne({'user': id}).populate('user');
-      }
-      else if (role == 'vendor') {
-        full_info = await Vendor.findOne({'user': id}).populate('user');
-      }
-      else if (role == 'shipper') {
-        full_info = await Shipper.findOne({'user': id}).populate('user');
-      }
-      full_info.user.password = 0; // password is unrevealed
-    }
-    return full_info
-  } catch (err) {
-    console.log(`cannot get user: `, err)
-    return null
-  }
-}
+    let user = await User.findOne({_id: userid})
+    if (user == null) return sendResponse(HttpStatus.NOT_FOUND_STATUS, `Not found user`);
 
-const getUser_no_verify = async (id) => {
-  try {
-    const user = await User.findOne({_id: id});
-    var full_info = null;
-    if (user != null) {
-      const role = user.role;
-      if (role == 'customer') {
-        full_info = await Customer.findOne({'user': id}).populate('user');
-      }
-      else if (role == 'vendor') {
-        full_info = await Vendor.findOne({'user': id}).populate('user');
-      }
-      else if (role == 'shipper') {
-        full_info = await Shipper.findOne({'user': id}).populate('user');
-      }
-      full_info.user.password = 0; // password is unrevealed
+    let user_data = null;
+
+    if (user.role == 'customer') {
+      user_data = await Customer.findOne({'user': user._id}, {_id:0}).populate('user');
     }
-    return full_info
-  } catch (err) {
-    console.log(`cannot get user with id ${id}: `, err)
-    sendResponse(res, 500, `Error ${err}`);
+    else if (user.role == 'vendor') {
+      user_data = await Vendor.findOne({'user': user._id}, {_id:0}).populate('user');
+    }
+    else if (user.role == 'shipper') {
+      user_data = await Shipper.findOne({'user': user._id}, {_id:0}).populate('user');
+    }
+
+    if (user_data == null) 
+      return sendResponse(HttpStatus.NOT_FOUND_STATUS, `Not found ${role}'s info`);
+
+    user_data.user.password = 0; // password is unrevealed
+    return sendResponse(HttpStatus.OK_STATUS, "ok",  {user_data});
+
+  } catch (err) {    
+    return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Cannot get user: ${err}`);
   }
 }
 
@@ -143,12 +124,12 @@ const changePassword = async (current_pw, new_pw) => {
     if (same) {
       const hash = await bcrypt.hash(new_pw, 8);
       user = await User.findByIdAndUpdate(user._id, {password: hash});
-      return {status: true, message: "Password is updated"}
+      return sendResponse(HttpStatus.OK_STATUS, "Password is updated");
     }
-    return {status: false, message: "Current password is wrong"}
+
+    return sendResponse(HttpStatus.BAD_REQUEST_STATUS, "Current password is wrong");
   } catch (err) {
-    console.log("cannot change password: ", err)
-    return {status: false, message: `Update password failed: ${err}`}
+    return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Update password failed: ${err}`);
   }
 }
 
@@ -162,6 +143,7 @@ const register_sample = async (user_register) => {
     const role = newuser.role;
     if (role == 'customer') {
       await Customer.create({...info, user: newuser._id})
+      await Cart.create({customer: newuser._id})
     }
     else if (role == 'vendor') {
       await Vendor.create({...info, user: newuser._id})
@@ -174,4 +156,4 @@ const register_sample = async (user_register) => {
   }
 }
 
-module.exports = {register_sample, register, login, getUserInfo, getUser_no_verify, changePassword}
+module.exports = {register_sample, register, login, getUserInfo, changePassword}
