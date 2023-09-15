@@ -42,32 +42,46 @@ connectDB().catch((error) => {
 // const router = express.Router();
 
 // Home page route:
-app.get("/", async function (req, res) {
-  res.render("layout.ejs", {
-    title: "Home",
-    bodyFile: "./home/index",
-    products: products,
-    activePage: "home",
-  });
+app.get("/", middleware.verifyUser, async function (req, res) {
+  const isLogin = middleware.isLogin();
+  const result = await UserService.getUserInfo(req.user._id);
+  if (result.status == 200) {
+    let user_data = result.data.user_data;
+    console.log(user_data);
+    res.render("layout.ejs", {
+      title: "Home",
+      bodyFile: "./home/index",
+      activePage: "my-account",
+      isLogin: isLogin,
+      products: products,
+      user: user_data,
+    });
+  } else {
+    console.log(result);
+  }
 });
 // Category page route:
 app.get("/phones", function (req, res) {
+  const isLogin = middleware.isLogin();
   res.render("layout.ejs", {
     title: "Smartphones",
     bodyFile: "./category/phones",
     products: products,
+    isLogin: isLogin,
     activePage: "phones",
   });
 });
 
 // Product page route:
 app.get("/product/:id", function (req, res) {
+  const isLogin = middleware.isLogin();
   const id = req.params.id;
   const matchedProduct = products.find((product) => product._id == id);
   res.render("layout.ejs", {
     title: "Product Detail",
     bodyFile: "./product/product",
     activePage: "product",
+    isLogin: isLogin,
     product: matchedProduct,
   });
 });
@@ -80,6 +94,7 @@ app.get("/login", async (req, res) => {
     activePage: "login",
   });
 });
+
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const result = await UserService.login(username, password);
@@ -100,6 +115,7 @@ app.get("/logout", async (req, res) => {
 
 // My Account route
 app.get("/my-account", middleware.verifyUser, async (req, res) => {
+  const isLogin = middleware.isLogin();
   const result = await UserService.getUserInfo(req.user._id);
   if (result.status == 200) {
     let user_data = result.data.user_data;
@@ -108,6 +124,7 @@ app.get("/my-account", middleware.verifyUser, async (req, res) => {
       title: "My Account",
       bodyFile: "./users/profile",
       activePage: "my-account",
+      isLogin: isLogin,
       user: user_data,
     });
   } else {
@@ -115,6 +132,48 @@ app.get("/my-account", middleware.verifyUser, async (req, res) => {
   }
 });
 
+app.post("/my-account", middleware.verifyUser, async (req, res) => {
+  const isLogin = middleware.isLogin();
+  const result = await UserService.updateProfile(req.user._id, req.body);
+  if (result.status == 200) {
+    let user_data = result.data.user_data;
+    console.log(user_data);
+    res.render("layout.ejs", {
+      title: "My Account",
+      bodyFile: "./users/profile",
+      activePage: "my-account",
+      user: user_data,
+      isLogin: isLogin,
+    });
+  } else {
+    console.log(result);
+  }
+});
+
+// Change password route
+app.get("/change-password", middleware.verifyUser, async (req, res) => {
+  const isLogin = middleware.isLogin();
+  res.render("layout.ejs", {
+    title: "Change Password",
+    bodyFile: "./users/change-password",
+    activePage: "change-password",
+    isLogin: isLogin,
+  });
+});
+app.post("/change-password", middleware.verifyUser, async (req, res) => {
+  const isLogin = middleware.isLogin();
+  const result = await UserService.changePassword(
+    req,
+    req.body.current_pw,
+    req.body.new_pw
+  );
+  if (result.status == 200) {
+    res.redirect("/logout");
+  } else {
+    console.log(result);
+    res.redirect("/change-password");
+  }
+});
 // Customer signup routes
 app.get("/signup-customer", (req, res) => {
   res.render("auth-layout.ejs", {
@@ -176,73 +235,90 @@ app.post("/signup-shipper", async (req, res) => {
 });
 // full route to footer pages:
 app.get("/about", function (req, res) {
+  const isLogin = middleware.isLogin();
   res.render("layout.ejs", {
     title: "About Us",
     bodyFile: "./others/about",
+    isLogin: isLogin,
     activePage: "about",
   });
 });
 
 app.get("/copyright", function (req, res) {
+  const isLogin = middleware.isLogin();
   res.render("layout.ejs", {
     title: "Copyright",
     bodyFile: "./others/copyright",
+    isLogin: isLogin,
     activePage: "about",
   });
 });
 app.get("/privacy", function (req, res) {
+  const isLogin = middleware.isLogin();
   res.render("layout.ejs", {
     title: "Privacy Policy",
     bodyFile: "./others/privacy",
+    isLogin: isLogin,
     activePage: "about",
   });
 });
 app.get("/terms", function (req, res) {
+  const isLogin = middleware.isLogin();
   res.render("layout.ejs", {
     title: "Terms & Conditions",
     bodyFile: "./others/terms",
+    isLogin: isLogin,
     activePage: "about",
   });
 });
 
 // New Product route
 app.get("/new-product", function (req, res) {
+  const isLogin = middleware.isLogin();
   res.render("layout.ejs", {
     title: "Add New Product",
     bodyFile: "./vendors/addProduct",
+    isLogin: isLogin,
     activePage: "newProduct",
   });
 });
 
 // Update Product Route
 app.get("/update-product", function (req, res) {
+  const isLogin = middleware.isLogin();
   res.render("layout.ejs", {
     title: "Update Product",
     bodyFile: "./vendors/updateProduct",
+    isLogin: isLogin,
     activePage: "updateProduct",
   });
 });
 // Vendor Dashboard route
 app.get("/vendor-dashboard", function (req, res) {
+  const isLogin = middleware.isLogin();
   res.render("layout.ejs", {
     title: "Vendor Dashboard",
     bodyFile: "./vendors/viewProducts",
     activePage: "vendor-dashboard",
+    isLogin: isLogin,
     products: products,
   });
 });
 
 // Shipper Dashboard route
 app.get("/shipper-dashboard", function (req, res) {
+  const isLogin = middleware.isLogin();
   res.render("layout.ejs", {
     title: "Shipper Dashboard",
     bodyFile: "./shipper/dashboard",
+    isLogin: isLogin,
     activePage: "shipper-dashboard",
   });
 });
 
 // Cart route
 app.get("/cart", middleware.verifyUser, async (req, res) => {
+  const isLogin = middleware.isLogin();
   const result = await CartService.getCart(req.user._id);
   if (result.status == 200) {
     let cart = result.data.cart;
@@ -251,6 +327,7 @@ app.get("/cart", middleware.verifyUser, async (req, res) => {
       title: "Shopping Cart",
       bodyFile: "./customer/cart",
       activePage: "cart",
+      isLogin: isLogin,
       product: products,
     });
   } else {

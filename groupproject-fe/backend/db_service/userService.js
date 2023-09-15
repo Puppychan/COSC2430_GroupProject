@@ -76,7 +76,7 @@ const register = async (all_info) => {
         "Register failed. Role can only be customer, vendor, shipper"
       );
 
-    return sendResponse(HttpStatus.OK_STATUS, "Register successfully", {user_info: newuser, role_info: info});
+    return sendResponse(HttpStatus.OK_STATUS, "Register successfully", { user_info: newuser, role_info: info });
   } catch (err) {
     if (err.include('E11000 duplicate key error'))
       return sendResponse(HttpStatus.FORBIDDEN_STATUS, `Register failed: this username has been used by another account.`);
@@ -129,16 +129,16 @@ const login = async (username, password) => {
 //  - token: if login succeed -> return a token (the frontend should store token to localstorage)
 const updateProfile = async (userid, update_info) => {
   try {
-    const {username, avatar, name, address} = update_info
+    const { username, avatar, name, address } = update_info
 
     let updated_user = await User.findOneAndUpdate(
-        {_id: userid},
-        {
-          username: username,
-          avatar: avatar
-        },
-        {new: true}
-      )
+      { _id: userid },
+      {
+        username: username,
+        avatar: avatar
+      },
+      { new: true }
+    )
 
     if (!!!updated_user) {
       return sendResponse(HttpStatus.NOT_FOUND_STATUS, "Not found user with given id");
@@ -149,39 +149,39 @@ const updateProfile = async (userid, update_info) => {
 
     if (role == 'customer') {
       updated_role_info = await Customer.findOneAndUpdate(
-        {user: userid},
+        { user: userid },
         {
           name: name,
           address: address
         },
-        {new: true}
+        { new: true }
       )
     }
     else if (role == 'vendor') {
-      updated_role_info = await Customer.findOneAndUpdate(
-        {user: userid},
+      updated_role_info = await Vendor.findOneAndUpdate(
+        { user: userid },
         {
           name: name,
           address: address
         },
-        {new: true}
+        { new: true }
       )
     }
     else if (role == 'shipper') {
-      updated_role_info = await Customer.findOneAndUpdate(
-          {user: userid},
-          {
-            name: name
-          },
-          {new: true}
-        )
+      updated_role_info = await Shipper.findOneAndUpdate(
+        { user: userid },
+        {
+          name: name
+        },
+        { new: true }
+      )
     }
 
     if (!!!updated_role_info) {
       return sendResponse(HttpStatus.NOT_FOUND_STATUS, `Not found ${role} info with given id`);
     }
 
-    return sendResponse(HttpStatus.OK_STATUS, "Updated profile successfully", {user_info: updated_user, role_info: updated_role_info});
+    return sendResponse(HttpStatus.OK_STATUS, "Updated profile successfully", { user_info: updated_user, role_info: updated_role_info });
   } catch (err) {
     if (err.include('E11000 duplicate key error'))
       return sendResponse(HttpStatus.FORBIDDEN_STATUS, `Update failed: this username has been used by another account.`);
@@ -192,7 +192,7 @@ const updateProfile = async (userid, update_info) => {
 
 const getUserInfo = async (userid) => {
   try {
-    let user = await User.findOne({_id: userid})
+    let user = await User.findOne({ _id: userid })
     if (user == null) return sendResponse(HttpStatus.NOT_FOUND_STATUS, `Not found user with given id`);
 
     let user_data = null;
@@ -213,7 +213,7 @@ const getUserInfo = async (userid) => {
       ).populate("user");
     }
 
-    if (user_data == null) 
+    if (user_data == null)
       return sendResponse(HttpStatus.NOT_FOUND_STATUS, `Not found ${role} info with given id`);
 
     user_data.user.password = 0; // password is unrevealed
@@ -231,7 +231,7 @@ const getUserInfo = async (userid) => {
 // where:
 //  - status: true if login succeed, false if fail
 //  - message: more details on the cause of such login status
-const changePassword = async (current_pw, new_pw) => {
+const changePassword = async (req, current_pw, new_pw) => {
   try {
     var user = await User.findOne({ _id: req.user._id });
     const same = await checkPassword(current_pw, user.password);
@@ -270,4 +270,4 @@ const register_sample = async (user_register) => {
   }
 };
 
-module.exports = {register_sample, register, login, getUserInfo, updateProfile, changePassword}
+module.exports = { register_sample, register, login, getUserInfo, updateProfile, changePassword }
