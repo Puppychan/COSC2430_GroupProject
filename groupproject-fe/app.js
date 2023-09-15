@@ -60,6 +60,8 @@ app.get("/", middleware.verifyUser, async function (req, res) {
     console.log(result);
   }
 });
+
+
 // Category page route:
 app.get("/phones", function (req, res) {
   const isLogin = middleware.isLogin();

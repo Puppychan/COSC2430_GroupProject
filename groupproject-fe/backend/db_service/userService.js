@@ -225,6 +225,30 @@ const getUserInfo = async (userid) => {
     );
   }
 };
+const getUser_no_verify = async (userid) => {
+  try {
+    const user = await User.findOne({ _id: userid });
+    var user_data = null;
+    if (user != null) {
+      const role = user.role;
+      if (role == 'customer') {
+        user_data = await Customer.findOne({ 'user': user._id }).populate('user');
+      }
+      else if (role == 'vendor') {
+        user_data = await Vendor.findOne({ 'user': user._id }).populate('user');
+      }
+      else if (role == 'shipper') {
+        user_data = await Shipper.findOne({ 'user': user._id }).populate('user');
+      }
+      user_data.user.password = 0; // password is unrevealed
+    }
+    return sendResponse(HttpStatus.OK_STATUS, "ok", { user_data });
+  } catch (err) {
+    console.log(`cannot get user with id ${id}: `, err)
+    // sendResponse(res, 500, `Error ${err}`);
+  }
+};
+
 
 // changePassword() returns change password status in the following format
 // {status, message}
@@ -270,4 +294,4 @@ const register_sample = async (user_register) => {
   }
 };
 
-module.exports = { register_sample, register, login, getUserInfo, updateProfile, changePassword }
+module.exports = { register_sample, register, login, getUserInfo, updateProfile, changePassword, getUser_no_verify }
