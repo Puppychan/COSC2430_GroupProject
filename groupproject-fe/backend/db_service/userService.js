@@ -125,7 +125,7 @@ const updateProfile = async (userid, update_info) => {
       )
     }
     else if (role == 'vendor') {
-      updated_role_info = await Customer.findOneAndUpdate(
+      updated_role_info = await Vendor.findOneAndUpdate(
         {user: userid},
         {
           name: name,
@@ -135,7 +135,7 @@ const updateProfile = async (userid, update_info) => {
       )
     }
     else if (role == 'shipper') {
-      updated_role_info = await Customer.findOneAndUpdate(
+      updated_role_info = await Shipper.findOneAndUpdate(
           {user: userid},
           {
             name: name
