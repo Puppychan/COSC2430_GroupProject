@@ -277,6 +277,7 @@ app.get("/about", async function (req, res) {
       bodyFile: "./others/about",
       isLogin: isLogin,
       activePage: "about",
+      user: user_data,
     });
   } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
     res.render("layout.ejs", {
@@ -284,6 +285,7 @@ app.get("/about", async function (req, res) {
       bodyFile: "./others/about",
       isLogin: isLogin,
       activePage: "about",
+      user: null,
     });
   } else {
     console.log(result);
@@ -304,6 +306,7 @@ app.get("/copyright", async function (req, res) {
       bodyFile: "./others/copyright",
       isLogin: isLogin,
       activePage: "about",
+      user: user_data,
     });
   } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
     res.render("layout.ejs", {
@@ -311,6 +314,7 @@ app.get("/copyright", async function (req, res) {
       bodyFile: "./others/copyright",
       isLogin: isLogin,
       activePage: "about",
+      user: null,
     });
   } else {
     console.log(result);
@@ -330,6 +334,7 @@ app.get('/privacy', async function (req, res) {
       bodyFile: "./others/privacy",
       isLogin: isLogin,
       activePage: "about",
+      user: user_data,
     });
   } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
     res.render("layout.ejs", {
@@ -337,6 +342,7 @@ app.get('/privacy', async function (req, res) {
       bodyFile: "./others/privacy",
       isLogin: isLogin,
       activePage: "about",
+      user: null,
     });
   } else {
     console.log(result);
@@ -356,6 +362,7 @@ app.get('/terms', async function (req, res) {
       bodyFile: "./others/terms",
       isLogin: isLogin,
       activePage: "about",
+      user: user_data,
     });
   } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
     res.render("layout.ejs", {
@@ -363,20 +370,29 @@ app.get('/terms', async function (req, res) {
       bodyFile: "./others/terms",
       isLogin: isLogin,
       activePage: "about",
+      user: null,
     });
   } else {
     console.log(result);
   }
 });
 // New Product route
-app.get("/new-product", function (req, res) {
+app.get("/new-product", middleware.verifyUser, async function (req, res) {
   const isLogin = middleware.isLogin();
-  res.render("layout.ejs", {
-    title: "Add New Product",
-    bodyFile: "./vendors/addProduct",
-    isLogin: isLogin,
-    activePage: "newProduct",
-  });
+  const result = await UserService.getUserInfo(req.user._id);
+  if (result.status == 200) {
+    let user_data = result.data.user_data;
+    console.log(user_data);
+    res.render("layout.ejs", {
+      title: "New Product",
+      bodyFile: "./vendors/addProduct",
+      activePage: "newProduct",
+      isLogin: isLogin,
+      user: user_data,
+    });
+  } else {
+    console.log(result);
+  }
 });
 
 // Update Product Route
