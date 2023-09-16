@@ -3,8 +3,10 @@ const cors = require("cors");
 const path = require("path");
 const { connectDB } = require("./backend/db/connectDB");
 const UserService = require("./backend/db_service/userService");
+const ProductService = require("./backend/db_service/productService");
 const CartService = require("./backend/db_service/cartService");
 const OrderService = require("./backend/db_service/orderService");
+const HttpStatus = require('./backend/utils/commonHttpStatus')
 
 const products = require("./public/javascript/products");
 
@@ -44,12 +46,14 @@ connectDB().catch((error) => {
 
 
 // Home page route:
-app.get("/", middleware.verifyUser, async function (req, res) {
+app.get("/", async function (req, res) {
+  // verify if is login
   const isLogin = middleware.isLogin();
-  const result = await UserService.getUserInfo(req.user._id);
-  if (result.status == 200) {
+  // get user id after login
+  const userId = middleware.getUserIdLocal();
+  const result = await UserService.getUserInfo(userId);
+  if (result.status == 200) { // Login successfully
     let user_data = result.data.user_data;
-    console.log(user_data);
     res.render("layout.ejs", {
       title: "Home",
       bodyFile: "./home/index",
@@ -57,6 +61,15 @@ app.get("/", middleware.verifyUser, async function (req, res) {
       isLogin: isLogin,
       products: products,
       user: user_data,
+    });
+  } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
+    res.render("layout.ejs", {
+      title: "Home",
+      bodyFile: "./home/index",
+      activePage: "my-account",
+      isLogin: isLogin,
+      products: products,
+      user: null,
     });
   } else {
     console.log(result);
@@ -109,8 +122,10 @@ app.get("/login", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const result = await UserService.login(username, password);
+  console.log("Login ;sdnkds", result);
   if (result.status == 200) {
     middleware.setToken(result.data.token);
+    middleware.setUserIdLocal(result.data.id);
     res.redirect("/");
   } else {
     console.log(result);
@@ -145,17 +160,12 @@ app.get("/my-account", middleware.verifyUser, async (req, res) => {
 
 app.post("/my-account", middleware.verifyUser, async (req, res) => {
   const isLogin = middleware.isLogin();
+  console.log("Is Login ", isLogin);
   const result = await UserService.updateProfile(req.user._id, req.body);
   if (result.status == 200) {
     let user_data = result.data.user_data;
     console.log(user_data);
-    res.render("layout.ejs", {
-      title: "My Account",
-      bodyFile: "./users/profile",
-      activePage: "my-account",
-      user: user_data,
-      isLogin: isLogin,
-    });
+    res.redirect("/my-account");
   } else {
     console.log(result);
   }
@@ -164,12 +174,19 @@ app.post("/my-account", middleware.verifyUser, async (req, res) => {
 // Change password route
 app.get("/change-password", middleware.verifyUser, async (req, res) => {
   const isLogin = middleware.isLogin();
-  res.render("layout.ejs", {
-    title: "Change Password",
-    bodyFile: "./users/change-password",
-    activePage: "change-password",
-    isLogin: isLogin,
-  });
+  const result = await UserService.getUserInfo(req.user._id);
+  if (result.status == 200) {
+    let user_data = result.data.user_data;
+    res.render("layout.ejs", {
+      title: "Change Password",
+      bodyFile: "./users/change-password",
+      activePage: "change-password",
+      isLogin: isLogin,
+      user: user_data,
+    });
+  } else {
+    console.log(result);
+  }
 });
 app.post("/change-password", middleware.verifyUser, async (req, res) => {
   const isLogin = middleware.isLogin();
@@ -247,44 +264,111 @@ app.post("/signup-shipper", async (req, res) => {
   }
 });
 // full route to footer pages:
-app.get("/about", function (req, res) {
+app.get("/about", async function (req, res) {
+  // verify if is login
   const isLogin = middleware.isLogin();
-  res.render("layout.ejs", {
-    title: "About Us",
-    bodyFile: "./others/about",
-    isLogin: isLogin,
-    activePage: "about",
-  });
+  // get user id after login
+  const userId = middleware.getUserIdLocal();
+  const result = await UserService.getUserInfo(userId);
+  if (result.status == 200) {
+    // Login successfully
+    let user_data = result.data.user_data;
+    res.render("layout.ejs", {
+      title: "About Us",
+      bodyFile: "./others/about",
+      isLogin: isLogin,
+      activePage: "about",
+    });
+  } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
+    res.render("layout.ejs", {
+      title: "About Us",
+      bodyFile: "./others/about",
+      isLogin: isLogin,
+      activePage: "about",
+    });
+  } else {
+    console.log(result);
+  }
 });
 
-app.get("/copyright", function (req, res) {
+app.get("/copyright", async function (req, res) {
+  // verify if is login
   const isLogin = middleware.isLogin();
-  res.render("layout.ejs", {
-    title: "Copyright",
-    bodyFile: "./others/copyright",
-    isLogin: isLogin,
-    activePage: "about",
-  });
+  // get user id after login
+  const userId = middleware.getUserIdLocal();
+  const result = await UserService.getUserInfo(userId);
+  if (result.status == 200) {
+    // Login successfully
+    let user_data = result.data.user_data;
+    res.render("layout.ejs", {
+      title: "Copyright",
+      bodyFile: "./others/copyright",
+      isLogin: isLogin,
+      activePage: "about",
+    });
+  } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
+    res.render("layout.ejs", {
+      title: "About Us",
+      bodyFile: "./others/copyright",
+      isLogin: isLogin,
+      activePage: "about",
+    });
+  } else {
+    console.log(result);
+  }
 });
-app.get("/privacy", function (req, res) {
+app.get('/privacy', async function (req, res) {
+  // verify if is login
   const isLogin = middleware.isLogin();
-  res.render("layout.ejs", {
-    title: "Privacy Policy",
-    bodyFile: "./others/privacy",
-    isLogin: isLogin,
-    activePage: "about",
-  });
+  // get user id after login
+  const userId = middleware.getUserIdLocal();
+  const result = await UserService.getUserInfo(userId);
+  if (result.status == 200) {
+    // Login successfully
+    let user_data = result.data.user_data;
+    res.render("layout.ejs", {
+      title: "Privacy",
+      bodyFile: "./others/privacy",
+      isLogin: isLogin,
+      activePage: "about",
+    });
+  } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
+    res.render("layout.ejs", {
+      title: "Privacy",
+      bodyFile: "./others/privacy",
+      isLogin: isLogin,
+      activePage: "about",
+    });
+  } else {
+    console.log(result);
+  }
 });
-app.get("/terms", function (req, res) {
+app.get('/terms', async function (req, res) {
+  // verify if is login
   const isLogin = middleware.isLogin();
-  res.render("layout.ejs", {
-    title: "Terms & Conditions",
-    bodyFile: "./others/terms",
-    isLogin: isLogin,
-    activePage: "about",
-  });
+  // get user id after login
+  const userId = middleware.getUserIdLocal();
+  const result = await UserService.getUserInfo(userId);
+  if (result.status == 200) {
+    // Login successfully
+    let user_data = result.data.user_data;
+    res.render("layout.ejs", {
+      title: "Terms",
+      bodyFile: "./others/terms",
+      isLogin: isLogin,
+      activePage: "about",
+    });
+  } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
+    res.render("layout.ejs", {
+      title: "Terms",
+      bodyFile: "./others/terms",
+      isLogin: isLogin,
+      activePage: "about",
+    });
+  } else {
+    console.log(result);
+  }
 });
-
 // New Product route
 app.get("/new-product", function (req, res) {
   const isLogin = middleware.isLogin();
@@ -297,13 +381,17 @@ app.get("/new-product", function (req, res) {
 });
 
 // Update Product Route
-app.get("/update-product", function (req, res) {
+app.get("/update-product/:id", async function (req, res) {
+  const id = req.params.id;
+  console.log("id", id);
+  const product = await ProductService.getProductById(id);
   const isLogin = middleware.isLogin();
   res.render("layout.ejs", {
     title: "Update Product",
     bodyFile: "./vendors/updateProduct",
     isLogin: isLogin,
     activePage: "updateProduct",
+    product: product,
   });
 });
 // Vendor Dashboard route

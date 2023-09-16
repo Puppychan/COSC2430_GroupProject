@@ -106,6 +106,7 @@ const login = async (username, password) => {
       let token = newToken(user);
       return sendResponse(HttpStatus.OK_STATUS, "Login successfully", {
         token,
+        id: user._id
       });
     }
     return sendResponse(
