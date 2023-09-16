@@ -11,6 +11,10 @@ const navigatePage = (type, id = -1, page) => {
             return `/viewAll?page=${page}`;
         case 'product-update':
             return `/update-product/${id}`;
+        case 'product-add':
+            return '/new-product';
+        case 'product-delete':
+            return `/delete-product/${id}`;
         case 'cart':
             return '/cart';
         case 'new-product':

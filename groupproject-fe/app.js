@@ -380,19 +380,42 @@ app.get('/terms', async function (req, res) {
 // New Product route
 app.get("/new-product", middleware.verifyUser, async function (req, res) {
   const isLogin = middleware.isLogin();
-  const result = await UserService.getUserInfo(req.user._id);
-  if (result.status == 200) {
-    let user_data = result.data.user_data;
-    console.log(user_data);
+  // get user id after login
+  const userId = middleware.getUserIdLocal();
+  const user = (await UserService.getUserInfo(userId)).data.user_data;
+
+  res.render("layout.ejs", {
+    title: "New Product",
+    bodyFile: "./vendors/addProduct",
+    activePage: "newProduct",
+    isLogin: isLogin,
+    user: user,
+  });
+});
+
+app.post("/new-product", middleware.verifyUser, productMulter.single('image'), async function (req, res) {
+  // verify if is login
+  const isLogin = middleware.isLogin();
+  // get user id after login
+  const userId = middleware.getUserIdLocal();
+  const user = await UserService.getUserInfo(userId);
+
+  // get product by id to display on update page
+  const newProduct = await ProductService.createProduct(req);
+  // console.log("Product", productResult);
+  
+
+  if (newProduct.status == HttpStatus.OK_STATUS) {
     res.render("layout.ejs", {
-      title: "New Product",
-      bodyFile: "./vendors/addProduct",
-      activePage: "newProduct",
+      title: "Update Product",
+      bodyFile: "./vendors/updateProduct",
       isLogin: isLogin,
-      user: user_data,
+      activePage: "updateProduct",
+      product: newProduct.data,
+      user: user,
     });
   } else {
-    console.log(result);
+    console.log("Bug", newProduct);
   }
 });
 
@@ -446,7 +469,6 @@ app.get("/update-product/:id", middleware.verifyUser, productMulter.single('imag
 
 app.post("/update-product/:id", middleware.verifyUser, productMulter.single('image'), async function (req, res) {
   try {
-    console.log("Request", req.body, req.params.id);
     const result = await ProductService.updateProduct(req);
     if (result.status == HttpStatus.OK_STATUS) {
       res.redirect("/product/" + result.data._id);
@@ -465,6 +487,15 @@ app.post("/update-product/:id", middleware.verifyUser, productMulter.single('ima
       console.log("Multer Error");
       // throw new Error(err.message, statusCode = HttpStatus.BAD_REQUEST_STATUS);
     }
+  }
+});
+
+app.post("/delete-product/:id", middleware.verifyUser, async function (req, res) {
+  const result = await ProductService.deleteProduct(req);
+  if (result.status == HttpStatus.OK_STATUS) {
+    res.redirect("/vendor-dashboard");
+  } else {
+    console.log(result);
   }
 });
 
@@ -525,12 +556,12 @@ app.post("/order", middleware.verifyUser, async (req, res) => {
 // handle error if append to url
 app.use((error, req, res, next) => {
   if (error instanceof multer.MulterError) {
-      if (error.code === 'LIMIT_FILE_SIZE') {
-          return res.status(413).json({ error: 'File too large' });
-      } else if (error.message === 'Field value too long') {
-          return res.status(400).json({ error: 'Field value too long' });
-      }
-      return res.status(400).json({ error: error.message });
+    if (error.code === 'LIMIT_FILE_SIZE') {
+      return res.status(413).json({ error: 'File too large' });
+    } else if (error.message === 'Field value too long') {
+      return res.status(400).json({ error: 'Field value too long' });
+    }
+    return res.status(400).json({ error: error.message });
   }
   next(error);
 });

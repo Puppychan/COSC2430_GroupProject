@@ -1,5 +1,4 @@
 const Product = require('../db/models/shopping/Product');
-const { sendResponse } = require('../routes/middleware');
 const { convertImageToBin } = require('../utils/imageToBin');
 
 const getProducts = async (req, res) => {
@@ -56,7 +55,6 @@ const getProducts = async (req, res) => {
 
         }
     } catch (err) {
-        // send response
         throw err;
 
     }
@@ -66,14 +64,11 @@ const getProductById = async (req, res) => {
     try {
         const renderedProduct = await Product.findById(req.params.id);
         if (!renderedProduct) {
-            // return res.status(404).send('Product not found');
             return null
         }
-        // sendResponse(res, 200, 'ok', renderedProduct);
         return renderedProduct;
 
     } catch (err) {
-        // send response
         throw err;
     }
 }
@@ -86,13 +81,11 @@ const searchProducts = async (req, res) => {
         const products = await Product.find({ name: { $regex: '.*' + search + '.*', $options: 'i' } })
         // if no product
         if (products.length == 0) {
-            sendResponse(res, 400, 'Not Product To Display');
-            return;
+            return [];
         }
-        sendResponse(res, 200, `ok`, products);
+        return products
     } catch (err) {
-        // send response
-        sendResponse(res, err.statusCode, err.message ?? `Error`);
+        throw err;
     }
 }
 
@@ -104,19 +97,18 @@ const createProduct = async (req, res) => {
         const imageContent = convertImageToBin(req);
 
         // get image attribute and the rest attributes
-        const { image, ...restAttributes } = req.body;
+        const { vendor, name, price, stock, description, image } = req.body;
 
         // Create a new product
         newProduct = await Product.create({
-            ...restAttributes,
+            vendor, name, price, stock, description,
             // get path + filename of image + format extension
             image: imageContent,
         });
-        sendResponse(res, 200, 'Product created successfully', newProduct);
+        return newProduct;
 
     } catch (err) {
-        // send response
-        sendResponse(res, err.statusCode, err.message ?? `Error`);
+        throw err;
     }
 }
 // TODO
@@ -142,7 +134,6 @@ const updateProduct = async (req, res) => {
             return updatedProduct;
         }
     } catch (err) {
-        // send response
         throw err;
     }
 }
@@ -152,25 +143,23 @@ const deleteProductById = async (req, res) => {
         const deleteProduct = await Product.findByIdAndDelete(req.params.id);
         // if delete product not found
         if (!deleteProduct) {
-            sendResponse(res, '404', 'Product to delete not found');
+            return null;
         }
         // if found and succesfully deleted
         else {
-            sendResponse(res, '200', 'Product deleted successfully');
+            return deleteProduct;
         }
     } catch (err) {
-        // send response
-        sendResponse(res, err.statusCode, err.message ?? `Error`);
+        throw err;
     }
 }
 const deleteProductListId = async (req, res) => {
     try {
         const idsToDelete = req.body.ids;
         const deleteProducts = await Product.deleteMany({ _id: { $in: idsToDelete } });
-        sendResponse(res, '200', 'Products deleted successfully');
+        return deleteProducts;
     } catch (err) {
-        // send response
-        sendResponse(res, err.statusCode, err.message ?? `Error`);
+        throw err;
     }
 }
 
