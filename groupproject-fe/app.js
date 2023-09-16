@@ -12,6 +12,7 @@ const { PORT, BACKEND_URL } = require("./common/constants");
 const { navigatePage } = require("./common/helperFuncs");
 const middleware = require("./backend/middleware/middleware");
 
+
 require("dotenv").config();
 const app = express();
 
@@ -358,14 +359,22 @@ app.post("/order", middleware.verifyUser, async (req, res) => {
   }
 });
 
-app.get("/order", function (req, res) {
+app.get("/order",middleware.verifyUser, async function (req, res) {
+  const isLogin = middleware.isLogin;
+  const result = await UserService.getUserInfo(req.user._id);
+  if (result.status == 200){
   res.render("layout.ejs", {
     title: "Shopping order",
     bodyFile: "./customer/order",
     activePage: "order",
     product: products,
+    isLogin: isLogin,
   });
+}
 });
+
+
+
 
 // Start the server
 app.listen(PORT, function () {
