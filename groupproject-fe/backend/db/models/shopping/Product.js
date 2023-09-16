@@ -5,7 +5,7 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
     minLength: [10, '10 characters at least'],
-    maxLength: [20, '20 characters at most']
+    maxLength: [50, '50 characters at most']
   },
   vendor: {
     type: mongoose.Schema.Types.ObjectId,
