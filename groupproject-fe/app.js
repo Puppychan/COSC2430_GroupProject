@@ -3,6 +3,7 @@ const cors = require("cors");
 const path = require('path');
 const {connectDB} = require("./backend/db/connectDB");
 const UserService = require("./backend/db_service/userService");
+const ProductService = require("./backend/db_service/productService");
 
 const products = require("./public/javascript/products");
 
@@ -159,11 +160,15 @@ app.get("/new-product", function (req, res) {
 });
 
 // Update Product Route
-app.get("/update-product", function (req, res) {
+app.get("/update-product/:id", async function (req, res) {
+  const id = req.params.id;
+  console.log("id", id);
+  const product = await ProductService.getProductById(id);
   res.render("layout.ejs", {
     title: "Update Product",
     bodyFile: "./vendors/updateProduct",
     activePage: "updateProduct",
+    product: product,
   });
 });
 // Vendor Dashboard route

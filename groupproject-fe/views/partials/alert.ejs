@@ -25,30 +25,18 @@
     </svg>
   </div>
 </div> -->
-<script>
-  import {
-    Dismiss
-  } from 'flowbite';
+<script type="module">
+  const {Dismiss} = require("flowbite")
 
-  // Target element that will be dismissed
   const $targetEl = document.getElementById('alert-border-5');
-  console.log("Targett", $targetEl);
 
-  // Trigger element
-  const $triggerEl = document.getElementById('btn-alert-border-5');
+  // Show snackbar on page load
+  $targetEl.classList.remove('hidden');
+  $targetEl.classList.add('fixed');
 
-  // Options object
-  const options = {
-    transition: 'transition-opacity',
-    duration: 1000,
-    timing: 'ease-out',
-    onHide: (context, targetEl) => {
-      console.log('element has been dismissed');
-      console.log(targetEl);
-    }
-  };
-
-  const dismiss = new Dismiss($targetEl, $triggerEl, options);
-  // hide the target element
-  // dismiss.hide();
+  // Hide the snackbar after 3 seconds
+  setTimeout(() => {
+    $targetEl.classList.add('hidden');
+    $targetEl.classList.remove('fixed');
+  }, 3000);
 </script>

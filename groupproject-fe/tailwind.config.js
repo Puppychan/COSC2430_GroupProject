@@ -51,6 +51,7 @@ module.exports = {
     },
   },
   plugins: [
+    // require('flowbite/plugin'),
     function ({ addUtilities }) {
       addUtilities(
         {
