@@ -26,19 +26,6 @@ const getProductById = async (req) => {
     }
 };
 
-const searchProducts = async (req) => {
-    try {
-        const productList = await productController.searchProducts(req.query.name);
-        if (productList.length == 0) {
-            return sendResponse(HttpStatus.NOT_FOUND_STATUS, `Product Not Found`);
-        }
-        return sendResponse(HttpStatus.OK_STATUS, `Search product successfully`, productList);
-    } catch (err) {
-        console.log(err);
-        return sendResponse(err.code ?? HttpStatus.INTERNAL_SERVER_ERROR_STATUS, err.message ?? `Get products failed`);
-
-    }
-};
 const createProduct = async (req) => {
     try {
         const product = await productController.createProduct(req);
@@ -72,4 +59,4 @@ const deleteProduct = async (req) => {
         return sendResponse(err.code ?? HttpStatus.INTERNAL_SERVER_ERROR_STATUS, err.message ?? `Delete products failed`);
     }
 }
-module.exports = { getProducts, getProductById, searchProducts, createProduct, updateProduct, deleteProduct };
+module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct };

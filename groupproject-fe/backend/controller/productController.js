@@ -5,6 +5,7 @@ const getProducts = async (req, res) => {
     try {
         let results;
         // get params
+        const searchName = req.query.name;
         const maxPrice = parseFloat(req.query.maxp);
         const minPrice = parseFloat(req.query.minp);
         // get pagination
@@ -15,6 +16,11 @@ const getProducts = async (req, res) => {
 
         // aggregate pipeline
         const matchStage = {};
+        // if params exist -> search
+        if (searchName) {
+            // filter product by name containing, insensitive case
+            matchStage.name = { $regex: '.*' + searchName + '.*', $options: 'i' };
+        }
         // if params exist -> filter
         if (!isNaN(maxPrice) || !isNaN(minPrice)) {
             // filter product by price range
@@ -72,23 +78,6 @@ const getProductById = async (req, res) => {
         throw err;
     }
 }
-
-const searchProducts = async (req, res) => {
-    try {
-        console.log("Called");
-        const search = req.query.name;
-        // search products by name containing, insensitive case
-        const products = await Product.find({ name: { $regex: '.*' + search + '.*', $options: 'i' } })
-        // if no product
-        if (products.length == 0) {
-            return [];
-        }
-        return products
-    } catch (err) {
-        throw err;
-    }
-}
-
 
 const createProduct = async (req, res) => {
     let newProduct;
@@ -167,7 +156,6 @@ const deleteProductListId = async (req, res) => {
 module.exports = {
     getProducts,
     getProductById,
-    searchProducts,
     createProduct,
     updateProduct,
     deleteProductById,

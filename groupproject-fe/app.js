@@ -377,6 +377,7 @@ app.get('/terms', async function (req, res) {
     console.log(result);
   }
 });
+
 // New Product route
 app.get("/new-product", middleware.verifyUser, async function (req, res) {
   const isLogin = middleware.isLogin();
