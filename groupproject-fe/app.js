@@ -13,7 +13,6 @@ const products = require("./public/javascript/products");
 const { PORT, BACKEND_URL } = require("./common/constants");
 const { navigatePage } = require("./common/helperFuncs");
 const middleware = require("./backend/middleware/middleware");
-const { Product } = require("./backend/db/models/modelCollection");
 
 require("dotenv").config();
 const app = express();
@@ -79,28 +78,18 @@ app.get("/", async function (req, res) {
 
 
 // Category page route:
-app.get("/viewAll", async function (req, res) {
-  // verify if is login
-  const isLogin = middleware.isLogin();
-  // get user id after login
-  const userId = middleware.getUserIdLocal();
-  const user = await UserService.getUserInfo(userId);
-
-  // get products
-  const results = await ProductService.getProducts(req);
-  const products = results?.data?.data;
-  const pageInfo = {
-    page: parseInt(results?.data?.page),
-    offset: results?.data?.offset,
-    totalPage: parseInt(results?.data?.totalPage),
-  };
-  console.log("Productss", products);
+app.get("/viewAll", function (req, res) {
+  const { pag } = req.query;
+  // const result =
+  /**
+   * pageIndex: 1,2,3
+   * data: productList
+   * totalPage: 10
+   */
   res.render("layout.ejs", {
     title: "Explore All Products",
     bodyFile: "./category/viewAll",
     products: products,
-    pageInfo: pageInfo,
-    user: user,
     isLogin: isLogin,
     activePage: "phones",
   });
