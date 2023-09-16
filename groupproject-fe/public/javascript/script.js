@@ -2,41 +2,23 @@
 const mobileMenu = document.querySelector("#navBarButton");
 const mobileMenuContainer = document.querySelector("#mobile-menu-2");
 mobileMenu.addEventListener("click", () => {
-  mobileMenuContainer.classList.toggle("hidden");
+    mobileMenuContainer.classList.toggle("hidden");
 });
 
 // Search bar function
 document.addEventListener('DOMContentLoaded', (event) => {
-  const searchBtn = document.getElementById('searchBtn');
-  const searchBar = document.getElementById('searchBar');
-  const closeSearchBtn = document.getElementById('closeSearchBtn');
+    const searchBtn = document.getElementById('searchBtn');
+    const searchBar = document.getElementById('searchBar');
+    const closeSearchBtn = document.getElementById('closeSearchBtn');
 
-  searchBtn.addEventListener('click', () => {
-      searchBar.classList.remove('hidden');
-  });
+    searchBtn.addEventListener('click', () => {
+        searchBar.classList.remove('hidden');
+    });
 
-  closeSearchBtn.addEventListener('click', () => {
-      searchBar.classList.add('hidden');
-  });
+    closeSearchBtn.addEventListener('click', () => {
+        searchBar.classList.add('hidden');
+    });
 });
-
-// Change type function
-let lastActive = null;
-    
-    function toggleActive(el) {
-        if(lastActive) {
-            lastActive.classList.toggle('text-blue-600');
-            lastActive.classList.toggle('text-gray-400');
-        }
-        
-        if(lastActive !== el) {
-            el.classList.toggle('text-blue-600');
-            el.classList.toggle('text-gray-400');
-            lastActive = el;
-        } else {
-            lastActive = null;
-        }
-    }
 
 // Price range slider function
 let minPriceSlider = document.getElementById('min-price');
@@ -80,3 +62,19 @@ if (minPriceSlider && maxPriceSlider) {
     };
 }
 
+// Quantity input function
+function increaseValue() {
+    var value = parseInt(document.getElementById('number').value, 10);
+    value = isNaN(value) ? 0 : value;
+    value++;
+    document.getElementById('number').value = value;
+}
+
+function decreaseValue() {
+    var value = parseInt(document.getElementById('number').value, 10);
+    value = isNaN(value) ? 1 : value;
+    if(value > 1) {
+        value--;
+    }
+    document.getElementById('number').value = value;
+}

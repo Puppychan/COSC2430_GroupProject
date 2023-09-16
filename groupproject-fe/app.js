@@ -41,6 +41,7 @@ connectDB().catch((error) => {
 // app.use('/', user)
 // const router = express.Router();
 
+
 // Home page route:
 app.get("/", middleware.verifyUser, async function (req, res) {
   const isLogin = middleware.isLogin();
@@ -63,11 +64,17 @@ app.get("/", middleware.verifyUser, async function (req, res) {
 
 
 // Category page route:
-app.get("/phones", function (req, res) {
-  const isLogin = middleware.isLogin();
+app.get("/viewAll", function (req, res) {
+  const { pag } = req.query;
+  // const result =
+  /**
+   * pageIndex: 1,2,3
+   * data: productList
+   * totalPage: 10
+   */
   res.render("layout.ejs", {
-    title: "Smartphones",
-    bodyFile: "./category/phones",
+    title: "Explore All Products",
+    bodyFile: "./category/viewAll",
     products: products,
     isLogin: isLogin,
     activePage: "phones",
@@ -93,6 +100,7 @@ app.get("/login", async (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Login",
     bodyFile: "./auth/login",
+    activePage: "login",
     activePage: "login",
   });
 });
@@ -180,7 +188,9 @@ app.post("/change-password", middleware.verifyUser, async (req, res) => {
 app.get("/signup-customer", (req, res) => {
   res.render("auth-layout.ejs", {
     title: " Customer Sign Up",
+    title: " Customer Sign Up",
     bodyFile: "./auth/signup-customer",
+    activePage: "signup-customer",
     activePage: "signup-customer",
   });
 });
