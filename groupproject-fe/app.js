@@ -51,7 +51,6 @@ app.get("/", async function (req, res) {
   // get user id after login
   const userId = middleware.getUserIdLocal();
   const result = await UserService.getUserInfo(userId);
-  console.log("Result", result);
   if (result.status == 200) { // Login successfully
     let user_data = result.data.user_data;
     res.render("layout.ejs", {
@@ -165,13 +164,7 @@ app.post("/my-account", middleware.verifyUser, async (req, res) => {
   if (result.status == 200) {
     let user_data = result.data.user_data;
     console.log(user_data);
-    res.render("layout.ejs", {
-      title: "My Account",
-      bodyFile: "./users/profile",
-      activePage: "my-account",
-      user: user_data,
-      isLogin: isLogin,
-    });
+    res.redirect("/my-account");
   } else {
     console.log(result);
   }
@@ -180,12 +173,19 @@ app.post("/my-account", middleware.verifyUser, async (req, res) => {
 // Change password route
 app.get("/change-password", middleware.verifyUser, async (req, res) => {
   const isLogin = middleware.isLogin();
-  res.render("layout.ejs", {
-    title: "Change Password",
-    bodyFile: "./users/change-password",
-    activePage: "change-password",
-    isLogin: isLogin,
-  });
+  const result = await UserService.getUserInfo(req.user._id);
+  if (result.status == 200) {
+    let user_data = result.data.user_data;
+    res.render("layout.ejs", {
+      title: "Change Password",
+      bodyFile: "./users/change-password",
+      activePage: "change-password",
+      isLogin: isLogin,
+      user: user_data,
+    });
+  } else {
+    console.log(result);
+  }
 });
 app.post("/change-password", middleware.verifyUser, async (req, res) => {
   const isLogin = middleware.isLogin();
@@ -263,44 +263,111 @@ app.post("/signup-shipper", async (req, res) => {
   }
 });
 // full route to footer pages:
-app.get("/about", function (req, res) {
+app.get("/about", async function (req, res) {
+  // verify if is login
   const isLogin = middleware.isLogin();
-  res.render("layout.ejs", {
-    title: "About Us",
-    bodyFile: "./others/about",
-    isLogin: isLogin,
-    activePage: "about",
-  });
+  // get user id after login
+  const userId = middleware.getUserIdLocal();
+  const result = await UserService.getUserInfo(userId);
+  if (result.status == 200) {
+    // Login successfully
+    let user_data = result.data.user_data;
+    res.render("layout.ejs", {
+      title: "About Us",
+      bodyFile: "./others/about",
+      isLogin: isLogin,
+      activePage: "about",
+    });
+  } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
+    res.render("layout.ejs", {
+      title: "About Us",
+      bodyFile: "./others/about",
+      isLogin: isLogin,
+      activePage: "about",
+    });
+  } else {
+    console.log(result);
+  }
 });
 
-app.get("/copyright", function (req, res) {
+app.get("/copyright", async function (req, res) {
+  // verify if is login
   const isLogin = middleware.isLogin();
-  res.render("layout.ejs", {
-    title: "Copyright",
-    bodyFile: "./others/copyright",
-    isLogin: isLogin,
-    activePage: "about",
-  });
+  // get user id after login
+  const userId = middleware.getUserIdLocal();
+  const result = await UserService.getUserInfo(userId);
+  if (result.status == 200) {
+    // Login successfully
+    let user_data = result.data.user_data;
+    res.render("layout.ejs", {
+      title: "Copyright",
+      bodyFile: "./others/copyright",
+      isLogin: isLogin,
+      activePage: "about",
+    });
+  } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
+    res.render("layout.ejs", {
+      title: "About Us",
+      bodyFile: "./others/copyright",
+      isLogin: isLogin,
+      activePage: "about",
+    });
+  } else {
+    console.log(result);
+  }
 });
-app.get("/privacy", function (req, res) {
+app.get('/privacy', async function (req, res) {
+  // verify if is login
   const isLogin = middleware.isLogin();
-  res.render("layout.ejs", {
-    title: "Privacy Policy",
-    bodyFile: "./others/privacy",
-    isLogin: isLogin,
-    activePage: "about",
-  });
+  // get user id after login
+  const userId = middleware.getUserIdLocal();
+  const result = await UserService.getUserInfo(userId);
+  if (result.status == 200) {
+    // Login successfully
+    let user_data = result.data.user_data;
+    res.render("layout.ejs", {
+      title: "Privacy",
+      bodyFile: "./others/privacy",
+      isLogin: isLogin,
+      activePage: "about",
+    });
+  } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
+    res.render("layout.ejs", {
+      title: "Privacy",
+      bodyFile: "./others/privacy",
+      isLogin: isLogin,
+      activePage: "about",
+    });
+  } else {
+    console.log(result);
+  }
 });
-app.get("/terms", function (req, res) {
+app.get('/terms', async function (req, res) {
+  // verify if is login
   const isLogin = middleware.isLogin();
-  res.render("layout.ejs", {
-    title: "Terms & Conditions",
-    bodyFile: "./others/terms",
-    isLogin: isLogin,
-    activePage: "about",
-  });
+  // get user id after login
+  const userId = middleware.getUserIdLocal();
+  const result = await UserService.getUserInfo(userId);
+  if (result.status == 200) {
+    // Login successfully
+    let user_data = result.data.user_data;
+    res.render("layout.ejs", {
+      title: "Terms",
+      bodyFile: "./others/terms",
+      isLogin: isLogin,
+      activePage: "about",
+    });
+  } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
+    res.render("layout.ejs", {
+      title: "Terms",
+      bodyFile: "./others/terms",
+      isLogin: isLogin,
+      activePage: "about",
+    });
+  } else {
+    console.log(result);
+  }
 });
-
 // New Product route
 app.get("/new-product", function (req, res) {
   const isLogin = middleware.isLogin();
