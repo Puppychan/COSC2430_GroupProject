@@ -4,25 +4,61 @@ const { convertImageToBin } = require('../utils/imageToBin');
 
 const getProducts = async (req, res) => {
     try {
-        let products;
+        let results;
         // get params
-        const maxPrice = req.query.maxp;
-        const minPrice = req.query.minp;
+        const maxPrice = parseFloat(req.query.maxp);
+        const minPrice = parseFloat(req.query.minp);
+        // get pagination
+        const currentPage = req.query.page ?? 1;
+        const limit = 15;
+        const skipValue = (currentPage - 1) * limit;
+        let totalItems = 0; // total count of products
+
+        // aggregate pipeline
+        const matchStage = {};
         // if params exist -> filter
-        if (maxPrice || minPrice)
+        if (!isNaN(maxPrice) || !isNaN(minPrice)) {
             // filter product by price range
-            products = await Product.find({ price: { $gte: minPrice, $lte: maxPrice } });
-        // if params not exist -> get all product
-        else
-            products = await Product.find();
+            matchStage.price = { $gte: minPrice, $lte: maxPrice };
+        }
+
+        const agg = [
+            { $match: matchStage },
+            {
+                $facet: {
+                    totalRecords: [
+                        { $count: "total" }
+                    ],
+                    data: [
+                        { $skip: skipValue },
+                        { $limit: limit }
+                    ]
+                }
+            }
+        ];
+        results = await Product.aggregate(agg);
         // send response
+        totalItems = results[0].totalRecords;
+        console.log("Data: ", results[0].data, "Total: ", totalItems);
         // if no product
-        if (products.length == 0) sendResponse(res, 400, 'Not Product To Display');
+        if (totalItems == 0) return {
+            data: [],
+            page: 1,
+            offset: 0,
+            totalPage: 1
+        };
         // if have product
-        else sendResponse(res, 200, `ok`, products);
+        else return {
+            data: results[0].data,
+            page: currentPage,
+            offset: skipValue + 1,
+            totalPage: Math.ceil(totalItems / limit)
+
+        }
     } catch (err) {
         // send response
-        sendResponse(res, err.statusCode, err.message ?? `Error`);
+        throw err;
+
     }
 }
 

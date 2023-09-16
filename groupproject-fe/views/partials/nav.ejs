@@ -65,19 +65,34 @@
                           <%=activePage==='products' ? 'aria-current="page"' : '' %>">VIEW ALL PRODUCTS</a>
                       </li>
                       <% } %>
+          <li>
+            <a href="/" class="block py-2 px-4 rounded
+              <%= activePage === 'home' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400 hover:text-white' %>"
+              <%=activePage==='home' ? 'aria-current="page"' : '' %>>HOME</a>
+          </li>
+          <li>
+            <a href="<%= navigatePage("product-list", null, 1) %>"
+              class="block py-2 px-4 rounded
+            <%= activePage === 'viewAll' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400 hover:text-white' %>"
+              <%=activePage==='viewAll' ? 'aria-current="page"' : '' %>>ALL PRODUCTS</a>
+          </li>
+        </ul>
       </div>
     </div>
-    <div id="searchBar" class="hidden w-full bg-gray-800 px-4 py-4 rounded-b-3xl">
-      <div class="mx-auto max-w-screen-xl flex items-center">
-        <input type="text" class="outline-none border-none flex-grow rounded-l-lg text-sm h-12 pl-4 text-black"
-          placeholder="Search..." />
-        <button
-          class="active:bg-blue-800 bg-blue-600 hover:bg-blue-700 text-white h-12 w-20 text-sm font-medium rounded-r-lg py-2.5 focus:outline-none focus:ring-blue-800">Search</button>
-        <button id="closeSearchBtn" class="p-2 ml-4 text-white h-10 w-10">
-          <i class="fas fa-times text-2xl hover:text-gray-200" aria-hidden="true"></i>
-        </button>
+    <form>
+      <div id="searchBar" class="hidden w-full bg-gray-800 px-4 py-4 rounded-b-3xl">
+        <div class="mx-auto max-w-screen-xl flex items-center">
+          
+            <input type="text" id="searchInput" class="outline-none border-none flex-grow rounded-l-lg text-sm h-12 pl-4 text-black"
+            placeholder="Search..." />
+          <button
+            class="active:bg-blue-800 bg-blue-600 hover:bg-blue-700 text-white h-12 w-20 text-sm font-medium rounded-r-lg py-2.5 focus:outline-none focus:ring-blue-800" type="submit" value="submit">Search</button>
+          <button id="closeSearchBtn" class="p-2 ml-4 text-white h-10 w-10">
+            <i class="fas fa-times text-2xl hover:text-gray-200" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
-    </div>
+    </form>
   </nav>
 
 </header>

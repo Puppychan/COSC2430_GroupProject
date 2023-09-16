@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const searchBtn = document.getElementById('searchBtn');
     const searchBar = document.getElementById('searchBar');
     const closeSearchBtn = document.getElementById('closeSearchBtn');
+    const form = document.querySelector('form');
+    const searchInput = document.getElementById('searchInput');
 
     searchBtn.addEventListener('click', () => {
         searchBar.classList.remove('hidden');
@@ -18,7 +20,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
     closeSearchBtn.addEventListener('click', () => {
         searchBar.classList.add('hidden');
     });
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const query = searchInput.value;
+        const data = { searchQuery: query };
+        console.log(JSON.stringify(data));
+    });
 });
+
 
 // Price range slider function
 let minPriceSlider = document.getElementById('min-price');
