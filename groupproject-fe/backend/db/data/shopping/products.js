@@ -76,9 +76,9 @@ const products = [
 ];
 
 
-products.forEach(product => {
-    product.price = product.price.toLocaleString('de-DE');
-});
+// products.forEach(product => {
+//     product.price = product.price.toLocaleString('de-DE');
+// });
 
 
 module.exports = products;
