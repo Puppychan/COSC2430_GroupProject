@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const {valid_username} = require('../../../../utils/validator')
+const {valid_username} = require('../../../utils/validator')
 
 const userSchema = new mongoose.Schema(
   {

@@ -1,11 +1,11 @@
 <section class="flex items-center justify-center">
     <div class="py-6 px-9 my-6 rounded-3xl bg-gray-800 border-gray-700">
+    <div class="py-6 px-9 my-6 rounded-3xl bg-gray-800 border-gray-700">
         <h1 class="text-center font-bold text-3xl my-4">My Profile</h1>
         <div class="flex items-center justify-center">
             <form action="/my-account" class="m-0" method="post">
                 <div class="flex justify-center">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
-                        alt="Profile Picture" class="rounded-full w-32 gap-4">
+                    <img src="<%= user.user.avatar || '' %>" alt="Profile Picture" class="rounded-full w-32 gap-4">
                 </div>
                 <div class="flex flex-col lg:flex-row gap-2">
                     <div class="flex gap-2 flex-col">
@@ -22,102 +22,85 @@
                             <label for="username"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
                             <input type="text" name="username" id="username"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg cursor-not-allowed focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                disabled readonly>
-                        </div>
-                        <div>
-                            <label for="password"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                            <input type="password" id="password"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg invalid:border-red-500 invalid:text-red-600 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                required
-                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,20}$">
-                            <div class="text-xs pt-2 text-gray-400">
-                                <ul>
-                                    <li>At least one upper case letter</li>
-                                    <li>At least one lower case letter</li>
-                                    <li>At least one digit</li>
-                                    <li>At least one special letter in this set "!@#$%^&*"</li>
-                                    <li>Must be 8 to 20 characters</li>
-                                </ul>
-                            </div>
+                                class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                value="<%= user.user.username %>">
                         </div>
                     </div>
-                    <div class="flex gap-2 flex-col lg:ml-5">
-                        <div class="vendor-info role-info" id="business-info">
-                            <div class="inputBox">
-                                <label for="business_address"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-                                    Business Name</label>
-                                <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600
-                                      sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
-                                      w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    id="business_name" name="business_name" minlength="5">
-                                <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
+                    <% if (user.user.role==="customer" ) { %>
+                        <div class="flex gap-2 flex-col lg:ml-5">
+                            <div class="customer-info role-info" id="name-field">
+                                <div class="inputBox">
+                                    <label for="name"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                                        Name</label>
+                                    <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600
+                                        sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
+                                        w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                        dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="name"
+                                        name="name" minlength="5" value="<%= user.name %>">
+                                    <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
+                                </div>
+                            </div>
+                            <div class="customer-info role-info" id="name-field">
+                                <div class="inputBox">
+                                    <label for="address"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                                        Address</label>
+                                    <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600
+                                        sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
+                                        w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                        dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        id="address" name="address" minlength="5" value="<%= user.address %>">
+                                    <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="vendor-info role-info" id="business-info">
-                            <div class="inputBox">
-                                <label for="business_address"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-                                    Business Address</label>
-                                <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600
-                                      sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
-                                      w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    id="business_address" name="business_address" minlength="5">
-                                <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
+                        <% } else if (user.user.role==="vendor" ) {%>
+                            <div class="flex gap-2 flex-col lg:ml-5">
+                                <div class="vendor-info role-info" id="business-info">
+                                    <div class="inputBox">
+                                        <label for="name"
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                                            Business Name</label>
+                                        <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600
+                                              sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
+                                              w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                              dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            id="name" name="name" minlength="5" value="<%= user.name %>">
+                                        <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
+                                    </div>
+                                </div>
+                                <div class="vendor-info role-info" id="business-info">
+                                    <div class="inputBox">
+                                        <label for="address"
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                                            Business Address</label>
+                                        <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600
+                                              sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
+                                              w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                              dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            id="address" name="address" minlength="5" value="<%= user.address %>">
+                                        <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="flex gap-2 flex-col lg:ml-5">
-                        <div class="customer-info role-info" id="name-field">
-                            <div class="inputBox">
-                                <label for="name"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-                                    Name</label>
-                                <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600
-                                            sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
-                                            w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                            dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    id="name" name="name" minlength="5">
-                                <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
-                            </div>
-                        </div>
-                        <div class="customer-info role-info" id="name-field">
-                            <div class="inputBox">
-                                <label for="address"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-                                    Address</label>
-                                <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600
-                                            sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
-                                            w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                            dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    id="address" name="address" minlength="5">
-                                <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex gap-2 flex-col lg:ml-5">
-                        <div class="shipper-info role-info" id="hub">
-                            <div class="inputBox">
-                                <label for="hub"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Distribution
-                                    Hub</label>
-                                <select class="bg-gray-50 border border-gray-300 text-gray-900
-                                      sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
-                                      w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="hub"
-                                    name="hub">
-                                    <option value="" disabled selected>Choose your Distribution Hub</option>
-                                    <option value="hanoi">Hanoi</option>
-                                    <option value="hcm">Ho Chi Minh City</option>
-                                    <option value="danang">Da Nang</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                            <% } else if (user.user.role==="shipper" ) {%>
+                                <div class="flex gap-2 flex-col lg:ml-5">
+                                    <div class="vendor-info role-info" id="business-info">
+                                        <div class="inputBox">
+                                            <label for="name"
+                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                                                Name</label>
+                                            <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600
+                                                  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
+                                                  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                                  dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                id="name" name="name" minlength="5" value="<%= user.name %>">
+                                            <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } %>
                 </div>
                 <button type="submit"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-3">Save
@@ -126,6 +109,13 @@
                     <a href="/logout"> <button type="button"
                             class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Logout</button></a>
                 </span>
+                <div class="mt-5">
+                    <a href="/change-password">
+                        <span
+                            class="focus:outline-none text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">Change
+                            password</span>
+                    </a>
+                </div>
             </form>
         </div>
     </div>
