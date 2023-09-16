@@ -55,27 +55,16 @@
                     <% } else { %>
                       <li>
                         <a href="/" class="block py-2 px-4 rounded
-                          <%= activePage === 'home' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400' %>"
+                          <%= activePage === 'home' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400 hover:text-white' %>"
                           <%=activePage==='home' ? 'aria-current="page"' : '' %>>HOME</a>
                       </li>
                       <li>
-                        <a href="/"
-                          class="block py-2 px-4 mr-6 rounded
-                        <%= activePage === 'products' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400' %>"
-                          <%=activePage==='products' ? 'aria-current="page"' : '' %>">VIEW ALL PRODUCTS</a>
+                        <a href="<%= navigatePage("product-list", null, 1) %>"
+                          class="block py-2 px-4 rounded
+                        <%= activePage === 'viewAll' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400 hover:text-white' %>"
+                          <%=activePage==='viewAll' ? 'aria-current="page"' : '' %>>ALL PRODUCTS</a>
                       </li>
                       <% } %>
-          <li>
-            <a href="/" class="block py-2 px-4 rounded
-              <%= activePage === 'home' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400 hover:text-white' %>"
-              <%=activePage==='home' ? 'aria-current="page"' : '' %>>HOME</a>
-          </li>
-          <li>
-            <a href="<%= navigatePage("product-list", null, 1) %>"
-              class="block py-2 px-4 rounded
-            <%= activePage === 'viewAll' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400 hover:text-white' %>"
-              <%=activePage==='viewAll' ? 'aria-current="page"' : '' %>>ALL PRODUCTS</a>
-          </li>
         </ul>
       </div>
     </div>
