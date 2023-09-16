@@ -1,0 +1,99 @@
+<section class="relative">
+    <img src="https://images.unsplash.com/photo-1530319067432-f2a729c03db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1389&q=80"
+        alt="" class="object-cover object-center mt-2 w-full h-[520px]">
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+</section>
+<section class="flex flex-col w-full lg:flex-row my-5">
+    <!-- Filter Sidebar -->
+    <aside class="hidden md:max-lg:block lg:block w-full lg:w-1/4 p-4 bg-gray-900 lg:mt-20 md:max-lg:center-and-half">
+        <h2 class="mb-4 text-xl font-bold text-white">Filter Products</h2>
+
+        <!-- Price Range Filter -->
+        <div class="mb-4">
+            <h3 class="mb-2 text-lg font-semibold text-gray-400">Price Range</h3>
+
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-gray-300">Min Price: </span>
+                <span id="min-price-label" class="text-gray-300">0</span>
+            </div>
+            <input type="range" id="min-price" name="min-price" min="0" max="50000000" value="0"
+                class="appearance-none bg-white w-full h-2 mb-2 rounded-lg [&::-webkit-slider-thumb]:bg-blue-500 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4  [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-lg" step="100000">
+
+            <div class="flex items-center justify-between mb-2">
+                <span class="dark:text-gray-300">Max Price: </span>
+                <span id="max-price-label" class="dark:text-gray-300">50000000</span>
+            </div>
+            <input type="range" id="max-price" name="max-price" min="0" max="50000000" value="50000000"
+                class="appearance-none bg-white w-full h-2 rounded-lg [&::-webkit-slider-thumb]:bg-blue-500 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4  [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-lg" step="100000">
+        </div>
+
+        <!-- Filter Button -->
+        <button type="button" class="w-full py-2 font-bold text-white bg-blue-800">Apply Filters</button>
+        <button type="button" id="reset-filters" class="w-full py-2 mt-2 font-bold text-white bg-blue-800">Reset
+            Filters</button>
+    </aside>
+    <div class="flex flex-col justify-center w-full lg:w-3/4">
+        <!-- Bao -->
+        <section
+            class="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 items-center justify-items-center gap-y-10 mt-2 mb-5 mx-auto md:max-w-xl lg:max-w-full lg:mx-0">
+            <h2 class="col-span-full text-center text-4xl mb-4 md:text-5xl font-bold md:mb-8">Trending Products</h2>
+            <% products.forEach(function(product){ %>
+                <div class="bg-gray-100 shadow-sm rounded-lg w-3/4 md:max-w-sm flex flex-col relative">
+                    <img src="<%= product.image %>" alt="<%= product.name %>"
+                        class="w-full h-48 object-cover rounded-t-lg">
+                    <div class="p-3 flex flex-col gap-2 h-auto flex-grow">
+                        <h3 class="text-lg font-bold line-clamp-1 text-gray-800">
+                            <%= product.name %>
+                        </h3>
+                        <p class="text-sm text-gray-500 line-clamp-1 mt-0">
+                            <%= product.category %>
+                        </p>
+                        <h4 class="text-red-600 line-clamp-1 font-semibold mt-0">
+                            <%= product.price %>₫
+                                <span
+                                    class="<%= product.stock > 0 ? 'text-green-600' : 'text-red-600' %> font-semibold">
+                                    - <%= product.stock> 0 ? product.stock + ' In Stock' : 'Out of Stock' %>
+                                </span>
+                        </h4>
+                        <p class="text-sm text-gray-800 mb-10 line-clamp-1 md:line-clamp-2">
+                            <%= product.description %>
+                        </p>
+                    </div>
+                    <div class="absolute bottom-4 left-4 text-blue-600 hover:text-blue-800 cursor-pointer"
+                        title="View Products">
+                        <a href="<%= navigatePage(" product", product._id) %>"> Details →</a>
+                    </div>
+                    <div class="absolute bottom-5 right-4 text-blue-600" title="Add To Cart">
+                        <i class="fa-solid fa-cart-plus fa-xl"></i>
+                    </div>
+                </div>
+                <% }); %>
+        </section>
+        <nav aria-label="Page navigation example" class="flex justify-center mt-6 w-full">
+            <ul class="inline-flex -space-x-px text-sm">
+              <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 ml-0 leading-tight bg-white border rounded-l-lg dark:bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">Previous</a>
+              </li>
+              <li>
+                <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 leading-tight border border-gray-300 bg-gray-700 dark:border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">1</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 border border-gray-300 bg-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-700 hover:text-white">2</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 border border-gray-300 bg-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-700 hover:text-white">3</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 border border-gray-300 bg-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-700 hover:text-white">4</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 border border-gray-300 bg-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-700 hover:text-white">5</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight border rounded-r-lg bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">Next</a>
+              </li>
+            </ul>
+          </nav>         
+    </div>
+         
+</section>
