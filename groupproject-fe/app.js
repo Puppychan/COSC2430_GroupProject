@@ -4,10 +4,13 @@ const path = require("path");
 const { connectDB } = require("./backend/db/connectDB");
 const UserService = require("./backend/db_service/userService");
 const CartService = require("./backend/db_service/cartService");
+const OrderService = require("./backend/db_service/orderService");
+
 const products = require("./public/javascript/products");
 
 const { PORT, BACKEND_URL } = require("./common/constants");
 const { navigatePage } = require("./common/helperFuncs");
+const middleware = require("./backend/middleware/middleware");
 
 require("dotenv").config();
 const app = express();
@@ -89,13 +92,39 @@ app.get("/login", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const result = await UserService.login(username, password);
-  console.log("User", result);
-  if (result.status) {
+  if (result.status == 200) {
+    middleware.setToken(result.data.token);
     res.redirect("/");
+  } else {
+    console.log(result);
+    res.redirect("/login");
   }
 });
 
-// Signup routes
+// logout
+app.get("/logout", async (req, res) => {
+  middleware.logout();
+  res.redirect("/login");
+});
+
+// My Account route
+app.get("/my-account", middleware.verifyUser, async (req, res) => {
+  const result = await UserService.getUserInfo(req.user._id);
+  if (result.status == 200) {
+    let user_data = result.data.user_data;
+    console.log(user_data);
+    res.render("layout.ejs", {
+      title: "My Account",
+      bodyFile: "./users/profile",
+      activePage: "my-account",
+      user: user_data,
+    });
+  } else {
+    console.log(result);
+  }
+});
+
+// Customer signup routes
 app.get("/signup-customer", (req, res) => {
   res.render("auth-layout.ejs", {
     title: " Customer Sign Up",
@@ -105,22 +134,18 @@ app.get("/signup-customer", (req, res) => {
     activePage: "signup-customer",
   });
 });
+
 app.post("/signup-customer", async (req, res) => {
-  const { username, password, role, avatar, name, address, hubid } = req.body;
-  const result = await UserService.register({
-    username,
-    password,
-    role,
-    avatar,
-    name,
-    address,
-    hubid,
-  });
+  const result = await UserService.register(req.body);
   console.log("User", result);
-  if (result.status) {
+  if (result.status == 200) {
     res.redirect("/login");
+  } else {
+    console.log(result);
+    res.redirect("/signup-customer");
   }
 });
+// Vendor signup routes
 app.get("/signup-vendor", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Vendor Sign Up",
@@ -128,22 +153,19 @@ app.get("/signup-vendor", (req, res) => {
     activePage: "signup-vendor",
   });
 });
+
 app.post("/signup-vendor", async (req, res) => {
-  const { username, password, role, avatar, name, address, hubid } = req.body;
-  const result = await UserService.register({
-    username,
-    password,
-    role,
-    avatar,
-    name,
-    address,
-    hubid,
-  });
+  const result = await UserService.register(req.body);
   console.log("User", result);
-  if (result.status) {
+  if (result.status == 200) {
     res.redirect("/login");
+  } else {
+    console.log(result);
+    res.redirect("/signup-vendor");
   }
 });
+
+// Shipper signup routes
 app.get("/signup-shipper", (req, res) => {
   res.render("auth-layout.ejs", {
     title: "Shipper Sign Up",
@@ -151,20 +173,16 @@ app.get("/signup-shipper", (req, res) => {
     activePage: "signup-shipper",
   });
 });
+
 app.post("/signup-shipper", async (req, res) => {
-  const { username, password, role, avatar, name, address, hubid } = req.body;
-  const result = await UserService.register({
-    username,
-    password,
-    role,
-    avatar,
-    name,
-    address,
-    hubid,
-  });
+  console.log(req.body);
+  const result = await UserService.register(req.body);
   console.log("User", result);
-  if (result.status) {
+  if (result.status == 200) {
     res.redirect("/login");
+  } else {
+    console.log(result);
+    res.redirect("/signup-shipper");
   }
 });
 // full route to footer pages:
@@ -197,90 +215,7 @@ app.get("/terms", function (req, res) {
     activePage: "about",
   });
 });
-// My Account route
-app.get("/my-account", async function (req, res) {
-  const user = await UserService.getUserInfo(req);
-  res.render("layout.ejs", {
-    title: "My Account",
-    bodyFile: "./users/profile",
-    activePage: "my-account",
-    user: user,
-  });
-});
-app.post("/my-account", async function (req, res) {});
-// New Product route
-app.get("/new-product", function (req, res) {
-  res.render("layout.ejs", {
-    title: "Add New Product",
-    bodyFile: "./vendors/addProduct",
-    activePage: "newProduct",
-  });
-});
-app.post("/new-product", async function (req, res) {});
-// Update Product Route
-app.get("/update-product", function (req, res) {
-  res.render("layout.ejs", {
-    title: "Update Product",
-    bodyFile: "./vendors/updateProduct",
-    activePage: "updateProduct",
-  });
-});
-app.post("/update-product", async function (req, res) {});
-// Vendor Dashboard route
-app.get("/vendor-dashboard", function (req, res) {
-  res.render("layout.ejs", {
-    title: "Vendor Dashboard",
-    bodyFile: "./vendors/viewProducts",
-    activePage: "vendor-dashboard",
-    products: products,
-  });
-});
 
-// Shipper Dashboard route
-app.get("/shipper-dashboard", function (req, res) {
-  res.render("layout.ejs", {
-    title: "Shipper Dashboard",
-    bodyFile: "./shipper/dashboard",
-    activePage: "shipper-dashboard",
-  });
-});
-
-// Cart route
-app.get("/cart", async function (req, res) {
-  const getCart = cartService.getCart(req.user._id);
-  res.render("layout.ejs", {
-    title: "Shopping Cart",
-    bodyFile: "./customer/cart",
-    activePage: "cart",
-    product: products,
-  });
-});
-app.post("/cart", async function (req, res) {
-  const addProductToCart = cartService.addProductToCart(
-    req.user.id,
-    req.body.id,
-    req.body.quantity
-  );
-  res.render("layout.ejs", {
-    title: "Shopping Cart",
-    bodyFile: "./customer/cart",
-    activePage: "cart",
-    product: products,
-  });
-});
-app.post("/cart/delete", async function (req, res) {
-  const deleteProductInCart = cartService.deleteProductInCart(
-    req.user.id,
-    req.body.id
-  );
-  res.render("layout.ejs", {
-    title: "Shopping Cart",
-    bodyFile: "./customer/cart",
-    activePage: "cart",
-    product: products,
-    activePage: "my-account",
-  });
-});
 // New Product route
 app.get("/new-product", function (req, res) {
   res.render("layout.ejs", {
@@ -318,13 +253,31 @@ app.get("/shipper-dashboard", function (req, res) {
 });
 
 // Cart route
-app.get("/cart", function (req, res) {
-  res.render("layout.ejs", {
-    title: "Shopping Cart",
-    bodyFile: "./customer/cart",
-    activePage: "cart",
-    product: products,
-  });
+app.get("/cart", middleware.verifyUser, async (req, res) => {
+  const result = await CartService.getCart(req.user._id);
+  if (result.status == 200) {
+    let cart = result.data.cart;
+    console.log(cart);
+    res.render("layout.ejs", {
+      title: "Shopping Cart",
+      bodyFile: "./customer/cart",
+      activePage: "cart",
+      product: products,
+    });
+  } else {
+    console.log(result);
+  }
+});
+
+// Place Order route
+app.post("/order", middleware.verifyUser, async (req, res) => {
+  const result = await OrderService.placeOrder(req.user._id);
+  if (result.status == 200) {
+    let order = result.data.order;
+    console.log(order);
+  } else {
+    console.log(result);
+  }
 });
 
 // Start the server
