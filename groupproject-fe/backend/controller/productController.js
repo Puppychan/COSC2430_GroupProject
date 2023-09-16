@@ -67,15 +67,14 @@ const getProductById = async (req, res) => {
         const renderedProduct = await Product.findById(req.params.id);
         if (!renderedProduct) {
             // return res.status(404).send('Product not found');
-            sendResponse(res, 400, 'Product Not Found');
-            return;
+            return null
         }
         // sendResponse(res, 200, 'ok', renderedProduct);
-        res.render('../view/product', { product: renderedProduct });
+        return renderedProduct;
 
     } catch (err) {
         // send response
-        sendResponse(res, err.statusCode, err.message ?? `Error`);
+        throw err;
     }
 }
 
@@ -125,26 +124,26 @@ const updateProduct = async (req, res) => {
     try {
         // update product by id
         // get image attribute and the rest attributes
-        const { image, ...restAttributes } = req.body;
+        const { vendor, name, price, stock, oldImage, description, image } = req.body;
         // convert image to base64
         const imageContent = convertImageToBin(req);
         // update product
         const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {
-            ...restAttributes,
+            vendor, name, price, stock, description,
             // get path + filename of image + format extension
-            image: imageContent,
+            image: imageContent ?? oldImage,
         });
         // if update product not found
         if (!updatedProduct) {
-            sendResponse(res, '404', 'Product to update not found');
+            return null;
         }
         // if found and succesfully updated
         else {
-            sendResponse(res, '200', 'Product updated successfully', updatedProduct);
+            return updatedProduct;
         }
     } catch (err) {
         // send response
-        sendResponse(res, err.statusCode, err.message ?? `Error`);
+        throw err;
     }
 }
 

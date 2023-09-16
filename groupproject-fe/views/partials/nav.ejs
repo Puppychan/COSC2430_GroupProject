@@ -10,25 +10,27 @@
         </button>
         <% if (isLogin) { %>
           <a href="<%= navigatePage(" my-account") %>"><i class="fa-solid fa-user fa-2xl"></i></a>
-          <a href="<%= navigatePage(" cart") %>"><i class="fa-solid fa-cart-shopping fa-2xl"></i></a>
-          <% } else { %>
-            <a href="<%= navigatePage(" login") %>"
-              class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2 bg-blue-600 hover:bg-blue-700
-              focus:outline-none focus:ring-blue-800">Log
-              in</a>
+          <% if (user?.user?.role==='customer' ) { %>
+            <a href="<%= navigatePage(" cart") %>"><i class="fa-solid fa-cart-shopping fa-2xl"></i></a>
             <% } %>
-              <button data-collapse-toggle="mobile-menu-2" type="button"
-                class="inline-flex items-center p-2 ml-1 text-sm rounded-lg lg:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
-                aria-controls="mobile-menu-2" aria-expanded="false" id="navBarButton">
-                <i class="fa-solid fa-bars fa-2x"></i>
-              </button>
+              <% } else { %>
+                <a href="<%= navigatePage(" login") %>"
+                  class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-2 bg-blue-600 hover:bg-blue-700
+                  focus:outline-none focus:ring-blue-800">Log
+                  in</a>
+                <% } %>
+                  <button data-collapse-toggle="mobile-menu-2" type="button"
+                    class="inline-flex items-center p-2 ml-1 text-sm rounded-lg lg:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
+                    aria-controls="mobile-menu-2" aria-expanded="false" id="navBarButton">
+                    <i class="fa-solid fa-bars fa-2x"></i>
+                  </button>
       </div>
       <div class="hidden flex-grow justify-center items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
         <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-2 lg:space-y-0 space-y-4 lg:mt-0">
           <% if (isLogin) { %>
             <% if (user?.user?.role==='customer' ) { %>
               <li>
-                <a href="/" class="block py-2 px-4 mr-6 rounded
+                <a href="<%= navigatePage("product-list", null, 1) %>" class="block py-2 px-4 mr-6 rounded
                 <%= activePage === 'products' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400' %>"
                   <%=activePage==='products' ? 'aria-current="page"' : '' %>">VIEW ALL PRODUCTS</a>
               </li>
@@ -52,24 +54,17 @@
                   <% } %>
                     <% } else { %>
                       <li>
-                        <a href="/"
+                        <a href="/" class="block py-2 px-4 rounded
+                          <%= activePage === 'home' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400' %>"
+                          <%=activePage==='home' ? 'aria-current="page"' : '' %>>HOME</a>
+                      </li>
+                      <li>
+                        <a href="<%= navigatePage("product-list", null, 1) %>"
                           class="block py-2 px-4 mr-6 rounded
                         <%= activePage === 'products' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400' %>"
                           <%=activePage==='products' ? 'aria-current="page"' : '' %>">VIEW ALL PRODUCTS</a>
                       </li>
                       <% } %>
-          <li>
-            <a href="/" class="block py-2 px-4 rounded
-              <%= activePage === 'home' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400 hover:text-white' %>"
-              <%=activePage==='home' ? 'aria-current="page"' : '' %>>HOME</a>
-          </li>
-          <li>
-            <a href="<%= navigatePage("product-list", null, 1) %>"
-              class="block py-2 px-4 rounded
-            <%= activePage === 'viewAll' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400 hover:text-white' %>"
-              <%=activePage==='viewAll' ? 'aria-current="page"' : '' %>>ALL PRODUCTS</a>
-          </li>
-        </ul>
       </div>
     </div>
     <form>

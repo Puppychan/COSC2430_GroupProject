@@ -12,7 +12,7 @@ const getProducts = async (req) => {
 };
 const getProductById = async (req) => {
     try {
-        const product = await productController.getProductById(req.params.id);
+        const product = await productController.getProductById(req);
         if (!product) {
             return { status: HttpStatus.NOT_FOUND_STATUS, message: "Product not found" };
         }
@@ -48,7 +48,10 @@ const createProduct = async (req) => {
 };
 const updateProduct = async (req) => {
     try {
-        const product = await productController.updateProduct(req.body);
+        const product = await productController.updateProduct(req);
+        if (!product) {
+            return { status: HttpStatus.NOT_FOUND_STATUS, message: "Product not found" };
+        }
         return { status: HttpStatus.OK_STATUS, message: "Update product successfully", data: product };
     } catch (err) {
         console.log(err);
