@@ -13,15 +13,7 @@
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                     Sign up for a Vendor account
                 </h1>
-                <h2 class="text-lg font-bold leading-tight tracking-tight md:text-xl">
-                    <a href="/login" class="text-blue-600">
-                      Already have an account?
-                    </a>
-                </h2>
-                <form class="space-y-4 md:space-y-6" action="/signup-vendor" method="POST">
-                    <div>
-                        <input type="text" hidden value="vendor" name="role">
-                    </div>
+                <form class="space-y-4 md:space-y-6" action="#">
                     <div>
                         <label for="username"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
@@ -33,7 +25,7 @@
                     <div>
                         <label for="password"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                        <input type="password" id="password" name="password"
+                        <input type="password" id="password"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm  invalid:border-red-500 invalid:text-red-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             required placeholder="••••••••"
                             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,20}$">
@@ -50,26 +42,29 @@
                     <!-- Additional fields for vendor -->
                     <div class="vendor-info role-info" id="business-info">
                         <div class="inputBox">
-                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                            <label for="business_address"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
                                 Business Name</label>
                             <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600
                                       sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
                                       w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="name"
-                                name="name" placeholder="Samsung Electronics Inc." minlength="5">
+                                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                id="business_name" name="business_name" placeholder="Samsung Electronics Inc."
+                                minlength="5">
                             <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
                         </div>
                     </div>
                     <div class="vendor-info role-info" id="business-info">
                         <div class="inputBox">
-                            <label for="address"
+                            <label for="business_address"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
                                 Business Address</label>
                             <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600
                                       sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
                                       w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="address"
-                                name="address" placeholder="129 Samseong-ro Yeongtong-gu Gyeonggi-do" minlength="5">
+                                      dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                id="business_address" name="business_address"
+                                placeholder="129 Samseong-ro Yeongtong-gu Gyeonggi-do" minlength="5">
                             <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
                         </div>
                     </div>

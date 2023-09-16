@@ -1,25 +1,17 @@
 const {Cart} = require('../db/models/modelCollection')
-const {sendResponse} = require('../middleware/middleware');
-const HttpStatus = require('../utils/commonHttpStatus')
 
 const getCart = async (customerid) => {
   try {
     const cart = await Cart.findOne({customer: customerid});
-    if (cart) return sendResponse(HttpStatus.OK_STATUS, "ok", {cart});
-
-    return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No cart is found the with given user id");
-
+    return cart
   } catch (err) {
-    return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Get cart failed: ${err}`);
+    console.log(err)
   }
 }
 
 const addProductToCart = async (customerid, product, quantity) => {
   try {
     let cart = await Cart.findOne({customer: customerid});
-
-    if (cart == null) return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No cart is found the with given user id");
-
     let exist = false
     for (let i=0; i<cart.items.length; i++) {
       if (cart.items[i].product == product) {
@@ -30,27 +22,24 @@ const addProductToCart = async (customerid, product, quantity) => {
     }
     if (!exist) cart.items.push({product: product, quantity: quantity});
     cart = await cart.save();
-    return sendResponse(HttpStatus.OK_STATUS, "Added product to cart", {cart});
-
+    return cart;
   } catch (err) {
-    return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Add product to cart failed: ${err}`);
+    console.log(err)
+    sendResponse(res, 500, `Error ${err}`);
   }
 }
 
 const deleteProductInCart = async (customerid, productid) => {
   try {
     let cart = await Cart.findOne({customerid});
-    if (cart == null) return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No cart is found the with given user id");
-
     cart.items = cart.items.filter(function(item) {
       return item.product != productid
     })
     cart = await cart.save()
-    return sendResponse(HttpStatus.OK_STATUS, "Removed product from cart", {cart});
+    return cart
 
   } catch (err) {
-    return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Remove product failed: ${err}`);
-
+    console.log(err)
   }
 }
 
