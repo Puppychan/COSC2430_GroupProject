@@ -61,7 +61,7 @@ app.get("/", async function (req, res) {
     res.render("layout.ejs", {
       title: "Home",
       bodyFile: "./home/index",
-      activePage: "my-account",
+      activePage: "home",
       isLogin: isLogin,
       products: products,
       user: user_data,
@@ -70,7 +70,7 @@ app.get("/", async function (req, res) {
     res.render("layout.ejs", {
       title: "Home",
       bodyFile: "./home/index",
-      activePage: "my-account",
+      activePage: "home",
       isLogin: isLogin,
       products: products,
       user: null,
@@ -105,7 +105,7 @@ app.get("/viewAll", async function (req, res) {
     pageInfo: pageInfo,
     user: user,
     isLogin: isLogin,
-    activePage: "phones",
+    activePage: "products",
   });
 });
 
@@ -388,7 +388,7 @@ app.get("/new-product", middleware.verifyUser, async function (req, res) {
   res.render("layout.ejs", {
     title: "New Product",
     bodyFile: "./vendors/addProduct",
-    activePage: "newProduct",
+    activePage: "products",
     isLogin: isLogin,
     user: user,
   });
@@ -404,7 +404,7 @@ app.post("/new-product", middleware.verifyUser, productMulter.single('image'), a
   // get product by id to display on update page
   const newProduct = await ProductService.createProduct(req);
   // console.log("Product", productResult);
-  
+
 
   if (newProduct.status == HttpStatus.OK_STATUS) {
     res.render("layout.ejs", {
