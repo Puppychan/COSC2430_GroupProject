@@ -554,6 +554,7 @@ app.post("/order", middleware.verifyUser, async (req, res) => {
   }
 });
 
+
 // handle error if append to url
 app.use((error, req, res, next) => {
   if (error instanceof multer.MulterError) {
@@ -566,6 +567,11 @@ app.use((error, req, res, next) => {
   }
   next(error);
 });
+
+
+
+
+
 
 // Start the server
 app.listen(PORT, function () {
