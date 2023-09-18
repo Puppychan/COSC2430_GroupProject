@@ -311,7 +311,7 @@ app.get("/copyright", async function (req, res) {
       title: "About Us",
       bodyFile: "./others/copyright",
       isLogin: isLogin,
-      activePage: "about",
+      activePage: "about",  
     });
   } else {
     console.log(result);
@@ -421,6 +421,10 @@ app.get("/shipper-dashboard", function (req, res) {
 app.get("/cart", middleware.verifyUser, async (req, res) => {
   const isLogin = middleware.isLogin();
   const result = await CartService.getCart(req.user._id);
+  
+  const userId = middleware.getUserIdLocal();
+  const user = await UserService.getUserInfo(userId);
+
   if (result.status == 200) {
     let cart = result.data.cart;
     console.log(cart);
@@ -430,6 +434,7 @@ app.get("/cart", middleware.verifyUser, async (req, res) => {
       activePage: "cart",
       isLogin: isLogin,
       product: products,
+      user: user
     });
   } else {
     console.log(result);
@@ -439,9 +444,13 @@ app.get("/cart", middleware.verifyUser, async (req, res) => {
 // Place Order route
 app.post("/order", middleware.verifyUser, async (req, res) => {
   const result = await OrderService.placeOrder(req.user._id);
+
+
+
   if (result.status == 200) {
     let order = result.data.order;
     console.log(order);
+
   } else {
     console.log(result);
   }
@@ -450,6 +459,8 @@ app.post("/order", middleware.verifyUser, async (req, res) => {
 app.get("/order",middleware.verifyUser, async function (req, res) {
   const isLogin = middleware.isLogin;
   const result = await UserService.getUserInfo(req.user._id);
+  const userId = middleware.getUserIdLocal();
+  const user = await UserService.getUserInfo(userId);
   if (result.status == 200){
   res.render("layout.ejs", {
     title: "Shopping order",
@@ -457,6 +468,7 @@ app.get("/order",middleware.verifyUser, async function (req, res) {
     activePage: "order",
     product: products,
     isLogin: isLogin,
+    user: user
   });
 }
 });
