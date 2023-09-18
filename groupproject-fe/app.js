@@ -554,6 +554,19 @@ app.post("/order", middleware.verifyUser, async (req, res) => {
   }
 });
 
+app.get("/order",middleware.verifyUser, async function (req, res) {
+  const isLogin = middleware.isLogin;
+  const result = await UserService.getUserInfo(req.user._id);
+  if (result.status == 200){
+  res.render("layout.ejs", {
+    title: "Shopping order",
+    bodyFile: "./customer/order",
+    activePage: "order",
+    product: products,
+    isLogin: isLogin,
+  });
+}
+});
 
 // handle error if append to url
 app.use((error, req, res, next) => {
@@ -567,9 +580,6 @@ app.use((error, req, res, next) => {
   }
   next(error);
 });
-
-
-
 
 
 
