@@ -87,8 +87,7 @@ app.get("/viewAll", async function (req, res) {
   const isLogin = middleware.isLogin();
   // get user id after login
   const userId = middleware.getUserIdLocal();
-  const user = await UserService.getUserInfo(userId);
-
+  const user = (await UserService.getUserInfo(userId)).data.user_data;
   // get products
   const results = await ProductService.getProducts(req);
   const products = results?.data?.data;
@@ -425,7 +424,7 @@ app.get("/product/:id", async function (req, res) {
   const isLogin = middleware.isLogin();
   // get user id after login
   const userId = middleware.getUserIdLocal();
-  const user = await UserService.getUserInfo(userId);
+  const user = (await UserService.getUserInfo(userId)).data.user_data;
 
   const productResult = await ProductService.getProductById(req);
   if (productResult.status == HttpStatus.OK_STATUS) {
@@ -448,7 +447,7 @@ app.get("/update-product/:id", middleware.verifyUser, productMulter.single('imag
   const isLogin = middleware.isLogin();
   // get user id after login
   const userId = middleware.getUserIdLocal();
-  const user = await UserService.getUserInfo(userId);
+  const user = (await UserService.getUserInfo(userId)).data.user_data;
 
   // get product by id to display on update page
   const productResult = await ProductService.getProductById(req);
@@ -528,8 +527,7 @@ app.get("/shipper-dashboard", function (req, res) {
 app.get("/cart", middleware.verifyUser, async (req, res) => {
   const isLogin = middleware.isLogin();
   const result = await CartService.getCart(req.user._id);
-
-  const user = await UserService.getUserInfo(req.user._id);
+  const user = (await UserService.getUserInfo(userId)).data.user_data;
   if (result.status == 200) {
     const cartItems = await result.data.cart.items.map(async (item) => {
       const product = await ProductService.getProductByObjectId(item.product);
@@ -541,8 +539,8 @@ app.get("/cart", middleware.verifyUser, async (req, res) => {
       } else {
         console.log(product);
       }
-      });
-      console.log("Cart items", cartItems);
+    });
+    console.log("Cart items", cartItems);
     let cart = {
       _id: result.data.cart._id,
       customer: user,
