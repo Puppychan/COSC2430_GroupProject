@@ -22,12 +22,9 @@
       </div>
       <div class="flex items-center justify-center md:justify-start gap-4">
         <form action="/cart" method="post" class="flex flex-col items-center md:items-start justify-center w-full">
-          <input type="hidden" name="id" value="<%= product.id %>
-              ">
-          <input type="hidden" name="name" value="<%= product.name %>
-              ">
-          <input type="hidden" name="price" value="<%= product.price %>
-              ">
+          <input type="hidden" name="id" value="<%= product.id %>">
+          <input type="hidden" name="name" value="<%= product.name %>">
+          <input type="hidden" name="price" value="<%= product.price %>">
           <div class="w-32 mb-8 flex flex-col items-center md:items-start gap-1">
             <label for="quantity" class="block text-xl font-semibold text-gray-400 text-center md:text-left">
               <span class="border-b border-gray-600">Quantity</span>
@@ -38,7 +35,7 @@
                 id="decrease" onclick="decreaseValue()" value="Decrease Value">-</div>
               <input type="number"
                 class="w-12 h-12 text-center border-t border-b border-gray-500 bg-gray-500 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                id="number" value="1" min="1">
+                id="number" value="1" min="1" name="quantity">
               <div
                 class="inline-flex items-center justify-center w-12 h-12 bg-gray-600 border rounded-r-md border-gray-600 cursor-pointer select-none"
                 id="increase" onclick="increaseValue()" value="Increase Value">+</div>

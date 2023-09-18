@@ -528,16 +528,48 @@ app.get("/shipper-dashboard", function (req, res) {
 app.get("/cart", middleware.verifyUser, async (req, res) => {
   const isLogin = middleware.isLogin();
   const result = await CartService.getCart(req.user._id);
+
+  const user = await UserService.getUserInfo(req.user._id);
   if (result.status == 200) {
-    let cart = result.data.cart;
+    const cartItems = await result.data.cart.items.map(async (item) => {
+      const product = await ProductService.getProductByObjectId(item.product);
+      if (product.status == HttpStatus.OK_STATUS) {
+        return {
+          product: product.data,
+          quantity: item.quantity,
+        }
+      } else {
+        console.log(product);
+      }
+      });
+      console.log("Cart items", cartItems);
+    let cart = {
+      _id: result.data.cart._id,
+      customer: user,
+      items: cartItems,
+    };
     console.log(cart);
+    // console.log("Cart products", cart.items[0].product.name);
     res.render("layout.ejs", {
       title: "Shopping Cart",
       bodyFile: "./customer/cart",
       activePage: "cart",
       isLogin: isLogin,
-      product: products,
+      user: user,
+      cart,
     });
+  } else {
+    console.log(result);
+  }
+});
+
+// Add Product to Cart
+app.post('/cart', middleware.verifyUser, async (req, res) => {
+  const id = req.body.id;
+  console.log("Add to cart", req.body)
+  const result = await CartService.addProductToCart(req.user._id, req.body.id, req.body.quantity);
+  if (result.status == 200) {
+    res.redirect('/cart');
   } else {
     console.log(result);
   }
@@ -554,18 +586,18 @@ app.post("/order", middleware.verifyUser, async (req, res) => {
   }
 });
 
-app.get("/order",middleware.verifyUser, async function (req, res) {
+app.get("/order", middleware.verifyUser, async function (req, res) {
   const isLogin = middleware.isLogin;
   const result = await UserService.getUserInfo(req.user._id);
-  if (result.status == 200){
-  res.render("layout.ejs", {
-    title: "Shopping order",
-    bodyFile: "./customer/order",
-    activePage: "order",
-    product: products,
-    isLogin: isLogin,
-  });
-}
+  if (result.status == 200) {
+    res.render("layout.ejs", {
+      title: "Shopping order",
+      bodyFile: "./customer/order",
+      activePage: "order",
+      product: products,
+      isLogin: isLogin,
+    });
+  }
 });
 
 // handle error if append to url

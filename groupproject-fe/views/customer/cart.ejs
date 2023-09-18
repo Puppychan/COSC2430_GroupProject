@@ -8,7 +8,7 @@
         <div class="px-4 py-6 sm:px-8 sm:py-10">
           <div class="flow-root">
             <ul class="-my-8">
-              <% product.forEach(product=> {%>
+              <% cart.items.forEach((product)=> {%>
                 <li
                   class="flex flex-col space-y-3 border-solid border-2 border-slate-500 rounded-xl py-1 text-left sm:flex-row sm:space-x-5 sm:space-y-0 mb-6 p-4">
                   <div class="shrink-0 py-3.5 pl-4 justify-center flex">
@@ -34,11 +34,9 @@
                               class="font-semibold flex items-center justify-center rounded-l-md bg-stone-300 px-3 transition hover:bg-stone-600 hover:text-white">-</button>
                             <input type="number"
                               class=" focus:outline-none text-center w-10 bg-stone-200 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none"
-                              name="custom-input-number" value="0"></input>
-
+                              name="custom-input-number" value="1" min="1"></input>
                             <button data-action="increment"
                               class="font-semibold flex items-center justify-center rounded-r-md bg-stone-300 px-3 transition hover:bg-stone-600 hover:text-white">+</button>
-
                           </div>
                         </div>
                       </div>
