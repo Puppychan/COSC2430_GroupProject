@@ -110,12 +110,17 @@ app.get("/viewAll", async function (req, res) {
 
 // login routes
 app.get("/login", async (req, res) => {
-  res.render("auth-layout.ejs", {
-    title: "Login",
-    bodyFile: "./auth/login",
-    activePage: "login",
-    activePage: "login",
-  });
+  const isLogin = middleware.isLogin();
+  if (isLogin) {
+    res.redirect("/my-account");
+  }
+  else {
+    res.render("auth-layout.ejs", {
+      title: "Login",
+      bodyFile: "./auth/login",
+      activePage: "login",
+    });
+  }
 });
 
 app.post("/login", async (req, res) => {
@@ -203,13 +208,17 @@ app.post("/change-password", middleware.verifyUser, async (req, res) => {
 });
 // Customer signup routes
 app.get("/signup-customer", (req, res) => {
-  res.render("auth-layout.ejs", {
-    title: " Customer Sign Up",
-    title: " Customer Sign Up",
-    bodyFile: "./auth/signup-customer",
-    activePage: "signup-customer",
-    activePage: "signup-customer",
-  });
+  const isLogin = middleware.isLogin();
+  if (isLogin) {
+    res.redirect("/my-account");
+  }
+  else {
+    res.render("auth-layout.ejs", {
+      title: " Customer Sign Up",
+      bodyFile: "./auth/signup-customer",
+      activePage: "signup-customer",
+    });
+  }
 });
 
 app.post("/signup-customer", async (req, res) => {
@@ -224,11 +233,17 @@ app.post("/signup-customer", async (req, res) => {
 });
 // Vendor signup routes
 app.get("/signup-vendor", (req, res) => {
-  res.render("auth-layout.ejs", {
-    title: "Vendor Sign Up",
-    bodyFile: "./auth/signup-vendor",
-    activePage: "signup-vendor",
-  });
+  const isLogin = middleware.isLogin();
+  if (isLogin) {
+    res.redirect("/my-account");
+  }
+  else {
+    res.render("auth-layout.ejs", {
+      title: "Vendor Sign Up",
+      bodyFile: "./auth/signup-vendor",
+      activePage: "signup-vendor",
+    });
+  }
 });
 
 app.post("/signup-vendor", async (req, res) => {
@@ -244,11 +259,17 @@ app.post("/signup-vendor", async (req, res) => {
 
 // Shipper signup routes
 app.get("/signup-shipper", (req, res) => {
-  res.render("auth-layout.ejs", {
-    title: "Shipper Sign Up",
-    bodyFile: "./auth/signup-shipper",
-    activePage: "signup-shipper",
-  });
+  const isLogin = middleware.isLogin();
+  if (isLogin) {
+    res.redirect("/my-account");
+  }
+  else {
+    res.render("auth-layout.ejs", {
+      title: "Shipper Sign Up",
+      bodyFile: "./auth/signup-shipper",
+      activePage: "signup-shipper",
+    });
+  }
 });
 
 app.post("/signup-shipper", async (req, res) => {
