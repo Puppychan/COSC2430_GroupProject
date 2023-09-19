@@ -85,9 +85,6 @@ app.get("/", async function (req, res) {
 app.get("/viewAll", async function (req, res) {
   // verify if is login
   const isLogin = middleware.isLogin();
-  // get user id after login
-  const userId = middleware.getUserIdLocal();
-  const user = (await UserService.getUserInfo(userId)).data.user_data;
   // get products
   const results = await ProductService.getProducts(req);
   const products = results?.data?.data;
@@ -96,16 +93,30 @@ app.get("/viewAll", async function (req, res) {
     offset: results?.data?.offset,
     totalPage: parseInt(results?.data?.totalPage),
   };
-  console.log("Productss", products);
-  res.render("layout.ejs", {
-    title: "Explore All Products",
-    bodyFile: "./category/viewAll",
-    products: products,
-    pageInfo: pageInfo,
-    user: user,
-    isLogin: isLogin,
-    activePage: "products",
-  });
+  if (isLogin) {  // get user id after login
+    const userId = middleware.getUserIdLocal();
+    const user = (await UserService.getUserInfo(userId)).data.user_data;
+
+    res.render("layout.ejs", {
+      title: "Explore All Products",
+      bodyFile: "./category/viewAll",
+      products: products,
+      pageInfo: pageInfo,
+      user: user,
+      isLogin: isLogin,
+      activePage: "products",
+    });
+  } else {
+    res.render("layout.ejs", {
+      title: "Explore All Products",
+      bodyFile: "./category/viewAll",
+      products: products,
+      pageInfo: pageInfo,
+      user: null,
+      isLogin: isLogin,
+      activePage: "products",
+    });
+  }
 });
 
 // login routes
@@ -442,23 +453,40 @@ app.post("/new-product", middleware.verifyUser, productMulter.single('image'), a
 
 // Product page route:
 app.get("/product/:id", async function (req, res) {
+  // verify if is login
   const isLogin = middleware.isLogin();
-  // get user id after login
-  const userId = middleware.getUserIdLocal();
-  const user = (await UserService.getUserInfo(userId)).data.user_data;
-
+  // get product info by id
   const productResult = await ProductService.getProductById(req);
-  if (productResult.status == HttpStatus.OK_STATUS) {
-    res.render("layout.ejs", {
-      title: "Product Detail",
-      bodyFile: "./product/product",
-      activePage: "product",
-      isLogin: isLogin,
-      product: productResult.data,
-      user: user,
-    });
+  if (isLogin) {
+    // get user id after login
+    const userId = middleware.getUserIdLocal();
+    const user = (await UserService.getUserInfo(userId)).data.user_data;
+    console.log("User", user);
+    console.log("Product", productResult);
+    if (productResult.status == HttpStatus.OK_STATUS) {
+      res.render("layout.ejs", {
+        title: "Product Detail",
+        bodyFile: "./product/product",
+        activePage: "product",
+        isLogin: isLogin,
+        product: productResult.data,
+        user: user,
+      });
+    }
   } else {
-    console.log(productResult);
+    if (productResult.status == HttpStatus.OK_STATUS) {
+      // User not logged in
+      res.render("layout.ejs", {
+        title: "Product Detail",
+        bodyFile: "./product/product",
+        activePage: "product",
+        isLogin: isLogin,
+        product: productResult.data,
+        user: null,
+      });
+    } else {
+      console.log(productResult);
+    }
   }
 });
 
@@ -548,6 +576,7 @@ app.get("/shipper-dashboard", function (req, res) {
 app.get("/cart", middleware.verifyUser, async (req, res) => {
   const isLogin = middleware.isLogin();
   const result = await CartService.getCart(req.user._id);
+  const userId = middleware.getUserIdLocal();
   const user = (await UserService.getUserInfo(userId)).data.user_data;
   if (result.status == 200) {
     const cartItems = await result.data.cart.items.map(async (item) => {
@@ -610,11 +639,12 @@ app.get("/order", middleware.verifyUser, async function (req, res) {
   const result = await UserService.getUserInfo(req.user._id);
   if (result.status == 200) {
     res.render("layout.ejs", {
-      title: "Shopping order",
+      title: "Order Summary",
       bodyFile: "./customer/order",
       activePage: "order",
       product: products,
       isLogin: isLogin,
+      user: result.data.user_data,
     });
   }
 });

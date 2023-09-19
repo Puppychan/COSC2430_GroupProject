@@ -11,16 +11,7 @@
                 <a href="/viewAll"
                     class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-900">
                     Shop Now
-                    <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                </a>
-                <a href="#"
-                    class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-white border border-gray-700 rounded-lg hover:bg-gray-700 focus:ring-4 focus:ring-gray-800">
-                    Speak to Sales
+                    <i class="fa-solid fa-arrow-right fa-l ml-2"></i>
                 </a>
             </div>
         </div>
@@ -56,11 +47,13 @@
                 </div>
                 <div class="absolute bottom-4 left-4 text-blue-600 hover:text-blue-800 cursor-pointer"
                     title="View Products">
-                    <a href="<%= navigatePage("product", product._id) %>"> Details →</a>
+                    <a href="<%= navigatePage(" product", product._id) %>"> Details →</a>
                 </div>
-                <div class="absolute bottom-5 right-4 text-blue-600" title="Add To Cart">
-                    <i class="fa-solid fa-cart-plus fa-xl"></i>
-                </div>
+                <% if (user?.user?.role=='customer' ) { %>
+                    <div class="absolute bottom-5 right-4 text-blue-600" title="Add To Cart">
+                        <i class="fa-solid fa-cart-plus fa-xl"></i>
+                    </div>
+                    <% } %>
             </div>
             <% }); %>
     </section>
