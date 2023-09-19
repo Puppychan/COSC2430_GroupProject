@@ -650,8 +650,7 @@ app.get("/order", middleware.verifyUser, async function (req, res) {
       activePage: "order",
       product: products,
       isLogin: isLogin,
-    user: user,
-
+      user: user,
     });
   }
 });
