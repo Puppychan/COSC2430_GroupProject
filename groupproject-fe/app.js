@@ -155,21 +155,26 @@ app.get("/logout", async (req, res) => {
 });
 
 // My Account route
-app.get("/my-account", middleware.verifyUser, async (req, res) => {
+app.get("/my-account", async (req, res) => {
   const isLogin = middleware.isLogin();
-  const result = await UserService.getUserInfo(req.user._id);
-  if (result.status == 200) {
-    let user_data = result.data.user_data;
-    console.log(user_data);
-    res.render("layout.ejs", {
-      title: "My Account",
-      bodyFile: "./users/profile",
-      activePage: "my-account",
-      isLogin: isLogin,
-      user: user_data,
-    });
+  if (isLogin) {
+    const userId = middleware.getUserIdLocal();
+    const result = await UserService.getUserInfo(userId);
+    if (result.status == 200) {
+      let user_data = result.data.user_data;
+      console.log(user_data);
+      res.render("layout.ejs", {
+        title: "My Account",
+        bodyFile: "./users/profile",
+        activePage: "my-account",
+        isLogin: isLogin,
+        user: user_data,
+      });
+    } else {
+      console.log(result);
+    }
   } else {
-    console.log(result);
+    res.redirect("/login");
   }
 });
 
@@ -415,7 +420,6 @@ app.get("/new-product", middleware.verifyUser, async function (req, res) {
   // get user id after login
   const userId = middleware.getUserIdLocal();
   const user = (await UserService.getUserInfo(userId)).data.user_data;
-
   res.render("layout.ejs", {
     title: "New Product",
     bodyFile: "./vendors/addProduct",
