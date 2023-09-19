@@ -626,9 +626,13 @@ app.post('/cart', middleware.verifyUser, async (req, res) => {
 // Place Order route
 app.post("/order", middleware.verifyUser, async (req, res) => {
   const result = await OrderService.placeOrder(req.user._id);
+
+
+
   if (result.status == 200) {
     let order = result.data.order;
     console.log(order);
+
   } else {
     console.log(result);
   }
@@ -637,6 +641,8 @@ app.post("/order", middleware.verifyUser, async (req, res) => {
 app.get("/order", middleware.verifyUser, async function (req, res) {
   const isLogin = middleware.isLogin;
   const result = await UserService.getUserInfo(req.user._id);
+  const userId = middleware.getUserIdLocal();
+  const user = await UserService.getUserInfo(userId);
   if (result.status == 200) {
     res.render("layout.ejs", {
       title: "Order Summary",
@@ -644,7 +650,8 @@ app.get("/order", middleware.verifyUser, async function (req, res) {
       activePage: "order",
       product: products,
       isLogin: isLogin,
-      user: result.data.user_data,
+    user: user,
+
     });
   }
 });
