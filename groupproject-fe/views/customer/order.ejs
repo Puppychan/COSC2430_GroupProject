@@ -1,59 +1,82 @@
-
-
-<div class="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32">    
-    <div class="py-24 mt-16 flex items-start">
-        <div class="w-[500px] px-4 py-6  bg-gray-800">
-            <h3 class="text-xl dark:text-white font-semibold text-gray-800">Customer</h3>
+<div class="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32">
+    <div class="py-24 mt-16 ">
+        <div class="w-[500px] px-4 py-6  bg-gray-800 rounded-xl">
+            <h3 class="text-xl dark:text-white font-semibold text-gray-800 ">Customer</h3>
             <div class="flex flex-col md:flex-row xl:flex-col justify-start">
-                <div class="flex flex-col justify-start items-start">
-                 
+                <% if (user?.user?.role==="customer" ) { %>
+                    <div class="flex flex-col justify-start items-start">
 
-                    <div class=" w-full space-x-4 py-8 border-b border-gray-200">
-                    
-                        
-                        <p class="text-2xl dark:text-white font-semibold leading-4 text-gray-800 text-center">Hahahah<p>
-                           
-                        
-                    </div>
-                    
-                    
-                    <div class="flex justify-center text-gray-800 dark:text-white md:justify-start items-center space-x-4 py-4 border-b border-gray-200 w-full">
-                        <img class="dark:hidden" src="https://tuk-cdn.s3.amazonaws.com/can-uploader/order-summary-3-svg1.svg" alt="email">
-                        <img class="hidden dark:block" src="https://tuk-cdn.s3.amazonaws.com/can-uploader/order-summary-3-svg1dark.svg" alt="email">
-                        
-<div class="w-[500px] px-4 py-6  bg-gray-800">
-    <select class="text-black" data-te-select-init>
-        <option class="text-black" value="" disabled selected>Choose your Distribution Hub</option>
-        <option class="text-black" value="00000001db42a4ac30ff65d2">Ha Noi</option>
-        <option class="text-black" value="00000001db42a4ac30ff65d1">Ho Chi Minh City</option>
-        <option class="text-black" value="00000001db42a4ac30ff65d3">Da Nang</option>
-    </select>
-</div>
 
-                    </div>
-                </div>
+                        <div class=" w-full space-x-4 py-8 border-b border-gray-200">
 
-                <div class="flex justify-between mt-6 md:mt-0 pl-5">
-                    <div class="flex justify-center md:justify-start xl:flex-col flex-col md:space-x-6 lg:space-x-8 xl:space-x-0 space-y-4 xl:space-y-12 md:space-y-0 md:flex-row items-center md:items-start">
-                        <div class="hidden">
-                            <p></p>
+
+                            <p class="text-2xl dark:text-white font-semibold leading-4 text-gray-800 text-center">
+                                <%= user?.name %>
+                                    <p>
+
+
                         </div>
-                        <div class="flex justify-center md:justify-start items-center md:items-start flex-col space-y-4 xl:mt-8">
-                            <p class="text-[22px] dark:text-white font-semibold leading-4 text-center md:text-left text-gray-800">Shipping Address</p>
-                            <p class="w-52 lg:w-full dark:text-gray-300 xl:w-48 text-center md:text-left text-md leading-5 text-gray-600">1Nguyen Van Linh</p>
+
+
+                        <div
+                            class="flex justify-center text-gray-800 dark:text-white md:justify-start items-center space-x-4 py-4 border-b border-gray-200 w-full">
+                         
+
+                                <div class="shipper-info role-info" id="hub">
+                                    <div class="inputBox">
+                                        <label for="hubid"
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Distribution
+                                            Hub</label>
+                                        <select class="bg-gray-50 border border-gray-300 text-gray-900
+                                              sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
+                                              w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                              dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="hub"
+                                            name="hubid">
+                                            <option value="" disabled selected>Choose your Distribution Hub</option>
+                                            <option value="00000001db42a4ac30ff65d2">Ha Noi</option>
+                                            <option value="00000001db42a4ac30ff65d1">Ho Chi Minh City</option>
+                                            <option value="00000001db42a4ac30ff65d3">Da Nang</option>
+                                        </select>
+                                    </div>
+                                </div>
+
                         </div>
-                    
                     </div>
-                   
-                </div>
+
+                    <div class="flex justify-between mt-6 md:mt-0 pl-5">
+                        <div
+                            class="flex justify-center md:justify-start xl:flex-col flex-col md:space-x-6 lg:space-x-8 xl:space-x-0 space-y-4 xl:space-y-12 md:space-y-0 md:flex-row items-center md:items-start">
+                            <div class="hidden">
+                                <p></p>
+                            </div>
+                            <div
+                                class="flex justify-center md:justify-start items-center md:items-start flex-col space-y-4 xl:mt-8">
+                                <p
+                                    class="text-[22px] dark:text-white font-semibold leading-4 text-center md:text-left text-gray-800">
+                                    Shipping Address</p>
+                                <p
+                                    class="w-52 lg:w-full dark:text-gray-300 xl:w-48 text-center md:text-left text-md leading-5 text-gray-600">
+                                    <%= user.address %></p>
+                            </div>
+
+                        </div>
+
+                    </div>
             </div>
+            <% } %>
         </div>
+        <div class="p-10">
+            <a href="/order" type="button"
+              class="p-10   inline-flex w-full items-center justify-center rounded-md px-6 py-4 text-lg font-semibold text-white bg-blue-500 hover:bg-blue-600">
+              Checkout
+            </a>
+          </div>
     </div>
+  
+
+    <div class="py-20">
 
 
-        <divdiv class="py-20">
-            
-        
         <p class="text-3xl font-medium">Order Summary</p>
         <p class="text-lg text-gray-400">Check your items before finish your order</p>
 
@@ -73,9 +96,9 @@
                                 <div class="sm:col-gap-5 sm:grid sm:grid-cols-2">
                                     <div class="lg:pr-0 sm:pr-5">
                                         <p class=" text-white-900 flex items-center">
-                                            <div class="text-lg font-semibold line-clamp-2">
-                                                <%= product.name %>
-                                            </div>
+                                        <div class="text-lg font-semibold line-clamp-2">
+                                            <%= product.name %>
+                                        </div>
 
 
                                         </p>
@@ -94,16 +117,16 @@
 
                             </div>
                         </li>
-                    <% }); %>
+                        <% }); %>
                 </ul>
             </div>
         </div>
-    </div>
+</div>
 </div>
 
-        
 
-    
+
+
 
 
 </div>

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // MongoDB Atlas connection string, replace this string with your own
-const mongoUrl = process.env.MONGODB_URI;
+const mongoUrl = "mongodb+srv://KhoaHo:Khoa1604@cluster0.na1oiya.mongodb.net/?retryWrites=true&w=majority";
 
 const connectDB = async () => {
   try {

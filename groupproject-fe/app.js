@@ -461,15 +461,22 @@ app.get("/order",middleware.verifyUser, async function (req, res) {
   const result = await UserService.getUserInfo(req.user._id);
   const userId = middleware.getUserIdLocal();
   const user = await UserService.getUserInfo(userId);
+  
   if (result.status == 200){
+    let user_data = result.data.user_data;
+    console.log(user_data);
   res.render("layout.ejs", {
+    
     title: "Shopping order",
     bodyFile: "./customer/order",
     activePage: "order",
     product: products,
     isLogin: isLogin,
-    user: user
+    
+    user: user_data,
   });
+}  else {
+  console.log(result);
 }
 });
 
