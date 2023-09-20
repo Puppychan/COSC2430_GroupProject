@@ -10,15 +10,37 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const searchBtn = document.getElementById('searchBtn');
     const searchBar = document.getElementById('searchBar');
     const closeSearchBtn = document.getElementById('closeSearchBtn');
+    const form = document.querySelector('form');
+    const searchInput = document.getElementById('searchInput');
 
     searchBtn.addEventListener('click', () => {
-        searchBar.classList.remove('hidden');
+        // display search bar with animation
+        if (searchBar.classList.contains('hidden')) {
+            searchBar.classList.remove('hidden');
+            searchBar.classList.remove('opacity-0');
+            searchBar.classList.add('opacity-100');
+        } else {
+            // hide search bar with animation
+            searchBar.classList.remove('opacity-100');
+            searchBar.classList.add('opacity-0');
+            setTimeout(() => searchBar.classList.add('hidden'), 300);
+        }
     });
 
     closeSearchBtn.addEventListener('click', () => {
-        searchBar.classList.add('hidden');
+        searchBar.classList.remove('opacity-100');
+        searchBar.classList.add('opacity-0');
+        setTimeout(() => searchBar.classList.add('hidden'), 300);
     });
+
+    // form.addEventListener('submit', (event) => {
+    //     event.preventDefault();
+    //     const query = searchInput.value;
+    //     const data = { searchQuery: query };
+    //     console.log(JSON.stringify(data));
+    // });
 });
+
 
 // Price range slider function
 let minPriceSlider = document.getElementById('min-price');
@@ -73,7 +95,7 @@ function increaseValue() {
 function decreaseValue() {
     var value = parseInt(document.getElementById('number').value, 10);
     value = isNaN(value) ? 1 : value;
-    if(value > 1) {
+    if (value > 1) {
         value--;
     }
     document.getElementById('number').value = value;

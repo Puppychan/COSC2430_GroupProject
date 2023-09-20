@@ -8,7 +8,7 @@
         <div class="px-4 py-6 sm:px-8 sm:py-10">
           <div class="flow-root">
             <ul class="-my-8">
-              <% product.forEach(product=> {%>
+              <% cart.items.forEach((product)=> {%>
                 <li
                   class="flex flex-col space-y-3 border-solid border-2 border-slate-500 rounded-xl py-1 text-left sm:flex-row sm:space-x-5 sm:space-y-0 mb-6 p-4">
                   <div class="shrink-0 py-3.5 pl-4 justify-center flex">
@@ -33,26 +33,22 @@
                             <button data-action="decrement"
                               class="font-semibold flex items-center justify-center rounded-l-md bg-stone-300 px-3 transition hover:bg-stone-600 hover:text-white">-</button>
                             <input type="number"
-                              class=" focus:outline-none text-center w-10 bg-stone-200 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none"
-                              name="custom-input-number" value="0"></input>
-
+                              class="focus:outline-none text-center w-10 bg-stone-200 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                              name="quantity" value="1" min="1">
                             <button data-action="increment"
                               class="font-semibold flex items-center justify-center rounded-r-md bg-stone-300 px-3 transition hover:bg-stone-600 hover:text-white">+</button>
-
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="absolute top-0 right-0 flex sm:bottom-0 sm:top-auto">
-                      <button type="button"
-                        class="removeButton flex rounded p-2 text-center text-white transition-all duration-200 ease-in-out focus:shadow hover:text-blue-400"
-                        onclick="removeItem(this)">
-                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                          stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"
-                            class=""></path>
-                        </svg>
-                      </button>
+                    <div class="absolute top-5 right-5 flex sm:bottom-0 sm:top-auto">
+                      <form action="/product-delete" method="post">
+                        <button type="button"
+                          class="removeButton flex rounded p-2 text-center text-white transition-all duration-200 ease-in-out focus:shadow hover:text-blue-400"
+                          onclick="removeItem(this)">
+                          <i class="fa-solid fa-trash fa-xl"></i>
+                        </button>
+                      </form>
                     </div>
                   </div>
                 </li>
@@ -61,8 +57,8 @@
           </div>
           <div class="mt-6 flex items-center justify-between">
             <p class="text-2xl font-bold text-white-900 mt-8">Total</p>
-            <p class="text-2xl font-semibold text-white-900"><span class="text-xs font-normal text-white-400">VND</span>
-
+            <p class="text-2xl font-semibold text-white-900">
+              <%= cart.total %><span class="text-xs font-normal text-white-400">VND</span>
             </p>
           </div>
           <div class="mt-6 text-center">

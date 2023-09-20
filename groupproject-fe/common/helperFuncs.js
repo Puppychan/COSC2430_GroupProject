@@ -1,5 +1,5 @@
 // Functions to navigate to different pages
-const navigatePage = (type, id = -1) => {
+const navigatePage = (type, id = -1, page) => {
     // trim to remove spaces, convert to lowercase to make it case-insensitive
     type = type.trim().toLowerCase();
     switch (type) {
@@ -7,6 +7,14 @@ const navigatePage = (type, id = -1) => {
             return '/my-account';
         case 'product':
             return `/product/${id}`;
+        case 'product-list':
+            return `/viewAll?page=${page}`;
+        case 'product-update':
+            return `/update-product/${id}`;
+        case 'product-add':
+            return '/new-product';
+        case 'product-delete':
+            return `/delete-product/${id}`;
         case 'cart':
             return '/cart';
         case 'new-product':

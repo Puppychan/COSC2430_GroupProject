@@ -43,14 +43,20 @@ const logout = () => {
 
 
 const sendResponse = (status, message, data) => {
-  return {status: status ?? 200, message: message ?? 'ok', data: data ?? null}
+  return { status: status ?? 200, message: message ?? 'ok', data: data ?? null }
 }
 
-const sendResponse2 = (res, status, message, data) => {
-  res.status(status ?? 200).json({
-    status: status ?? 200, message: message ?? 'ok', data: data ?? null
+const sendResponse2 = (res, status, message) => {
+  return res.status(status).render('err-layout', {
+    title: 'Error',
+    bodyFile: 'others/error',
+    error: {
+      status: status,
+      message: message,
+      data: null,  // You can pass additional data here if needed
+    },
   });
-}
+};
 
 const runAsyncWrapper = (callback) => {
   return function (req, res, next) {
@@ -68,7 +74,7 @@ const verifyUser = async (req, res, next) => {
 
     const payload = await verifyToken(token)
     if (payload) {
-      const user =  await User.findOne({_id: payload.id});
+      const user = await User.findOne({ _id: payload.id });
       user.password = 0;
       req['user'] = user
       next()

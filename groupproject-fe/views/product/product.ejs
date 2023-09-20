@@ -1,60 +1,54 @@
 <section class="overflow-hidden bg-gray-900 py-11">
-  <div class="max-w-6xl px-4 py-4 mx-auto lg:py-8 md:px-6">
-    <div class="flex flex-wrap -mx-4">
-      <div class="w-full mb-8 md:w-1/2 md:mb-0">
-        <div class="sticky top-0 z-50 overflow-hidden ">
-          <div class="relative mb-6 lg:mb-10 aspect-square mx-auto p-4 md:p-0 max-w-[90%] sm:max-w-full">
-            <img src="<%= product.image %>" alt="Main Product Image" class="object-cover w-full h-full">
-          </div>
-        </div>
+  <div class="max-w-6xl px-4 py-4 md:px-6 lg:py-16 mx-auto flex md:flex-row flex-col gap-10 md:gap-0">
+    <section class="my-0 md:my-10 aspect-square mx-auto p-4 md:p-0
+      grow h-80 w-full md:w-1/2 max-w-[90%] sm:max-w-full">
+      <img src="<%= product.image %>" alt="Main Product Image" class="object-cover w-full h-full 
+        rounded-xl shadow-slate-500	shadow-lg drop-shadow-lg
+        border border-slate-300">
+    </section>
+    <section class="w-full md:w-3/4 md:pl-12 lg:pl-16 xl:pl-20 ">
+      <div class="mb-8 text-center md:text-left">
+        <h2 class="mb-6 text-4xl font-bold text-gray-100 md:text-4xl line-clamp-2">
+          <%= product.name %>
+        </h2>
+        <p class="inline-block mb-6 text-2xl font-semibold text-gray-300 line-clamp-1">
+          <span>
+            <%= new Intl.NumberFormat('de-DE', { style: 'currency' , currency: 'VND' }).format(product.price) %>
+          </span>
+        </p>
+        <p class="my-3 text-gray-300 leading-loose text-lg tracking-wide font-light indent-5 lg:indent-10">
+          <%= product.description %>
+        </p>
       </div>
-      <div class="w-full px-4 md:w-1/2 ">
-        <div class="lg:pl-20">
-          <div class="mb-8 ">
-            <h2 class="max-w-xl mb-6 text-2xl font-bold text-gray-400 md:text-4xl">
-              <%= product.name %>
-            </h2>
-            <p class="inline-block mb-6 text-4xl font-bold text-gray-400 ">
-              <span>
-                <%= product.price %>₫
-              </span>
-            </p>
-            <p class="max-w-md text-gray-400">
-              <%= product.description %>
-            </p>
-          </div>
-        </div>
-        <div class="flex items-center gap-4 lg:pl-20">
-          <form action="/cart" method="POST">
-            <input type="hidden" name="id" value="<%= product.id %>
-              ">
-            <input type="hidden" name="name" value="<%= product.name %>
-              ">
-            <input type="hidden" name="price" value="<%= product.price %>
-              ">
-            <div class="w-32 mb-8">
-              <label for="quantity" class="block text-xl font-semibold text-gray-400">
+      <% if (user?.user?.role==='customer' ) { %>
+        <div class="flex items-center justify-center md:justify-start gap-4">
+          <form action="/cart" method="post" class="flex flex-col items-center md:items-start justify-center w-full">
+            <input type="hidden" name="id" value="<%= product.id %>">
+            <input type="hidden" name="name" value="<%= product.name %>">
+            <input type="hidden" name="price" value="<%= product.price %>">
+            <div class="w-32 mb-8 flex flex-col items-center md:items-start gap-1">
+              <label for="quantity" class="block text-xl font-semibold text-gray-400 text-center md:text-left">
                 <span class="border-b border-gray-600">Quantity</span>
               </label>
               <div class="inline-flex mt-2">
                 <div
-                  class="inline-flex items-center justify-center w-10 h-10 bg-gray-600 border rounded-l-md border-gray-600 cursor-pointer select-none" id="decrease" onclick="decreaseValue()" value="Decrease Value">-</div>
+                  class="inline-flex items-center justify-center w-12 h-12 bg-gray-600 border rounded-l-md border-gray-600 cursor-pointer select-none"
+                  id="decrease" onclick="decreaseValue()" value="Decrease Value">-</div>
                 <input type="number"
-                  class="w-10 h-10 text-center border-t border-b border-gray-500 bg-gray-500 appearance-none focus:outline-none"
-                  id="number" value="1" />
+                  class="w-12 h-12 text-center border-t border-b border-gray-500 bg-gray-500 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  id="number" value="1" min="1" name="quantity">
                 <div
-                  class="inline-flex items-center justify-center w-10 h-10 bg-gray-600 border rounded-r-md border-gray-600 cursor-pointer select-none"
+                  class="inline-flex items-center justify-center w-12 h-12 bg-gray-600 border rounded-r-md border-gray-600 cursor-pointer select-none"
                   id="increase" onclick="increaseValue()" value="Increase Value">+</div>
               </div>
             </div>
             <button
-              class="font-semibold flex items-center justify-center w-full p-4 rounded-md  text-gray-200 border-blue-600 bg-blue-600 hover:bg-blue-700 hover:border-blue-700 hover:text-gray-300"
+              class="font-semibold flex items-center justify-center w-1/2 md:w-auto p-4 rounded-md  text-gray-200 border-blue-600 bg-blue-600 hover:bg-blue-700 hover:border-blue-700 hover:text-gray-300"
               type="submit">
               Add to cart</button>
           </form>
-
         </div>
-      </div>
-    </div>
+        <% } %>
+    </section>
   </div>
 </section>

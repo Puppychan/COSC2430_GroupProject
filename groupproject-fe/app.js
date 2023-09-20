@@ -7,13 +7,15 @@ const ProductService = require("./backend/db_service/productService");
 const CartService = require("./backend/db_service/cartService");
 const OrderService = require("./backend/db_service/orderService");
 const HttpStatus = require('./backend/utils/commonHttpStatus')
+const multer = require('multer');
 
 const products = require("./public/javascript/products");
 
 const { PORT, BACKEND_URL } = require("./common/constants");
 const { navigatePage } = require("./common/helperFuncs");
 const middleware = require("./backend/middleware/middleware");
-
+const productMulter = require("./backend/db/defineMulter");
+const { Product } = require("./backend/db/models/modelCollection");
 
 require("dotenv").config();
 const app = express();
@@ -34,6 +36,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // reusable function for all ejs
 app.locals.navigatePage = navigatePage;
+// support getting local image files
+global.publicDirectory = path.resolve(__dirname, 'public');
 
 connectDB().catch((error) => {
   console.log(error);
@@ -57,7 +61,7 @@ app.get("/", async function (req, res) {
     res.render("layout.ejs", {
       title: "Home",
       bodyFile: "./home/index",
-      activePage: "my-account",
+      activePage: "home",
       isLogin: isLogin,
       products: products,
       user: user_data,
@@ -66,7 +70,7 @@ app.get("/", async function (req, res) {
     res.render("layout.ejs", {
       title: "Home",
       bodyFile: "./home/index",
-      activePage: "my-account",
+      activePage: "home",
       isLogin: isLogin,
       products: products,
       user: null,
@@ -76,47 +80,57 @@ app.get("/", async function (req, res) {
   }
 });
 
-
 // Category page route:
-app.get("/viewAll", function (req, res) {
-  const { pag } = req.query;
-  // const result =
-  /**
-   * pageIndex: 1,2,3
-   * data: productList
-   * totalPage: 10
-   */
-  res.render("layout.ejs", {
-    title: "Explore All Products",
-    bodyFile: "./category/viewAll",
-    products: products,
-    isLogin: isLogin,
-    activePage: "phones",
-  });
-});
-
-// Product page route:
-app.get("/product/:id", function (req, res) {
+app.get("/viewAll", async function (req, res) {
+  // verify if is login
   const isLogin = middleware.isLogin();
-  const id = req.params.id;
-  const matchedProduct = products.find((product) => product._id == id);
-  res.render("layout.ejs", {
-    title: "Product Detail",
-    bodyFile: "./product/product",
-    activePage: "product",
-    isLogin: isLogin,
-    product: matchedProduct,
-  });
+  // get products
+  const results = await ProductService.getProducts(req);
+  const products = results?.data?.data;
+  const pageInfo = {
+    page: parseInt(results?.data?.page),
+    offset: results?.data?.offset,
+    totalPage: parseInt(results?.data?.totalPage),
+  };
+  if (isLogin) {  // get user id after login
+    const userId = middleware.getUserIdLocal();
+    const user = (await UserService.getUserInfo(userId)).data.user_data;
+
+    res.render("layout.ejs", {
+      title: "Explore All Products",
+      bodyFile: "./category/viewAll",
+      products: products,
+      pageInfo: pageInfo,
+      user: user,
+      isLogin: isLogin,
+      activePage: "products",
+    });
+  } else {
+    res.render("layout.ejs", {
+      title: "Explore All Products",
+      bodyFile: "./category/viewAll",
+      products: products,
+      pageInfo: pageInfo,
+      user: null,
+      isLogin: isLogin,
+      activePage: "products",
+    });
+  }
 });
 
 // login routes
 app.get("/login", async (req, res) => {
-  res.render("auth-layout.ejs", {
-    title: "Login",
-    bodyFile: "./auth/login",
-    activePage: "login",
-    activePage: "login",
-  });
+  const isLogin = middleware.isLogin();
+  if (isLogin) {
+    res.redirect("/my-account");
+  }
+  else {
+    res.render("auth-layout.ejs", {
+      title: "Login",
+      bodyFile: "./auth/login",
+      activePage: "login",
+    });
+  }
 });
 
 app.post("/login", async (req, res) => {
@@ -140,21 +154,26 @@ app.get("/logout", async (req, res) => {
 });
 
 // My Account route
-app.get("/my-account", middleware.verifyUser, async (req, res) => {
+app.get("/my-account", async (req, res) => {
   const isLogin = middleware.isLogin();
-  const result = await UserService.getUserInfo(req.user._id);
-  if (result.status == 200) {
-    let user_data = result.data.user_data;
-    console.log(user_data);
-    res.render("layout.ejs", {
-      title: "My Account",
-      bodyFile: "./users/profile",
-      activePage: "my-account",
-      isLogin: isLogin,
-      user: user_data,
-    });
+  if (isLogin) {
+    const userId = middleware.getUserIdLocal();
+    const result = await UserService.getUserInfo(userId);
+    if (result.status == 200) {
+      let user_data = result.data.user_data;
+      console.log(user_data);
+      res.render("layout.ejs", {
+        title: "My Account",
+        bodyFile: "./users/profile",
+        activePage: "my-account",
+        isLogin: isLogin,
+        user: user_data,
+      });
+    } else {
+      console.log(result);
+    }
   } else {
-    console.log(result);
+    res.redirect("/login");
   }
 });
 
@@ -184,10 +203,9 @@ app.get("/change-password", middleware.verifyUser, async (req, res) => {
       isLogin: isLogin,
       user: user_data,
     });
-  } else {
-    console.log(result);
   }
 });
+
 app.post("/change-password", middleware.verifyUser, async (req, res) => {
   const isLogin = middleware.isLogin();
   const result = await UserService.changePassword(
@@ -204,13 +222,17 @@ app.post("/change-password", middleware.verifyUser, async (req, res) => {
 });
 // Customer signup routes
 app.get("/signup-customer", (req, res) => {
-  res.render("auth-layout.ejs", {
-    title: " Customer Sign Up",
-    title: " Customer Sign Up",
-    bodyFile: "./auth/signup-customer",
-    activePage: "signup-customer",
-    activePage: "signup-customer",
-  });
+  const isLogin = middleware.isLogin();
+  if (isLogin) {
+    res.redirect("/my-account");
+  }
+  else {
+    res.render("auth-layout.ejs", {
+      title: " Customer Sign Up",
+      bodyFile: "./auth/signup-customer",
+      activePage: "signup-customer",
+    });
+  }
 });
 
 app.post("/signup-customer", async (req, res) => {
@@ -225,11 +247,17 @@ app.post("/signup-customer", async (req, res) => {
 });
 // Vendor signup routes
 app.get("/signup-vendor", (req, res) => {
-  res.render("auth-layout.ejs", {
-    title: "Vendor Sign Up",
-    bodyFile: "./auth/signup-vendor",
-    activePage: "signup-vendor",
-  });
+  const isLogin = middleware.isLogin();
+  if (isLogin) {
+    res.redirect("/my-account");
+  }
+  else {
+    res.render("auth-layout.ejs", {
+      title: "Vendor Sign Up",
+      bodyFile: "./auth/signup-vendor",
+      activePage: "signup-vendor",
+    });
+  }
 });
 
 app.post("/signup-vendor", async (req, res) => {
@@ -245,11 +273,17 @@ app.post("/signup-vendor", async (req, res) => {
 
 // Shipper signup routes
 app.get("/signup-shipper", (req, res) => {
-  res.render("auth-layout.ejs", {
-    title: "Shipper Sign Up",
-    bodyFile: "./auth/signup-shipper",
-    activePage: "signup-shipper",
-  });
+  const isLogin = middleware.isLogin();
+  if (isLogin) {
+    res.redirect("/my-account");
+  }
+  else {
+    res.render("auth-layout.ejs", {
+      title: "Shipper Sign Up",
+      bodyFile: "./auth/signup-shipper",
+      activePage: "signup-shipper",
+    });
+  }
 });
 
 app.post("/signup-shipper", async (req, res) => {
@@ -278,6 +312,7 @@ app.get("/about", async function (req, res) {
       bodyFile: "./others/about",
       isLogin: isLogin,
       activePage: "about",
+      user: user_data,
     });
   } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
     res.render("layout.ejs", {
@@ -285,6 +320,7 @@ app.get("/about", async function (req, res) {
       bodyFile: "./others/about",
       isLogin: isLogin,
       activePage: "about",
+      user: null,
     });
   } else {
     console.log(result);
@@ -305,18 +341,21 @@ app.get("/copyright", async function (req, res) {
       bodyFile: "./others/copyright",
       isLogin: isLogin,
       activePage: "about",
+      user: user_data,
     });
   } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
     res.render("layout.ejs", {
       title: "About Us",
       bodyFile: "./others/copyright",
       isLogin: isLogin,
-      activePage: "about",  
+      activePage: "about",
+      user: null,
     });
   } else {
     console.log(result);
   }
 });
+
 app.get('/privacy', async function (req, res) {
   // verify if is login
   const isLogin = middleware.isLogin();
@@ -331,6 +370,7 @@ app.get('/privacy', async function (req, res) {
       bodyFile: "./others/privacy",
       isLogin: isLogin,
       activePage: "about",
+      user: user_data,
     });
   } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
     res.render("layout.ejs", {
@@ -338,11 +378,13 @@ app.get('/privacy', async function (req, res) {
       bodyFile: "./others/privacy",
       isLogin: isLogin,
       activePage: "about",
+      user: null,
     });
   } else {
     console.log(result);
   }
 });
+
 app.get('/terms', async function (req, res) {
   // verify if is login
   const isLogin = middleware.isLogin();
@@ -357,6 +399,7 @@ app.get('/terms', async function (req, res) {
       bodyFile: "./others/terms",
       isLogin: isLogin,
       activePage: "about",
+      user: user_data,
     });
   } else if (result.status == HttpStatus.UNAUTHORIZED_STATUS || result.status == HttpStatus.NOT_FOUND_STATUS) { // Not login
     res.render("layout.ejs", {
@@ -364,36 +407,150 @@ app.get('/terms', async function (req, res) {
       bodyFile: "./others/terms",
       isLogin: isLogin,
       activePage: "about",
+      user: null,
     });
   } else {
     console.log(result);
   }
 });
+
 // New Product route
-app.get("/new-product", function (req, res) {
+app.get("/new-product", middleware.verifyUser, async function (req, res) {
   const isLogin = middleware.isLogin();
+  // get user id after login
+  const userId = middleware.getUserIdLocal();
+  const user = (await UserService.getUserInfo(userId)).data.user_data;
   res.render("layout.ejs", {
-    title: "Add New Product",
+    title: "New Product",
     bodyFile: "./vendors/addProduct",
+    activePage: "products",
     isLogin: isLogin,
-    activePage: "newProduct",
+    user: user,
   });
 });
 
-// Update Product Route
-app.get("/update-product/:id", async function (req, res) {
-  const id = req.params.id;
-  console.log("id", id);
-  const product = await ProductService.getProductById(id);
+app.post("/new-product", middleware.verifyUser, productMulter.single('image'), async function (req, res) {
+  // verify if is login
   const isLogin = middleware.isLogin();
-  res.render("layout.ejs", {
-    title: "Update Product",
-    bodyFile: "./vendors/updateProduct",
-    isLogin: isLogin,
-    activePage: "updateProduct",
-    product: product,
-  });
+  // get user id after login
+  const userId = middleware.getUserIdLocal();
+  const user = await UserService.getUserInfo(userId);
+
+  // get product by id to display on update page
+  const newProduct = await ProductService.createProduct(req);
+  // console.log("Product", productResult);
+
+
+  if (newProduct.status == HttpStatus.OK_STATUS) {
+    res.render("layout.ejs", {
+      title: "Update Product",
+      bodyFile: "./vendors/updateProduct",
+      isLogin: isLogin,
+      activePage: "updateProduct",
+      product: newProduct.data,
+      user: user,
+    });
+  } else {
+    console.log("Bug", newProduct);
+  }
 });
+
+// Product page route:
+app.get("/product/:id", async function (req, res) {
+  // verify if is login
+  const isLogin = middleware.isLogin();
+  // get product info by id
+  const productResult = await ProductService.getProductById(req);
+  if (isLogin) {
+    // get user id after login
+    const userId = middleware.getUserIdLocal();
+    const user = (await UserService.getUserInfo(userId)).data.user_data;
+    if (productResult.status == HttpStatus.OK_STATUS) {
+      res.render("layout.ejs", {
+        title: "Product Detail",
+        bodyFile: "./product/product",
+        activePage: "product",
+        isLogin: isLogin,
+        product: productResult.data,
+        user: user,
+      });
+    }
+  } else {
+    if (productResult.status == HttpStatus.OK_STATUS) {
+      // User not logged in
+      res.render("layout.ejs", {
+        title: "Product Detail",
+        bodyFile: "./product/product",
+        activePage: "product",
+        isLogin: isLogin,
+        product: productResult.data,
+        user: null,
+      });
+    } else {
+      console.log(productResult);
+    }
+  }
+});
+
+// Update Product Route
+app.get("/update-product/:id", middleware.verifyUser, productMulter.single('image'), async function (req, res) {
+  // verify if is login
+  const isLogin = middleware.isLogin();
+  // get user id after login
+  const userId = middleware.getUserIdLocal();
+  const user = (await UserService.getUserInfo(userId)).data.user_data;
+
+  // get product by id to display on update page
+  const productResult = await ProductService.getProductById(req);
+  // console.log("Product", productResult);
+
+  if (productResult.status == HttpStatus.OK_STATUS) {
+    res.render("layout.ejs", {
+      title: "Update Product",
+      bodyFile: "./vendors/updateProduct",
+      isLogin: isLogin,
+      activePage: "updateProduct",
+      product: productResult.data,
+      user: user,
+    });
+  } else {
+    console.log("Bug", productResult);
+  }
+});
+
+app.post("/update-product/:id", middleware.verifyUser, productMulter.single('image'), async function (req, res) {
+  try {
+    const result = await ProductService.updateProduct(req);
+    if (result.status == HttpStatus.OK_STATUS) {
+      res.redirect("/product/" + result.data._id);
+    } else {
+      console.log(result);
+    }
+  } catch (err) {
+    console.log(err);
+    if (err instanceof multer.MulterError) {
+      if (err.code === 'LIMIT_FILE_SIZE' || err.message === 'Field value too long') {
+        // throw new Error('File size too large', statusCode = HttpStatus.BAD_REQUEST_STATUS);
+        // TODO: handle alert
+        console.log("Multer Limit File Size");
+      }
+      // TODO; handle older multer
+      console.log("Multer Error");
+      // throw new Error(err.message, statusCode = HttpStatus.BAD_REQUEST_STATUS);
+    }
+  }
+});
+
+app.post("/delete-product/:id", middleware.verifyUser, async function (req, res) {
+  const result = await ProductService.deleteProduct(req);
+  if (result.status == HttpStatus.OK_STATUS) {
+    res.redirect("/vendor-dashboard");
+  } else {
+    console.log(result);
+  }
+});
+
+
 // Vendor Dashboard route
 app.get("/vendor-dashboard", function (req, res) {
   const isLogin = middleware.isLogin();
@@ -421,21 +578,48 @@ app.get("/shipper-dashboard", function (req, res) {
 app.get("/cart", middleware.verifyUser, async (req, res) => {
   const isLogin = middleware.isLogin();
   const result = await CartService.getCart(req.user._id);
-  
   const userId = middleware.getUserIdLocal();
-  const user = await UserService.getUserInfo(userId);
-
+  const user = (await UserService.getUserInfo(userId)).data.user_data;
   if (result.status == 200) {
-    let cart = result.data.cart;
+    const cartItems = await result.data.cart.items.map(async (item) => {
+      const product = await ProductService.getProductByObjectId(item.product);
+      if (product.status == HttpStatus.OK_STATUS) {
+        return {
+          product: product.data,
+          quantity: item.quantity,
+        }
+      } else {
+        console.log(product);
+      }
+    });
+    console.log("Cart items", cartItems);
+    let cart = {
+      _id: result.data.cart._id,
+      customer: user,
+      items: cartItems,
+    };
     console.log(cart);
+    // console.log("Cart products", cart.items[0].product.name);
     res.render("layout.ejs", {
       title: "Shopping Cart",
       bodyFile: "./customer/cart",
       activePage: "cart",
       isLogin: isLogin,
-      product: products,
-      user: user
+      user: user,
+      cart,
     });
+  } else {
+    console.log(result);
+  }
+});
+
+// Add Product to Cart
+app.post('/cart', middleware.verifyUser, async (req, res) => {
+  const id = req.body.id;
+  console.log("Add to cart", req.body)
+  const result = await CartService.addProductToCart(req.user._id, req.body.id, req.body.quantity);
+  if (result.status == 200) {
+    res.redirect('/cart');
   } else {
     console.log(result);
   }
@@ -444,9 +628,6 @@ app.get("/cart", middleware.verifyUser, async (req, res) => {
 // Place Order route
 app.post("/order", middleware.verifyUser, async (req, res) => {
   const result = await OrderService.placeOrder(req.user._id);
-
-
-
   if (result.status == 200) {
     let order = result.data.order;
     console.log(order);
@@ -456,30 +637,35 @@ app.post("/order", middleware.verifyUser, async (req, res) => {
   }
 });
 
-app.get("/order",middleware.verifyUser, async function (req, res) {
+app.get("/order", middleware.verifyUser, async function (req, res) {
   const isLogin = middleware.isLogin;
   const result = await UserService.getUserInfo(req.user._id);
   const userId = middleware.getUserIdLocal();
   const user = await UserService.getUserInfo(userId);
-  
-  if (result.status == 200){
-    let user_data = result.data.user_data;
-    console.log(user_data);
-  res.render("layout.ejs", {
-    
-    title: "Shopping order",
-    bodyFile: "./customer/order",
-    activePage: "order",
-    product: products,
-    isLogin: isLogin,
-    
-    user: user_data,
-  });
-}  else {
-  console.log(result);
-}
+  if (result.status == 200) {
+    res.render("layout.ejs", {
+      title: "Order Summary",
+      bodyFile: "./customer/order",
+      activePage: "order",
+      product: products,
+      isLogin: isLogin,
+      user: user,
+    });
+  }
 });
 
+// handle error if append to url
+app.use((error, req, res, next) => {
+  if (error instanceof multer.MulterError) {
+    if (error.code === 'LIMIT_FILE_SIZE') {
+      return res.status(413).json({ error: 'File too large' });
+    } else if (error.message === 'Field value too long') {
+      return res.status(400).json({ error: 'Field value too long' });
+    }
+    return res.status(400).json({ error: error.message });
+  }
+  next(error);
+});
 
 
 

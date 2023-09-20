@@ -1,28 +1,68 @@
 const Product = require('../db/models/shopping/Product');
-const { sendResponse } = require('../routes/middleware');
 const { convertImageToBin } = require('../utils/imageToBin');
 
 const getProducts = async (req, res) => {
     try {
-        let products;
+        let results;
         // get params
-        const maxPrice = req.query.maxp;
-        const minPrice = req.query.minp;
+        const searchName = req.query.name;
+        const maxPrice = parseFloat(req.query.maxp);
+        const minPrice = parseFloat(req.query.minp);
+        // get pagination
+        const currentPage = req.query.page ?? 1;
+        const limit = 15;
+        const skipValue = (currentPage - 1) * limit;
+        let totalItems = 0; // total count of products
+
+        // aggregate pipeline
+        const matchStage = {};
+        // if params exist -> search
+        if (searchName) {
+            // filter product by name containing, insensitive case
+            matchStage.name = { $regex: '.*' + searchName + '.*', $options: 'i' };
+        }
         // if params exist -> filter
-        if (maxPrice || minPrice)
+        if (!isNaN(maxPrice) || !isNaN(minPrice)) {
             // filter product by price range
-            products = await Product.find({ price: { $gte: minPrice, $lte: maxPrice } });
-        // if params not exist -> get all product
-        else
-            products = await Product.find();
+            matchStage.price = { $gte: minPrice, $lte: maxPrice };
+        }
+
+        const agg = [
+            { $match: matchStage },
+            {
+                $facet: {
+                    totalRecords: [
+                        { $count: "total" }
+                    ],
+                    data: [
+                        { $skip: skipValue },
+                        { $limit: limit }
+                    ]
+                }
+            }
+        ];
+        results = await Product.aggregate(agg);
         // send response
+        totalItems = results[0].totalRecords;
+        console.log("Data: ", results[0].data, "Total: ", totalItems);
         // if no product
-        if (products.length == 0) sendResponse(res, 400, 'Not Product To Display');
+        if (totalItems == 0) return {
+            data: [],
+            page: 1,
+            offset: 0,
+            totalPage: 1
+        };
         // if have product
-        else sendResponse(res, 200, `ok`, products);
+        else return {
+            data: results[0].data,
+            page: currentPage,
+            offset: skipValue + 1,
+            totalPage: Math.ceil(totalItems / limit)
+
+        }
     } catch (err) {
-        // send response
-        sendResponse(res, err.statusCode, err.message ?? `Error`);
+        throw err;
+
     }
 }
 
@@ -30,37 +70,26 @@ const getProductById = async (req, res) => {
     try {
         const renderedProduct = await Product.findById(req.params.id);
         if (!renderedProduct) {
-            // return res.status(404).send('Product not found');
-            sendResponse(res, 400, 'Product Not Found');
-            return;
+            return null
         }
-        // sendResponse(res, 200, 'ok', renderedProduct);
-        res.render('../view/product', { product: renderedProduct });
+        return renderedProduct;
 
     } catch (err) {
-        // send response
-        sendResponse(res, err.statusCode, err.message ?? `Error`);
+        throw err;
     }
 }
 
-const searchProducts = async (req, res) => {
+const getProductByObjectId = async (req, res) => {
     try {
-        console.log("Called");
-        const search = req.query.name;
-        // search products by name containing, insensitive case
-        const products = await Product.find({ name: { $regex: '.*' + search + '.*', $options: 'i' } })
-        // if no product
-        if (products.length == 0) {
-            sendResponse(res, 400, 'Not Product To Display');
-            return;
+        const renderedProduct = await Product.findById(req);
+        if (!renderedProduct) {
+            return null
         }
-        sendResponse(res, 200, `ok`, products);
+        return renderedProduct;
     } catch (err) {
-        // send response
-        sendResponse(res, err.statusCode, err.message ?? `Error`);
+        throw err;
     }
 }
-
 
 const createProduct = async (req, res) => {
     let newProduct;
@@ -69,19 +98,18 @@ const createProduct = async (req, res) => {
         const imageContent = convertImageToBin(req);
 
         // get image attribute and the rest attributes
-        const { image, ...restAttributes } = req.body;
+        const { vendor, name, price, stock, description, image } = req.body;
 
         // Create a new product
         newProduct = await Product.create({
-            ...restAttributes,
+            vendor, name, price, stock, description,
             // get path + filename of image + format extension
             image: imageContent,
         });
-        sendResponse(res, 200, 'Product created successfully', newProduct);
+        return newProduct;
 
     } catch (err) {
-        // send response
-        sendResponse(res, err.statusCode, err.message ?? `Error`);
+        throw err;
     }
 }
 // TODO
@@ -89,26 +117,25 @@ const updateProduct = async (req, res) => {
     try {
         // update product by id
         // get image attribute and the rest attributes
-        const { image, ...restAttributes } = req.body;
+        const { vendor, name, price, stock, oldImage, description, image } = req.body;
         // convert image to base64
         const imageContent = convertImageToBin(req);
         // update product
         const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {
-            ...restAttributes,
+            vendor, name, price, stock, description,
             // get path + filename of image + format extension
-            image: imageContent,
+            image: imageContent ?? oldImage,
         });
         // if update product not found
         if (!updatedProduct) {
-            sendResponse(res, '404', 'Product to update not found');
+            return null;
         }
         // if found and succesfully updated
         else {
-            sendResponse(res, '200', 'Product updated successfully', updatedProduct);
+            return updatedProduct;
         }
     } catch (err) {
-        // send response
-        sendResponse(res, err.statusCode, err.message ?? `Error`);
+        throw err;
     }
 }
 
@@ -117,25 +144,23 @@ const deleteProductById = async (req, res) => {
         const deleteProduct = await Product.findByIdAndDelete(req.params.id);
         // if delete product not found
         if (!deleteProduct) {
-            sendResponse(res, '404', 'Product to delete not found');
+            return null;
         }
         // if found and succesfully deleted
         else {
-            sendResponse(res, '200', 'Product deleted successfully');
+            return deleteProduct;
         }
     } catch (err) {
-        // send response
-        sendResponse(res, err.statusCode, err.message ?? `Error`);
+        throw err;
     }
 }
 const deleteProductListId = async (req, res) => {
     try {
         const idsToDelete = req.body.ids;
         const deleteProducts = await Product.deleteMany({ _id: { $in: idsToDelete } });
-        sendResponse(res, '200', 'Products deleted successfully');
+        return deleteProducts;
     } catch (err) {
-        // send response
-        sendResponse(res, err.statusCode, err.message ?? `Error`);
+        throw err;
     }
 }
 
@@ -143,9 +168,9 @@ const deleteProductListId = async (req, res) => {
 module.exports = {
     getProducts,
     getProductById,
-    searchProducts,
     createProduct,
     updateProduct,
     deleteProductById,
-    deleteProductListId
+    deleteProductListId,
+    getProductByObjectId
 }

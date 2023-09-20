@@ -1,67 +1,76 @@
 const productController = require("../controller/productController");
 const HttpStatus = require("../utils/commonHttpStatus");
-const getProducts = async (req, res) => {
+const { sendResponse } = require("../middleware/middleware");
+
+const getProducts = async (req) => {
     try {
-        const productList = await productController.getProducts();
-        return { status: HttpStatus.OK_STATUS, message: "Get products successfully", data: productList };
+        const productList = await productController.getProducts(req);
+        return sendResponse(HttpStatus.OK_STATUS, `Get products successfully`, productList);
     }
     catch (err) {
         console.log(err);
-        return { status: HttpStatus.INTERNAL_SERVER_ERROR_STATUS, message: `Get products failed: ${err}` };
+        return sendResponse(err.code ?? HttpStatus.INTERNAL_SERVER_ERROR_STATUS, err.message ?? `Get products failed`);
     }
 };
-const getProductById = async (req, res) => {
+const getProductById = async (req) => {
     try {
-        const product = await productController.getProductById(req.params.id);
+        const product = await productController.getProductById(req);
         if (!product) {
-            return { status: HttpStatus.NOT_FOUND_STATUS, message: "Product not found" };
+            return sendResponse(HttpStatus.NOT_FOUND_STATUS, `Product Not Found`);
         }
-        return { status: HttpStatus.OK_STATUS, message: "Get product successfully", data: product };
+        return sendResponse(HttpStatus.OK_STATUS, `Get product successfully`, product);
 
     } catch (err) {
         console.log(err);
-        return { status: HttpStatus.INTERNAL_SERVER_ERROR_STATUS, message: `Get product failed: ${err}` };
+        return sendResponse(err.code ?? HttpStatus.INTERNAL_SERVER_ERROR_STATUS, err.message ?? `Get products failed`);
     }
 };
 
-const searchProducts = async (req, res) => {
+const getProductByObjectId = async (req) => {
     try {
-        const productList = await productController.searchProducts(req.query.name);
-        if (productList.length == 0) {
-            return { status: HttpStatus.NOT_FOUND_STATUS, message: "Product not found" };
+        const product = await productController.getProductByObjectId(req);
+        if (!product) {
+            return sendResponse(HttpStatus.NOT_FOUND_STATUS, `Product Not Found`);
         }
-        return { status: HttpStatus.OK_STATUS, message: "Get products successfully", data: productList };
-    } catch (err) {
-        console.log(err);
-        return { status: HttpStatus.INTERNAL_SERVER_ERROR_STATUS, message: `Get products failed: ${err}` };
+        return sendResponse(HttpStatus.OK_STATUS, `Get product successfully`, product);
 
-    }
-};
-const createProduct = async (req, res) => {
-    try {
-        const product = await productController.createProduct(req.body);
-        return { status: HttpStatus.OK_STATUS, message: "Create product successfully", data: product };
     } catch (err) {
         console.log(err);
-        return { status: HttpStatus.INTERNAL_SERVER_ERROR_STATUS, message: `Create product failed: ${err}` };
+        return sendResponse(err.code ?? HttpStatus.INTERNAL_SERVER_ERROR_STATUS, err.message ?? `Get products failed`);
     }
 };
-const updateProduct = async (req, res) => {
+
+const createProduct = async (req) => {
     try {
-        const product = await productController.updateProduct(req.body);
-        return { status: HttpStatus.OK_STATUS, message: "Update product successfully", data: product };
+        const product = await productController.createProduct(req);
+        return sendResponse(HttpStatus.OK_STATUS, `Create product successfully`, product);
     } catch (err) {
         console.log(err);
-        return { status: HttpStatus.INTERNAL_SERVER_ERROR_STATUS, message: `Update product failed: ${err}` };
+        return sendResponse(err.code ?? HttpStatus.INTERNAL_SERVER_ERROR_STATUS, err.message ?? `Create products failed`);
     }
 };
-const deleteProduct = async (req, res) => {
+const updateProduct = async (req) => {
     try {
-        const product = await productController.deleteProductById(req.params.id);
-        return { status: HttpStatus.OK_STATUS, message: "Delete product successfully", data: product };
+        const product = await productController.updateProduct(req);
+        if (!product) {
+            return sendResponse(HttpStatus.NOT_FOUND_STATUS, `Product Not Found`);
+        }
+        return sendResponse(HttpStatus.OK_STATUS, `Update product successfully`, product);
     } catch (err) {
         console.log(err);
-        return { status: HttpStatus.INTERNAL_SERVER_ERROR_STATUS, message: `Delete product failed: ${err}` };
+        return sendResponse(err.code ?? HttpStatus.INTERNAL_SERVER_ERROR_STATUS, err.message ?? `Update products failed`);
+    }
+};
+const deleteProduct = async (req) => {
+    try {
+        const product = await productController.deleteProductById(req);
+        if (!product) {
+            return sendResponse(HttpStatus.NOT_FOUND_STATUS, `Product Not Found`);
+        }
+        return sendResponse(HttpStatus.OK_STATUS, `Delete product successfully`, product);
+    } catch (err) {
+        console.log(err);
+        return sendResponse(err.code ?? HttpStatus.INTERNAL_SERVER_ERROR_STATUS, err.message ?? `Delete products failed`);
     }
 }
-module.exports = { getProducts, getProductById, searchProducts, createProduct, updateProduct, deleteProduct };
+module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductByObjectId };

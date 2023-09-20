@@ -3,45 +3,68 @@
         <h1 class="text-center font-bold text-3xl my-4">
             <%= title %>
         </h1>
-        <form action="#">
+        <form action="<%= navigatePage('product-add') %>" method="post">
             <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                 <div class="sm:col-span-2">
-                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
-                        Name</label>
-                    <input type="text" name="name" id="name"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Type product name" minlength="10" maxlength="20" required="">
-                    <p class="text-xs pt-2 text-gray-400">Must be 10 to 20 characters</p>
+                    <input type="text" name="vendor" id="vendor" value="<%= user?.user?._id %>" hidden>
                 </div>
                 <div class="sm:col-span-2">
-                    <label for="price"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                    <input type="number" name="price" id="price"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="$2999" step="0.01" min="0" required="">
-                    <p class="text-xs pt-2 text-gray-400">Must be a positive number</p>
+                    <%- include('../partials/input',{
+                        type: "text",
+                        name: "name",
+                        id: "name",
+                        label: 'Name',
+                        placeholder: "Type product name",
+                        minLength: 10,
+                        maxLength: 50,
+                        validationText: "Must be 10 to 50 characters"
+                    }) %>
+                </div>
+                <div class="sm:col-span-2">
+                    <%- include('../partials/input',{
+                        type: "number",
+                        name: "price",
+                        id: "price",
+                        label: 'Price',
+                        placeholder: "$00000",
+                        min: 0,
+                        step: 0.01,
+                        validationText: "Must be a positive number"
+                    }) %>
                 </div>
                 <div class=" sm:col-span-2">
-                    <label for="stock"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stock</label>
-                    <input type="number" name="stock" id="stock"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="20" min="0" required="">
-                    <p class="text-xs pt-2 text-gray-400">Must be a positive number</p>
+                    <%- include('../partials/input',{
+                        type: "number",
+                        name: "stock",
+                        id: "stock",
+                        label: 'Stock',
+                        placeholder: "000",
+                        min: 0,
+                        step: 1,
+                        validationText: "Must be a positive integer"
+                    }) %>
                 </div>
                 <div class="sm:col-span-2">
-                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product
-                        Image</label>
-                    <input type="file" name="image" id="image"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <%- include('../partials/input',{
+                        type: "file",
+                        name: "image",
+                        id: "image",
+                        label: 'Product Image',
+                        required: true
+                    }) %>
                 </div>
-                <div class="sm:col-span-2">
-                    <label for="description"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                    <textarea id="description" rows="8"
-                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Your description here" maxlength="500"></textarea>
-                    <p class="text-xs pt-2 text-gray-400">Maximum 500 characters</p>
+                <div class="col-span-1 lg:col-span-2">
+                    <%- include('../partials/input',{
+                        type: "textarea",
+                        name: "description",
+                        id: "description",
+                        label: 'Description',
+                        value: '',
+                        rows: 8,
+                        placeholder: "Your description here",
+                        maxLength: 500,
+                        validationText: "Maximum 500 characters"
+                    }) %>
                 </div>
             </div>
             <button type="submit"
