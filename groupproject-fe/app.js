@@ -80,7 +80,6 @@ app.get("/", async function (req, res) {
   }
 });
 
-
 // Category page route:
 app.get("/viewAll", async function (req, res) {
   // verify if is login
@@ -206,6 +205,7 @@ app.get("/change-password", middleware.verifyUser, async (req, res) => {
     });
   }
 });
+
 app.post("/change-password", middleware.verifyUser, async (req, res) => {
   const isLogin = middleware.isLogin();
   const result = await UserService.changePassword(
@@ -355,6 +355,7 @@ app.get("/copyright", async function (req, res) {
     console.log(result);
   }
 });
+
 app.get('/privacy', async function (req, res) {
   // verify if is login
   const isLogin = middleware.isLogin();
@@ -383,6 +384,7 @@ app.get('/privacy', async function (req, res) {
     console.log(result);
   }
 });
+
 app.get('/terms', async function (req, res) {
   // verify if is login
   const isLogin = middleware.isLogin();
@@ -463,8 +465,6 @@ app.get("/product/:id", async function (req, res) {
     // get user id after login
     const userId = middleware.getUserIdLocal();
     const user = (await UserService.getUserInfo(userId)).data.user_data;
-    console.log("User", user);
-    console.log("Product", productResult);
     if (productResult.status == HttpStatus.OK_STATUS) {
       res.render("layout.ejs", {
         title: "Product Detail",
@@ -628,9 +628,6 @@ app.post('/cart', middleware.verifyUser, async (req, res) => {
 // Place Order route
 app.post("/order", middleware.verifyUser, async (req, res) => {
   const result = await OrderService.placeOrder(req.user._id);
-
-
-
   if (result.status == 200) {
     let order = result.data.order;
     console.log(order);
