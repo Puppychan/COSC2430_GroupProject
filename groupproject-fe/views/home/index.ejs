@@ -27,10 +27,7 @@
         <h2 class="col-span-full text-center text-4xl mb-4 md:text-5xl font-bold md:mb-8">Trending Products</h2>
         <% products.forEach(function(product){ %>
             <div class="bg-gray-100 shadow-sm rounded-lg w-3/4 md:max-w-sm flex flex-col relative">
-                <a href="<%= navigatePage(" product", product._id) %>">
-                    <img src="<%= product.image %>" alt="<%= product.name %>"
-                        class="w-full h-48 object-cover rounded-t-lg">
-                </a>
+                <img src="<%= product.image %>" alt="<%= product.name %>" class="w-full h-48 object-cover rounded-t-lg">
                 <div class="p-3 flex flex-col gap-2 h-auto flex-grow">
                     <h3 class="text-lg font-bold line-clamp-1 text-gray-800">
                         <%= product.name %>
