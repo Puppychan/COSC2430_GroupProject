@@ -13,7 +13,7 @@
         </h2>
         <p class="inline-block mb-6 text-2xl font-semibold text-gray-300 line-clamp-1">
           <span>
-            <%= product.price %>₫
+            <%= new Intl.NumberFormat('de-DE', { style: 'currency' , currency: 'VND' }).format(product.price) %>
           </span>
         </p>
         <p class="my-3 text-gray-300 leading-loose text-lg tracking-wide font-light indent-5 lg:indent-10">

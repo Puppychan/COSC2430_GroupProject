@@ -204,8 +204,6 @@ app.get("/change-password", middleware.verifyUser, async (req, res) => {
       isLogin: isLogin,
       user: user_data,
     });
-  } else {
-    console.log(result);
   }
 });
 app.post("/change-password", middleware.verifyUser, async (req, res) => {

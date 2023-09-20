@@ -1,0 +1,18 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-900 flex-col">
+    <div class="bg-gray-700 p-8 rounded shadow-md w-full max-w-md mb-4">
+        <h1 class="text-white text-2xl font-semibold text-center">Error: <%= error.status %> - <%= error.message %>
+        </h1>
+        <% if(error.data) { %>
+            <div class="bg-gray-800 p-4 rounded text-green-300">
+                <pre class="whitespace-pre-wrap"><%= JSON.stringify(error.data, null, 2) %></pre>
+            </div>
+            <% } %>
+    </div>
+    <a href="/"
+        class="font-semibold flex items-center justify-center w-1/2 md:w-auto p-4 rounded-md  text-gray-200 border-blue-600 bg-blue-600 hover:bg-blue-700 hover:border-blue-700 hover:text-gray-300"
+        class="font-semibold flex items-center justify-center w-1/2 md:w-auto px-4 py-2 rounded-md text-gray-200 border-blue-600 bg-blue-600 hover:bg-blue-700 hover:border-blue-700 hover:text-gray-300 text-center">
+        Back to Home
+    </a>
+</div>
+</div>
+</div>
