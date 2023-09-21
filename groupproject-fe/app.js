@@ -278,9 +278,9 @@ app.get("/signup-customer", (req, res) => {
   }
 });
 
-app.post("/signup-customer", async (req, res) => {
+app.post("/signup-customer", imageMulter.single('avatar'), async (req, res) => {
   try {
-    const result = await UserService.register(req.body);
+    const result = await UserService.register(req);
     console.log("User", result);
     if (result.status == HttpStatus.OK_STATUS) {
       res.redirect("/login");
@@ -311,9 +311,9 @@ app.get("/signup-vendor", (req, res) => {
   }
 });
 
-app.post("/signup-vendor", async (req, res) => {
+app.post("/signup-vendor", imageMulter.single('avatar'), async (req, res) => {
   try {
-    const result = await UserService.register(req.body);
+    const result = await UserService.register(req);
     console.log("User", result);
     if (result.status == HttpStatus.OK_STATUS) {
       res.redirect("/login");
@@ -345,10 +345,10 @@ app.get("/signup-shipper", (req, res) => {
   }
 });
 
-app.post("/signup-shipper", async (req, res) => {
+app.post("/signup-shipper", imageMulter.single('avatar'), async (req, res) => {
   try {
     console.log(req.body);
-    const result = await UserService.register(req.body);
+    const result = await UserService.register(req);
     console.log("User", result);
     if (result.status == HttpStatus.OK_STATUS) {
       res.redirect("/login");

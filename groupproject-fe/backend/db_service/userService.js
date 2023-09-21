@@ -49,16 +49,19 @@ const { convertImageToBin } = require("../utils/imageToBin");
 }
 
 */
-const register = async (all_info) => {
+const register = async (req) => {
   try {
-    const { username, password, role, avatar, name, address, hubid } = all_info;
+    // convert image to base64
+    const imageContent = convertImageToBin(req);
+
+    const { username, password, role, name, address, hubid } = req.body;
 
     const hash = await bcrypt.hash(password, 8);
     const newuser = await User.create({
       username: username,
       password: hash,
       role: role,
-      avatar: avatar,
+      avatar: imageContent,
     });
 
     let info = null;
@@ -89,7 +92,7 @@ const register = async (all_info) => {
 
     return sendResponse(HttpStatus.OK_STATUS, "Register successfully", { user_info: newuser, role_info: info });
   } catch (err) {
-    if (err.include('E11000 duplicate key error'))
+    if (err?.include('E11000 duplicate key error'))
       return sendResponse(HttpStatus.FORBIDDEN_STATUS, `Register failed: this username has been used by another account.`);
     else
       return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Register failed: ${err}`);
