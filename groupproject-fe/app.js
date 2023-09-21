@@ -587,18 +587,23 @@ app.get("/vendor-dashboard", function (req, res) {
 });
 
 // Shipper Dashboard route
-app.get("/shipper-dashboard", function (req, res) {
+app.get("/shipper-dashboard", middleware.verifyUser, async function (req, res) {
   try {
     const isLogin = middleware.isLogin();
     const userRole = middleware.getUserRoleLocal();
-    res.render("layout.ejs", {
-      title: "Shipper Dashboard",
-      bodyFile: "./orders/dashboard",
-      isLogin: isLogin,
-      activePage: "shipper-dashboard",
-      userRole: isLogin ? userRole : null,
-      orders: dummyOrders,
-    });
+    const orders = await UserService.getShipperDashboard(req.user._id);
+    if (orders.status == HttpStatus.OK_STATUS) {
+      res.render("layout.ejs", {
+        title: "Shipper Dashboard",
+        bodyFile: "./orders/dashboard",
+        isLogin: isLogin,
+        activePage: "shipper-dashboard",
+        userRole: isLogin ? userRole : null,
+        orders: orders.data,
+      });
+    } else {
+      console.log(orders);
+    }
   } catch (err) {
     console.log(err);
   }
@@ -609,9 +614,10 @@ app.get("/cart", middleware.verifyUser, async (req, res) => {
   try {
     const isLogin = middleware.isLogin();
     const userRole = middleware.getUserRoleLocal();
+    const user = await UserService.getUserInfo(req.user._id);
 
     const result = await CartService.getCart(req.user._id);
-    if (result.status == HttpStatus.OK_STATUS) {
+    if (result.status == HttpStatus.OK_STATUS && user.status == HttpStatus.OK_STATUS) {
       const cartItems = await result.data.cart.items.map(async (item) => {
         const product = await ProductService.getProductByObjectId(item.product);
         if (product.status == HttpStatus.OK_STATUS) {
