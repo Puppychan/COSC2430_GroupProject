@@ -16,6 +16,7 @@ const {
   Shipper,
   Cart,
 } = require("../db/models/modelCollection");
+const {getActiveOrdersInHub} = require("./orderService")
 const { checkPassword, newToken, convertTokenToId } = require("../utils/verification");
 const { sendResponse } = require("../middleware/middleware");
 const HttpStatus = require("../utils/commonHttpStatus");
@@ -237,6 +238,7 @@ const getUserInfo = async (userid) => {
     );
   }
 };
+
 const getUser_no_verify = async (userid) => {
   try {
     const user = await User.findOne({ _id: userid });
@@ -286,6 +288,17 @@ const changePassword = async (req, current_pw, new_pw) => {
   }
 };
 
+// get orders to display in shipper dashboard
+const getShipperDashboard = async (userid) => {
+  try {
+    const shipper = await Shipper.findOne({user: userid});
+    const orders = await getActiveOrdersInHub(shipper.hub);
+    return sendResponse(HttpStatus.OK_STATUS, "ok", orders);
+  } catch (err) {
+    return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Get orders failed: ${err}`);
+  }
+}
+
 // dont care this function, it is used to import sample data
 const register_sample = async (user_register) => {
   try {
@@ -306,4 +319,4 @@ const register_sample = async (user_register) => {
   }
 };
 
-module.exports = { register_sample, register, login, getUserInfo, updateProfile, changePassword, getUser_no_verify }
+module.exports = { register_sample, register, login, getUserInfo, updateProfile, changePassword, getUser_no_verify, getShipperDashboard}

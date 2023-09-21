@@ -18,7 +18,7 @@ const userRoutes = require("./routes/userRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const hubRoutes = require("./routes/hubRoutes");
-const productRoutes = require("./routes/productRoutes");
+// const productRoutes = require("./routes/productRoutes");
 
 app.use(cors())
 app.use(express.json())
@@ -43,7 +43,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/hub", hubRoutes);
-app.use("/api/product", productRoutes);
+// app.use("/api/product", productRoutes);
 
 const PORT = process.env.TEST_BACKEND_PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

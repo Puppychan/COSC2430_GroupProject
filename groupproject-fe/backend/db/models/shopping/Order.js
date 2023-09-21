@@ -36,12 +36,16 @@ const orderSchema = new mongoose.Schema({
     ref: 'Hub',
     required: true
   },
-  items: [{
-    type: orderItemSchema,
-    validate: [function (v) {
-      return (v != null && v !== undefined && v.length != 0)
-    }, 'Order item list cannot be empty']
-  }],
+  items: {
+    type: [orderItemSchema],
+    required: true,
+    validate: {
+      validator: function(v) {
+        return (v != null && v !== undefined && v.length != 0);
+      },
+      message: "Cannot create order with empty cart"
+    },
+  },
   total_price: {
     type: Number,
     required: true,

@@ -1,21 +1,12 @@
-// RMIT University Vietnam
-// Course: COSC2430 Web Programming
-// Semester: 2023B
-// Assessment: Assignment 2
-// Authors: Tran Mai Nhung - s3879954
-//          Tran Nguyen Ha Khanh - s3877707
-//          Nguyen Vinh Gia Bao - s3986287
-//          Ton That Huu Luan - s3958304
-//          Ho Van Khoa - s3997024
-// Acknowledgement: 
-const { Order, Product, Cart } = require("../db/models/modelCollection");
-const { sendResponse } = require('../middleware/middleware');
+const {Order, Product, Cart} = require("../db/models/modelCollection");
+const {emptyCart} = require("./cartService");
+const {sendResponse} = require('../middleware/middleware');
 const HttpStatus = require('../utils/commonHttpStatus')
 
 
 const placeOrder = async (customerid, hubid) => {
   try {
-    const cart = await Cart.findOne({ customer: customerid });
+    let cart = await Cart.findOne({customer: customerid});
     if (cart == null) return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No cart is found the with given user id");
 
     let items_final = []
@@ -27,8 +18,10 @@ const placeOrder = async (customerid, hubid) => {
         total_price += product.price * item.quantity;
       }
     }
-    const order = await Order.create({ customer: customerid, items: items_final, total_price: total_price, hub: hubid, status: 'active' })
-    return sendResponse(HttpStatus.OK_STATUS, "Placed order successfully", { order });
+    const order = await Order.create({customer: customerid, items: items_final, total_price: total_price, hub: hubid, status: 'active'})
+    cart = await emptyCart(customerid);
+
+    return sendResponse(HttpStatus.OK_STATUS, "Placed order successfully", {order, cart});
 
   } catch (err) {
     console.error(err);
@@ -96,21 +89,20 @@ const getOrderById = async (orderid) => {
   }
 };
 
-
-// const randomHub = async () => {
-//   try {
-//     const hubs = await Hub.find();
-//     let random_hub = hubs[Math.floor(Math.random()*hubs.length)];
-//     return random_hub._id;
-//   } catch (err) {
-//     throw(err)
-//   }
-// }
+const getActiveOrdersInHub = async (hubid) => {
+  try {
+    const orders = await Order.find({hub: hubid, status: 'active'});
+    return orders
+  } catch (err) {
+    throw(err)
+  }
+}
 
 module.exports = {
   getOrderHistory,
   getOrderById,
   placeOrder,
   updateOrderStatus,
-  assignShipper
+  assignShipper,
+  getActiveOrdersInHub
 };
