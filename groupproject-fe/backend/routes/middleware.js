@@ -1,3 +1,13 @@
+// RMIT University Vietnam
+// Course: COSC2430 Web Programming
+// Semester: 2023B
+// Assessment: Assignment 2
+// Authors: Tran Mai Nhung - s3879954
+//          Tran Nguyen Ha Khanh - s3877707
+//          Nguyen Vinh Gia Bao - s3986287
+//          Ton That Huu Luan - s3958304
+//          Ho Van Khoa - s3997024
+// Acknowledgement: 
 const User = require('../db/models/user/User')
 const { verifyToken } = require('../utils/verification')
 
@@ -27,7 +37,7 @@ const verifyUser = async (req, res, next) => {
     const payload = await verifyToken(authorization.split(' ')[1])
     console.log(payload)
     if (payload) {
-      const user =  await User.findOne({_id: payload.id});
+      const user = await User.findOne({ _id: payload.id });
       user.password = 0;
       req['user'] = user
       next()

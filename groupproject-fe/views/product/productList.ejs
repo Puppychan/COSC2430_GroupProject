@@ -1,3 +1,13 @@
+<!-- RMIT University Vietnam 
+Course: COSC2430 Web Programming 
+Semester: 2023B
+Assessment: Assignment 2 
+Authors:  Tran Mai Nhung - s3879954          
+          Tran Nguyen Ha Khanh - s3877707          
+          Nguyen Vinh Gia Bao - s3986287          
+          Ton That Huu Luan - s3958304          
+          Ho Van Khoa - s3997024 
+Acknowledgement:  -->
 <section class="header relative">
   <img
     src="https://images.unsplash.com/photo-1530319067432-f2a729c03db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1389&q=80"
@@ -40,8 +50,7 @@
   </aside>
   <div class="flex flex-col justify-center w-full lg:w-3/4">
     <!-- Bao -->
-    <section
-      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 
       items-center justify-items-center 
       gap-x-7 gap-y-10 
       mt-2 mb-5 mx-auto md:max-w-2xl lg:max-w-full lg:mx-0">
@@ -50,17 +59,19 @@
       </h2>
       <% products.forEach(function(product){ %>
         <%- include('./product-card.ejs', {product, userRole}) %>
-        <% }); %>
+          <% }); %>
     </section>
     <nav aria-label="Page navigation example" class="flex justify-center mt-6 w-full">
       <ul class="inline-flex -space-x-px text-sm">
         <li>
-          <a href="<%= navigatePage(" product-list", null, {...pageInfo, page: pageInfo.page - 1}) %>" class="flex items-center
+          <a href="<%= navigatePage(" product-list", null, {...pageInfo, page: pageInfo.page - 1}) %>" class="flex
+            items-center
             justify-center w-32 h-12 leading-tight border text-base font-bold rounded-l-lg bg-gray-100 border-gray-700
             text-neutral-600 hover:bg-gray-700 hover:text-white" <%= pageInfo.page==0 ? "disabled" : "" %>>Previous</a>
         </li>
         <li>
-          <a href="<%= navigatePage(" product-list", null, {...pageInfo, page: pageInfo.page + 1}) %>" class="flex items-center
+          <a href="<%= navigatePage(" product-list", null, {...pageInfo, page: pageInfo.page + 1}) %>" class="flex
+            items-center
             justify-center w-32 h-12 leading-tight border text-base font-bold rounded-r-lg bg-gray-100 border-gray-700
             text-neutral-600 hover:bg-gray-700 hover:text-white" <%= pageInfo.page==pageInfo.totalPage ? "disabled" : ""
               %>>Next</a>

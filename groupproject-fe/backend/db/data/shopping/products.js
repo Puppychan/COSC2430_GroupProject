@@ -1,3 +1,13 @@
+// RMIT University Vietnam
+// Course: COSC2430 Web Programming
+// Semester: 2023B
+// Assessment: Assignment 2
+// Authors: Tran Mai Nhung - s3879954
+//          Tran Nguyen Ha Khanh - s3877707
+//          Nguyen Vinh Gia Bao - s3986287
+//          Ton That Huu Luan - s3958304
+//          Ho Van Khoa - s3997024
+// Acknowledgement: 
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Types;
 let products = [
@@ -98,7 +108,7 @@ const generateProducts = () => {
       name: productInfo.name,
       category: "Accessories",
       image:
-        `https://source.unsplash.com/random?${productInfo.productTypes}&${index+7}`,
+        `https://source.unsplash.com/random?${productInfo.productTypes}&${index + 7}`,
       description:
         "PlayStation 5 (PS5) is a home video game console developed by Sony Interactive Entertainment. Announced in 2019 as the successor to the PlayStation 4, the PS5 was released on November 12, 2020 in Australia, Japan, New Zealand, North America, Singapore, and South Korea, and November 19, 2020 onwards in other major markets except China and India.",
       // price from 1 million to 10 million
