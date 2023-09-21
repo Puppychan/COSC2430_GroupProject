@@ -654,7 +654,6 @@ app.get("/order", middleware.verifyUser, async function (req, res) {
   if (result.status == 200) {
     let user_data = result.data.user_data;
     console.log(user_data);
-
     res.render("layout.ejs", {
       title: "Order Summary",
       bodyFile: "./customer/order",
