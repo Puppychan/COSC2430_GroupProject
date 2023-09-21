@@ -652,13 +652,16 @@ app.get("/order", middleware.verifyUser, async function (req, res) {
   const userId = middleware.getUserIdLocal();
   const user = await UserService.getUserInfo(userId);
   if (result.status == 200) {
+    let user_data = result.data.user_data;
+    console.log(user_data);
+
     res.render("layout.ejs", {
       title: "Order Summary",
       bodyFile: "./customer/order",
       activePage: "order",
       product: products,
       isLogin: isLogin,
-      user: user,
+      user: user_data,
     });
   }
 });
