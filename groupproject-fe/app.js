@@ -135,7 +135,7 @@ app.post("/login", async (req, res) => {
     console.log("Login ;sdnkds", result);
     if (result.status == HttpStatus.OK_STATUS) {
       middleware.setToken(result.data.token);
-      middleware.setUserIdLocal(result.data.id);
+      middleware.setUserRoleLocal(result.data.role);
       res.redirect("/");
     } else {
       console.log(result);
@@ -157,12 +157,12 @@ app.get("/logout", async (req, res) => {
 });
 
 // My Account route
-app.get("/my-account/:id", middleware.verifyUser,  async (req, res) => {
+app.get("/my-account", middleware.verifyUser,  async (req, res) => {
   try {
     const isLogin = middleware.isLogin();
     const userRole = middleware.getUserRoleLocal();
-    const userId = req.params.id;
-    const result = await UserService.getUserInfo(req.user._id);
+    const userId = req.user._id;
+    const result = await UserService.getUserInfo(userId);
     // if have login
     if (isLogin) {
       if (result.status == HttpStatus.OK_STATUS) {
@@ -678,6 +678,7 @@ app.get("/order", middleware.verifyUser, async function (req, res) {
   try {
     const isLogin = middleware.isLogin();
     const userRole = middleware.getUserRoleLocal();
+    const user = await UserService.getUserInfo(req.user._id);
 
     res.render("layout.ejs", {
       title: "Order Summary",
