@@ -161,7 +161,7 @@ app.get("/logout", async (req, res) => {
 });
 
 // My Account route
-app.get("/my-account", middleware.verifyUser,  async (req, res) => {
+app.get("/my-account", middleware.verifyUser, async (req, res) => {
   try {
     const isLogin = middleware.isLogin();
     const userRole = middleware.getUserRoleLocal();
@@ -580,7 +580,7 @@ app.get("/shipper-dashboard", function (req, res) {
     const userRole = middleware.getUserRoleLocal();
     res.render("layout.ejs", {
       title: "Shipper Dashboard",
-      bodyFile: "./shipper/dashboard",
+      bodyFile: "./orders/dashboard",
       isLogin: isLogin,
       activePage: "shipper-dashboard",
       userRole: isLogin ? userRole : null,
@@ -630,6 +630,26 @@ app.get("/cart", middleware.verifyUser, async (req, res) => {
     }
   } catch (err) {
     console.log(err);
+  }
+});
+
+app.get("/order-detail", middleware.verifyUser, async function (req, res) {
+  const isLogin = middleware.isLogin;
+  const result = await UserService.getUserInfo(req.user._id);
+  const userId = middleware.getUserIdLocal();
+  const user = await UserService.getUserInfo(userId);
+  if (result.status == 200) {
+    let user_data = result.data.user_data;
+    console.log(user_data);
+
+    res.render("layout.ejs", {
+      title: "Order Detail",
+      bodyFile: "./customer/order-detail",
+      activePage: "order detail",
+      product: products,
+      isLogin: isLogin,
+      user: user_data,
+    });
   }
 });
 
@@ -691,12 +711,50 @@ app.get("/order", middleware.verifyUser, async function (req, res) {
       product: products,
       isLogin: isLogin,
       userRole: isLogin ? userRole : null,
+      user: user,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+// Get Order History
+app.get('/order-history', middleware.verifyUser, async (req, res) => {
+  try {
+    const isLogin = middleware.isLogin();
+    const userRole = middleware.getUserRoleLocal();
+
+    res.render('layout.ejs', {
+      title: 'Order History',
+      bodyFile: './orders/dashboard',
+      activePage: 'order-history',
+      isLogin: isLogin,
+      userRole: isLogin ? userRole : null,
     });
   } catch (err) {
     console.log(err);
   }
 });
 
+// Order Detail route
+app.get("/order-detail", middleware.verifyUser, async function (req, res) {
+  const isLogin = middleware.isLogin;
+  const result = await UserService.getUserInfo(req.user._id);
+  const userId = middleware.getUserIdLocal();
+  const user = await UserService.getUserInfo(userId);
+  if (result.status == 200) {
+    let user_data = result.data.user_data;
+    console.log(user_data);
+
+    res.render("layout.ejs", {
+      title: "Order Detail",
+      bodyFile: "./customer/order-detail",
+      activePage: "order detail",
+      product: products,
+      isLogin: isLogin,
+      user: user_data,
+    });
+  }
+});
 // handle error if append to url
 app.use((error, req, res, next) => {
   if (error instanceof multer.MulterError) {

@@ -1,6 +1,5 @@
 <div class="text-center pt-24 pb-0">    
-    <p class="lg:text-5xl text-3xl font-medium">Order Summary</p>
-    <p class="lg:text-xl mt-4 text-xl text-gray-400">Check your items before finish your order</p>
+    <p class="lg:text-5xl text-4xl font-medium">Order Detail</p>
 </div>
 
 <section>
@@ -10,7 +9,6 @@
         
         <div class="py-20 lg:mt-16 justify-items-center text-lg ">
             
-            <% if (user?.user?.role==="customer" ) { %>
                 
                 <div class="w-[400px] px-4 py-6 mx-auto bg-gray-800 mb:flex rounded-xl shadow-inner shadow-2 xl lg:ml-16">
                     
@@ -56,40 +54,30 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex items-center justify-between mt-14 ml-4 mb-12">
+                    <div class="flex items-center justify-between mt-10 ml-4 mb-8">
                         <p class="text-2xl font-bold text-white-900 ">Total</p>
                         <p class="text-xl font-semibold text-white-900 ">
                             123.33<span class="text-xs font-normal text-white-400">VND</span>
                         </p>
                     </div>
-                    <form action="/order" method="post">
-                        <div class="shipper-info role-info ml-4" id="hub">
-                            <div class="inputBox flex flex-col">
-                                <label for="hubid"
-                                    class="block mb-2 text-xl font-medium text-gray-900 dark:text-white mb:text-center">Distribution
-                                    Hub</label>
-                                <select class="bg-gray-50 border border-gray-300 text-gray-900
-                                  sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
-                                  w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                  dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="hub"
-                                    name="hubid">
-                                    <option value="" disabled selected>Choose your Distribution Hub</option>
-                                    <option value="00000001db42a4ac30ff65d2">Ha Noi</option>
-                                    <option value="00000001db42a4ac30ff65d1">Ho Chi Minh City</option>
-                                    <option value="00000001db42a4ac30ff65d3">Da Nang</option>
-                                </select>
-                            </div>
-                        </div>
-                        <input type="text" name="_id" value="<%= user?._id %>" class="hidden">
-                        <div class="pt-12 flex justify-center">
-                            <button href="/order" type="submit"
-                                class="inline-flex w-96 items-center justify-center rounded-md px-6 py-4 text-lg font-semibold text-white bg-blue-500 hover:bg-blue-600">
-                                Place Order
-                            </button>
-                        </div>
-                    </form>
+                    
                 </div>
-                <% } %>
+
+                <div class="flex lg:flex-row justify-between lg:ml-16 mt-auto">
+                    <div class="pt-12 flex">
+                        <button href="/order" type="submit"
+                            class="inline-flex w-44 items-center justify-center rounded-md px-6 py-4 text-lg font-semibold text-white bg-green-500 hover:bg-green-600">
+                            Mark As Complete
+                        </button>
+                    </div>
+                    <div class="pt-12 flex">
+                        <button 
+                            class="inline-flex w-44 items-center justify-center rounded-md px-6 py-4 text-lg font-semibold text-white bg-red-500 hover:bg-red-600">
+                            Mark As Cancel
+                        </button>
+                    </div>
+                </div>
+               
         </div>
     
     

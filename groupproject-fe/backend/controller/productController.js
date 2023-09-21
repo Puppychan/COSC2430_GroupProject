@@ -73,7 +73,7 @@ const getProducts = async (req, res) => {
 
 const getRandomProducts = (req, res) => {
     try {
-        const limit = 8;
+        const limit = 6;
         const agg = [
             { $sample: { size: limit } }
         ];
