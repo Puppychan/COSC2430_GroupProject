@@ -1,3 +1,13 @@
+// RMIT University Vietnam
+// Course: COSC2430 Web Programming
+// Semester: 2023B
+// Assessment: Assignment 2
+// Authors: Tran Mai Nhung - s3879954
+//          Tran Nguyen Ha Khanh - s3877707
+//          Nguyen Vinh Gia Bao - s3986287
+//          Ton That Huu Luan - s3958304
+//          Ho Van Khoa - s3997024
+// Acknowledgement: 
 const multer = require('multer');
 
 const storage = multer.diskStorage({
@@ -15,7 +25,7 @@ const uploadLimits = {
     fieldSize: 2 * 1024 * 1024  // 2 MB
 };
 
-const upload = multer({ 
+const upload = multer({
     storage: storage,
     limits: uploadLimits
 });

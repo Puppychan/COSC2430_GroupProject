@@ -1,20 +1,25 @@
-<div class="text-center pt-24 pb-0">    
+<!-- RMIT University Vietnam 
+Course: COSC2430 Web Programming 
+Semester: 2023B
+Assessment: Assignment 2 
+Authors:  Tran Mai Nhung - s3879954          
+          Tran Nguyen Ha Khanh - s3877707          
+          Nguyen Vinh Gia Bao - s3986287          
+          Ton That Huu Luan - s3958304          
+          Ho Van Khoa - s3997024 
+Acknowledgement:  -->
+<div class="text-center pt-24 pb-0">
     <p class="lg:text-5xl text-3xl font-medium">Order Summary</p>
     <p class="lg:text-xl mt-4 text-xl text-gray-400">Check your items before finish your order</p>
 </div>
-
 <section>
-
-
     <div class="sm:px-10 lg:px-20 xl:px-32 lg:flex lg:flex-row justify-between sm:flex-end">
-        
         <div class="py-20 lg:mt-16 justify-items-center text-lg ">
-            
             <% if (user?.user?.role==="customer" ) { %>
-                
-                <div class="w-[400px] px-4 py-6 mx-auto bg-gray-800 mb:flex rounded-xl shadow-inner shadow-2 xl lg:ml-16">
-                    
-                    <h3 class="text-2xl dark:text-white font-semibold text-gray-800 text-center ">Shipping Information</h3>
+                <div
+                    class="w-[400px] px-4 py-6 mx-auto bg-gray-800 mb:flex rounded-xl shadow-inner shadow-2 xl lg:ml-16">
+                    <h3 class="text-2xl dark:text-white font-semibold text-gray-800 text-center ">Shipping Information
+                    </h3>
                     <div class="flex flex-col md:flex-row xl:flex-col justify-start">
                         <div class="flex flex-col justify-start items-start">
                             <div
@@ -22,10 +27,10 @@
                             </div>
                         </div>
                         <div class="mt-6 md:mt-0 lg:pl-5">
-                          
+
                             <div
                                 class="flex justify-center md:justify-start xl:flex-col flex-col md:space-x-6 lg:space-x-8 xl:space-x-0 space-y-4 xl:space-y-12 md:space-y-0 md:flex-row items-center md:items-start">
-                             
+
                                 <div
                                     class="flex justify-center md:justify-start items-center md:items-start flex-col space-y-4 xl:mt-8">
                                     <p
@@ -46,9 +51,7 @@
                                         <%= user?.address %>
                                     </p>
                                 </div>
-                                
                             </div>
-                            
                         </div>
                         <div class="flex flex-col justify-start items-start">
                             <div
@@ -91,14 +94,7 @@
                 </div>
                 <% } %>
         </div>
-    
-    
         <div class="lg:py-20 lg:ml-20 py-10">
-    
-    
-        
-    
-    
             <div class="mt-8 space-y-3 rounded-2xl border-[3px] border-gray-600 px-2 py-20 lg:px-11 ">
                 <div class="flow-root">
                     <ul class="-my-8">
@@ -109,7 +105,7 @@
                                     <img class="h-20 w-20 max-w-full rounded-lg object-cover mt-1 "
                                         src="<%= product.image %>" alt="" />
                                 </div>
-    
+
                                 <div class="relative flex flex-1 flex-col justify-between p-4">
                                     <div class="sm:col-gap-5 sm:grid sm:grid-cols-2">
                                         <div class="lg:pr-0 sm:pr-5">
@@ -117,10 +113,10 @@
                                             <div class="text-lg font-semibold line-clamp-2 ">
                                                 <%= product.name %>
                                             </div>
-    
-    
+
+
                                             </p>
-    
+
                                         </div>
                                         <div
                                             class="mt-4 pt-4 flex items-end justify-between sm:mt-0 sm:items-start sm:justify-end">
@@ -128,11 +124,11 @@
                                                 class="shrink-0 w-20 text-xl font-semibold text-white-900 sm:order-2 sm:ml-8 sm:text-right">
                                                 <%= product.price %>
                                             </p>
-    
+
                                         </div>
                                     </div>
-    
-    
+
+
                                 </div>
                             </li>
                             <% }); %>
@@ -141,11 +137,5 @@
             </div>
         </div>
     </div>
-    
-    
-    
-    
-    
-    
     </div>
 </section>

@@ -1,3 +1,13 @@
+<!-- RMIT University Vietnam 
+Course: COSC2430 Web Programming 
+Semester: 2023B
+Assessment: Assignment 2 
+Authors:  Tran Mai Nhung - s3879954          
+          Tran Nguyen Ha Khanh - s3877707          
+          Nguyen Vinh Gia Bao - s3986287          
+          Ton That Huu Luan - s3958304          
+          Ho Van Khoa - s3997024 
+Acknowledgement:  -->
 <section>
     <div class="bg-gray-800 border-gray-700 py-3 px-9 my-6 rounded-lg mx-auto max-w-2xl lg:py-6">
         <h1 class="text-center font-bold text-3xl my-4">
@@ -9,62 +19,26 @@
                     <input type="text" name="vendor" id="vendor" value="<%= userId %>" hidden>
                 </div>
                 <div class="sm:col-span-2">
-                    <%- include('../partials/input',{
-                        type: "text",
-                        name: "name",
-                        id: "name",
-                        label: 'Name',
-                        placeholder: "Type product name",
-                        minLength: 10,
-                        maxLength: 50,
-                        validationText: "Must be 10 to 50 characters"
-                    }) %>
+                    <%- include('../partials/input',{ type: "text" , name: "name" , id: "name" , label: 'Name' ,
+                        placeholder: "Type product name" , minLength: 10, maxLength: 50,
+                        validationText: "Must be 10 to 50 characters" }) %>
                 </div>
                 <div class="sm:col-span-2">
-                    <%- include('../partials/input',{
-                        type: "number",
-                        name: "price",
-                        id: "price",
-                        label: 'Price',
-                        placeholder: "$00000",
-                        min: 0,
-                        step: 0.01,
-                        validationText: "Must be a positive number"
-                    }) %>
+                    <%- include('../partials/input',{ type: "number" , name: "price" , id: "price" , label: 'Price' ,
+                        placeholder: "$00000" , min: 0, step: 0.01, validationText: "Must be a positive number" }) %>
                 </div>
                 <div class=" sm:col-span-2">
-                    <%- include('../partials/input',{
-                        type: "number",
-                        name: "stock",
-                        id: "stock",
-                        label: 'Stock',
-                        placeholder: "000",
-                        min: 0,
-                        step: 1,
-                        validationText: "Must be a positive integer"
-                    }) %>
+                    <%- include('../partials/input',{ type: "number" , name: "stock" , id: "stock" , label: 'Stock' ,
+                        placeholder: "000" , min: 0, step: 1, validationText: "Must be a positive integer" }) %>
                 </div>
                 <div class="sm:col-span-2">
-                    <%- include('../partials/input',{
-                        type: "file",
-                        name: "image",
-                        id: "image",
-                        label: 'Product Image',
-                        required: true
-                    }) %>
+                    <%- include('../partials/input',{ type: "file" , name: "image" , id: "image" ,
+                        label: 'Product Image' , required: true }) %>
                 </div>
                 <div class="col-span-1 lg:col-span-2">
-                    <%- include('../partials/input',{
-                        type: "textarea",
-                        name: "description",
-                        id: "description",
-                        label: 'Description',
-                        value: '',
-                        rows: 8,
-                        placeholder: "Your description here",
-                        maxLength: 500,
-                        validationText: "Maximum 500 characters"
-                    }) %>
+                    <%- include('../partials/input',{ type: "textarea" , name: "description" , id: "description" ,
+                        label: 'Description' , value: '' , rows: 8, placeholder: "Your description here" , maxLength:
+                        500, validationText: "Maximum 500 characters" }) %>
                 </div>
             </div>
             <button type="submit"

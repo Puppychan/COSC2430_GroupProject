@@ -1,6 +1,17 @@
+<!-- RMIT University Vietnam 
+Course: COSC2430 Web Programming 
+Semester: 2023B
+Assessment: Assignment 2 
+Authors:  Tran Mai Nhung - s3879954          
+          Tran Nguyen Ha Khanh - s3877707          
+          Nguyen Vinh Gia Bao - s3986287          
+          Ton That Huu Luan - s3958304          
+          Ho Van Khoa - s3997024 
+Acknowledgement:  -->
 <div class="bg-gray-100 shadow-gray-700 shadow-lg rounded-lg w-full md:max-w-sm flex flex-col relative">
   <a href="<%= navigatePage(" product", product._id) %>">
-    <img src="<%= product.image %>" alt="<%= product.name %> Image" class="w-full h-56 md:h-52 object-cover rounded-t-lg">
+    <img src="<%= product.image %>" alt="<%= product.name %> Image"
+      class="w-full h-56 md:h-52 object-cover rounded-t-lg">
   </a>
   <div class="p-3 flex flex-col gap-2 h-auto flex-grow">
     <h3 class="text-lg font-bold line-clamp-1 text-gray-800">
@@ -11,9 +22,9 @@
     </p>
     <h4 class="text-red-600 line-clamp-1 font-semibold mt-0">
       <%= formatCurrency(product.price) %>
-      <span class="<%= product.stock > 0 ? 'text-green-600' : 'text-red-600' %> font-semibold">
-        - <%= product.stock> 0 ? product.stock + ' In Stock' : 'Out of Stock' %>
-      </span>
+        <span class="<%= product.stock > 0 ? 'text-green-600' : 'text-red-600' %> font-semibold">
+          - <%= product.stock> 0 ? product.stock + ' In Stock' : 'Out of Stock' %>
+        </span>
     </h4>
     <p class="text-sm text-gray-800 mb-10 line-clamp-1 md:line-clamp-2">
       <%= product.description %>
@@ -23,8 +34,8 @@
     <a href="<%= navigatePage(" product", product._id) %>"> Details →</a>
   </div>
   <% if (userRole=='customer' ) { %>
-  <div class="absolute bottom-5 right-4 text-blue-600" title="Add To Cart">
-    <i class="fa-solid fa-cart-plus fa-xl"></i>
-  </div>
-  <% } %>
+    <div class="absolute bottom-5 right-4 text-blue-600" title="Add To Cart">
+      <i class="fa-solid fa-cart-plus fa-xl"></i>
+    </div>
+    <% } %>
 </div>

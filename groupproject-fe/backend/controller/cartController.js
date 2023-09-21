@@ -1,9 +1,19 @@
-const {Cart, Product} = require('../db/models/modelCollection')
-const {sendResponse} = require("../routes/middleware");
+// RMIT University Vietnam
+// Course: COSC2430 Web Programming
+// Semester: 2023B
+// Assessment: Assignment 2
+// Authors: Tran Mai Nhung - s3879954
+//          Tran Nguyen Ha Khanh - s3877707
+//          Nguyen Vinh Gia Bao - s3986287
+//          Ton That Huu Luan - s3958304
+//          Ho Van Khoa - s3997024
+// Acknowledgement: 
+const { Cart, Product } = require('../db/models/modelCollection')
+const { sendResponse } = require("../routes/middleware");
 
 const getCart = async (req, res) => {
   try {
-    const cart = await Cart.findOne({customer: req.params.userid});
+    const cart = await Cart.findOne({ customer: req.params.userid });
     sendResponse(res, 200, 'ok', cart);
   } catch (err) {
     console.log(err)
@@ -13,17 +23,17 @@ const getCart = async (req, res) => {
 
 const addProductToCart = async (req, res) => {
   try {
-    const {product, quantity} = req.body
-    let cart = await Cart.findOne({customer: req.params.userid});
+    const { product, quantity } = req.body
+    let cart = await Cart.findOne({ customer: req.params.userid });
     let exist = false
-    for (let i=0; i<cart.items.length; i++) {
+    for (let i = 0; i < cart.items.length; i++) {
       if (cart.items[i].product == product) {
         cart.items[i].quantity += quantity;
         exist = true
         break;
       }
     }
-    if (!exist) cart.items.push({product: product, quantity: quantity})
+    if (!exist) cart.items.push({ product: product, quantity: quantity })
     cart = await cart.save()
     sendResponse(res, 200, 'added product to cart', cart);
   } catch (err) {
@@ -35,8 +45,8 @@ const addProductToCart = async (req, res) => {
 const deleteProductInCart = async (req, res) => {
   try {
     const productid = req.params.productid
-    let cart = await Cart.findOne({customer: req.user._id});
-    cart.items = cart.items.filter(function(item) {
+    let cart = await Cart.findOne({ customer: req.user._id });
+    cart.items = cart.items.filter(function (item) {
       return item.product != productid
     })
     cart = await cart.save()
@@ -48,4 +58,4 @@ const deleteProductInCart = async (req, res) => {
   }
 }
 
-module.exports = {addProductToCart, deleteProductInCart, getCart}
+module.exports = { addProductToCart, deleteProductInCart, getCart }

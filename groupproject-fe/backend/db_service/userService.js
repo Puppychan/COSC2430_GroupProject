@@ -1,3 +1,13 @@
+// RMIT University Vietnam
+// Course: COSC2430 Web Programming
+// Semester: 2023B
+// Assessment: Assignment 2
+// Authors: Tran Mai Nhung - s3879954
+//          Tran Nguyen Ha Khanh - s3877707
+//          Nguyen Vinh Gia Bao - s3986287
+//          Ton That Huu Luan - s3958304
+//          Ho Van Khoa - s3997024
+// Acknowledgement: 
 const bcrypt = require("bcrypt");
 const {
   User,
@@ -161,7 +171,7 @@ const updateProfile = async (userid, update_info) => {
     }
     else if (role == 'vendor') {
       updated_role_info = await Vendor.findOneAndUpdate(
-        {user: userid},
+        { user: userid },
         {
           name: name,
           address: address
@@ -171,12 +181,12 @@ const updateProfile = async (userid, update_info) => {
     }
     else if (role == 'shipper') {
       updated_role_info = await Shipper.findOneAndUpdate(
-          {user: userid},
-          {
-            name: name
-          },
-          {new: true}
-        )
+        { user: userid },
+        {
+          name: name
+        },
+        { new: true }
+      )
     }
 
     if (!!!updated_role_info) {
