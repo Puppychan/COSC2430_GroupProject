@@ -7,6 +7,7 @@ router.post('/register', user.register)
 router.post('/login', user.login)
 router.post('/update', verifyUser, user.updateProfile)
 router.route('/my-account').get(verifyUser, user.getUserInfo)
+router.route('/shipper-dashboard').get(verifyUser, user.getShipperDashboard)
 router.route('/:id').get(user.getUser_no_verify)
 router.route('/change-password').post(verifyUser, user.changePassword)
 

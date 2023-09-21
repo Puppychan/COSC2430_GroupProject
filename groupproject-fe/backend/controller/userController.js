@@ -1,25 +1,25 @@
 const bcrypt = require('bcrypt')
 const {User, Customer, Vendor, Shipper, Cart} = require('../db/models/modelCollection')
+const {getActiveOrdersInHub} = require("./orderController")
 const {sendResponse} = require('../routes/middleware');
 const {checkPassword, newToken} = require('../utils/verification')
 
 const register_sample = async (user_register) => {
   try {
-    const {user, info} = user_register
+    const { user, info } = user_register;
     const hash = await bcrypt.hash(user.password, 8);
-    const newuser = await User.create({...user, password: hash});
+    const newuser = await User.create({ ...user, password: hash });
     const role = newuser.role;
-    if (role == 'customer') {
-      await Customer.create({...info, user: newuser._id})
-    }
-    else if (role == 'vendor') {
-      await Vendor.create({...info, user: newuser._id})
-    }
-    else if (role == 'shipper') {
-      await Shipper.create({...info, user: newuser._id})
+    if (role == "customer") {
+      await Customer.create({ ...info, user: newuser._id });
+      await Cart.create({ customer: newuser._id });
+    } else if (role == "vendor") {
+      await Vendor.create({ ...info, user: newuser._id });
+    } else if (role == "shipper") {
+      await Shipper.create({ ...info, user: newuser._id });
     }
   } catch (err) {
-    throw(err)
+    throw err;
   }
 }
 
@@ -208,4 +208,15 @@ const changePassword = async (req, res) => {
   }
 }
 
-module.exports = {register_sample, register, login, getUserInfo, getUser_no_verify, updateProfile, changePassword}
+const getShipperDashboard = async (req, res) => {
+  try {
+    const shipper = await Shipper.findOne({user: req.user._id});
+    const orders = await getActiveOrdersInHub(shipper.hub);
+    sendResponse(res, 200, 'ok', orders);
+  } catch (err) {
+    console.log(err)
+    sendResponse(res, 500, `Error ${err}`);
+  }
+}
+
+module.exports = {register_sample, register, login, getUserInfo, getUser_no_verify, updateProfile, changePassword, getShipperDashboard}

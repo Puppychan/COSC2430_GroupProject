@@ -1,10 +1,10 @@
-const cart = require("./cartController");
 const {Order, Product, Cart} = require("../db/models/modelCollection");
+const {emptyCart} = require("./cartController");
 const {sendResponse} = require("../routes/middleware");
 
 const getOrderHistory = async (req, res) => {
   try {
-    const orders = await Order.find({customer: req.params.userid});
+    const orders = await Order.find({customer: req.user._id});
     sendResponse(res, 200, 'ok', orders);
   } catch (err) {
     console.error(err);
@@ -24,8 +24,8 @@ const getOrderById = async (req, res) => {
 
 const placeOrder = async (req, res) => {
   try {
-    const customerid = req.params.userid
-    const cart = await Cart.findOne({customer: customerid});
+    const customerid = req.user._id
+    let cart = await Cart.findOne({customer: customerid});
     const {hub} = req.body;
     let items_final = []
     let total_price = 0;
@@ -37,7 +37,8 @@ const placeOrder = async (req, res) => {
       }
     }
     const order = await Order.create({customer: customerid, items: items_final, total_price: total_price, hub: hub, status: 'active'})
-    sendResponse(res, 200, 'ok', order);
+    cart = await emptyCart(customerid);
+    sendResponse(res, 200, 'ok', {order, cart});
   } catch (err) {
     console.error(err);    
     sendResponse(res, 500, `Error ${err}`);
@@ -79,20 +80,20 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
-// const randomHub = async () => {
-//   try {
-//     const hubs = await Hub.find();
-//     let random_hub = hubs[Math.floor(Math.random()*hubs.length)];
-//     return random_hub._id;
-//   } catch (err) {
-//     throw(err)
-//   }
-// }
+const getActiveOrdersInHub = async (hubid) => {
+  try {
+    const orders = await Order.find({hub: hubid, status: 'active'});
+    return orders;
+  } catch (err) {
+    throw(err)
+  }
+}
 
 module.exports = {
   getOrderHistory,
   getOrderById,
   placeOrder,
   updateOrderStatus,
-  assignShipper
+  assignShipper,
+  getActiveOrdersInHub
 };

@@ -1,11 +1,12 @@
 const {Order, Product, Cart} = require("../db/models/modelCollection");
+const {emptyCart} = require("./cartService");
 const {sendResponse} = require('../middleware/middleware');
 const HttpStatus = require('../utils/commonHttpStatus')
 
 
 const placeOrder = async (customerid, hubid) => {
   try {
-    const cart = await Cart.findOne({customer: customerid});
+    let cart = await Cart.findOne({customer: customerid});
     if (cart == null) return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No cart is found the with given user id");
 
     let items_final = []
@@ -18,7 +19,9 @@ const placeOrder = async (customerid, hubid) => {
       }
     }
     const order = await Order.create({customer: customerid, items: items_final, total_price: total_price, hub: hubid, status: 'active'})
-    return sendResponse(HttpStatus.OK_STATUS, "Placed order successfully", {order});
+    cart = await emptyCart(customerid);
+
+    return sendResponse(HttpStatus.OK_STATUS, "Placed order successfully", {order, cart});
 
   } catch (err) {
     console.error(err);   
@@ -84,21 +87,20 @@ const getOrderById = async (orderid) => {
   }
 };
 
-
-// const randomHub = async () => {
-//   try {
-//     const hubs = await Hub.find();
-//     let random_hub = hubs[Math.floor(Math.random()*hubs.length)];
-//     return random_hub._id;
-//   } catch (err) {
-//     throw(err)
-//   }
-// }
+const getActiveOrdersInHub = async (hubid) => {
+  try {
+    const orders = await Order.find({hub: hubid, status: 'active'});
+    return orders
+  } catch (err) {
+    throw(err)
+  }
+}
 
 module.exports = {
   getOrderHistory,
   getOrderById,
   placeOrder,
   updateOrderStatus,
-  assignShipper
+  assignShipper,
+  getActiveOrdersInHub
 };

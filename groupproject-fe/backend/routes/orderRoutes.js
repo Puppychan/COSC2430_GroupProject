@@ -5,12 +5,12 @@ const {verifyUser, verifyAction} = require('./middleware')
 
 
 router
-.route('/place-order/:userid')
-.post(verifyUser, verifyAction, order.placeOrder)
+.route('/place-order')
+.post(verifyUser, order.placeOrder)
 
 router
-.route('/order-history/:userid')
-.get(verifyUser, verifyAction, order.getOrderHistory)
+.route('/order-history')
+.get(verifyUser, order.getOrderHistory)
 
 router.post('/update-status/:orderid', order.updateOrderStatus)
 router.post('/assign-shipper/:orderid', order.assignShipper)

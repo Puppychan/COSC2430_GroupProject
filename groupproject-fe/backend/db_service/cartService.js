@@ -4,7 +4,7 @@ const HttpStatus = require('../utils/commonHttpStatus')
 
 const getCart = async (customerid) => {
   try {
-    const cart = await Cart.findOne({customer: customerid});
+    const cart = await Cart.findOne({customer: customerid}).populate('items.product');
     if (cart) return sendResponse(HttpStatus.OK_STATUS, "ok", {cart});
 
     return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No cart is found the with given user id");
@@ -54,4 +54,15 @@ const deleteProductInCart = async (customerid, productid) => {
   }
 }
 
-module.exports = {addProductToCart, deleteProductInCart, getCart}
+// call emptyCart after placing order
+const emptyCart = async (customerid) => {
+  try {
+    let cart = await Cart.findOneAndUpdate({customer: customerid}, {items: []}, {new: true});
+    return cart;
+
+  } catch (err) {
+    throw(err)
+  }
+}
+
+module.exports = {addProductToCart, deleteProductInCart, getCart, emptyCart}
