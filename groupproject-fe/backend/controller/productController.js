@@ -15,7 +15,7 @@ const getProducts = async (req, res) => {
     try {
         let results;
         // get params
-        const searchName = req.query.name;
+        const searchName = req.query.name == 'undefined' ? '' : req.query.name;
         const maxPrice = parseFloat(req.query.maxp);
         const minPrice = parseFloat(req.query.minp);
         // get pagination
@@ -39,6 +39,7 @@ const getProducts = async (req, res) => {
         }
 
         const agg = [
+            // onyly if matchStage is not empty
             { $match: matchStage },
             {
                 $facet: {
@@ -52,6 +53,7 @@ const getProducts = async (req, res) => {
                 }
             }
         ];
+
         results = await Product.aggregate(agg);
         // send response
         totalItems = results[0].totalRecords;
