@@ -22,10 +22,10 @@ const multer = require('multer');
 const { PORT, BACKEND_URL } = require("./common/constants");
 const { navigatePage, formatCurrency } = require("./common/helperFuncs");
 const middleware = require("./backend/middleware/middleware");
-const productMulter = require("./backend/db/defineMulter");
+const imageMulter = require("./backend/db/defineMulter");
 const { Product } = require("./backend/db/models/modelCollection");
 const { products } = require("./public/javascript/products");
-const dummyOrders = require("./public/javascript/order");
+const dummyOrders = require("./public/javascript/orders");
 
 require("dotenv").config();
 const app = express();
@@ -200,11 +200,11 @@ app.get("/my-account", middleware.verifyUser, async (req, res) => {
   }
 });
 
-app.post("/my-account", middleware.verifyUser, async (req, res) => {
+app.post("/my-account", middleware.verifyUser, imageMulter.single('avatar'), async (req, res) => {
   try {
     const isLogin = middleware.isLogin();
     console.log("Is Login ", isLogin);
-    const result = await UserService.updateProfile(req.user._id, req.body);
+    const result = await UserService.updateProfile(req.user._id, req);
     if (result.status == HttpStatus.OK_STATUS) {
       let user_data = result.data.user_data;
       console.log(user_data);
@@ -447,7 +447,7 @@ app.get("/new-product", middleware.verifyUser, async function (req, res) {
   }
 });
 
-app.post("/new-product", middleware.verifyUser, productMulter.single('image'), async function (req, res) {
+app.post("/new-product", middleware.verifyUser, imageMulter.single('image'), async function (req, res) {
   try {
     // verify if is login
     const isLogin = middleware.isLogin();
@@ -503,7 +503,7 @@ app.get("/product/:id", async function (req, res) {
 });
 
 // Update Product Route
-app.get("/update-product/:id", middleware.verifyUser, productMulter.single('image'), async function (req, res) {
+app.get("/update-product/:id", middleware.verifyUser, imageMulter.single('image'), async function (req, res) {
   try {
     // verify if is login
     const isLogin = middleware.isLogin();
@@ -530,7 +530,7 @@ app.get("/update-product/:id", middleware.verifyUser, productMulter.single('imag
   }
 });
 
-app.post("/update-product/:id", middleware.verifyUser, productMulter.single('image'), async function (req, res) {
+app.post("/update-product/:id", middleware.verifyUser, imageMulter.single('image'), async function (req, res) {
   try {
     const result = await ProductService.updateProduct(req);
     if (result.status == HttpStatus.OK_STATUS) {

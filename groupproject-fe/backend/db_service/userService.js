@@ -19,6 +19,7 @@ const {
 const { checkPassword, newToken, convertTokenToId } = require("../utils/verification");
 const { sendResponse } = require("../middleware/middleware");
 const HttpStatus = require("../utils/commonHttpStatus");
+const { convertImageToBin } = require("../utils/imageToBin");
 
 /*  this function register user (in both User collection and role's collection) 
   - example of all_info for customer:
@@ -139,15 +140,16 @@ const login = async (username, password) => {
 //  - status: true if login succeed, false if fail
 //  - message: more details on the cause of such login status 
 //  - token: if login succeed -> return a token (the frontend should store token to localstorage)
-const updateProfile = async (userid, update_info) => {
+const updateProfile = async (userid, req) => {
   try {
-    const { username, avatar, name, address } = update_info
+    const imageContent = convertImageToBin(req);
+    const { username, name, address, oldAvatar } = req.body;
 
     let updated_user = await User.findOneAndUpdate(
       { _id: userid },
       {
         username: username,
-        avatar: avatar
+        avatar: imageContent ?? oldAvatar,
       },
       { new: true }
     )
@@ -195,7 +197,8 @@ const updateProfile = async (userid, update_info) => {
 
     return sendResponse(HttpStatus.OK_STATUS, "Updated profile successfully", { user_info: updated_user, role_info: updated_role_info });
   } catch (err) {
-    if (err.include('E11000 duplicate key error'))
+    console.log(err);
+    if (err?.include('E11000 duplicate key error'))
       return sendResponse(HttpStatus.FORBIDDEN_STATUS, `Update failed: this username has been used by another account.`);
     else
       return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Update failed: ${err}`);
