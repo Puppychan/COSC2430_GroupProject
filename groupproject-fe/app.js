@@ -41,8 +41,9 @@ app.set("layout", "auth-layout");
 
 app.use(express.urlencoded({ extended: true }));
 // to apply css styles
-app.use(express.static("public"));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 // reusable function for all ejs
 app.locals.navigatePage = navigatePage;
@@ -799,5 +800,6 @@ app.use((error, req, res, next) => {
 
 // Start the server
 app.listen(PORT, function () {
-  console.log(`Server started on port ${PORT}`);
+    console.log(`Server started on port ${PORT}`);
 });
+
