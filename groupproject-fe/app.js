@@ -666,6 +666,27 @@ app.get("/order", middleware.verifyUser, async function (req, res) {
   }
 });
 
+// Order Detail route
+app.get("/order-detail", middleware.verifyUser, async function (req, res) {
+  const isLogin = middleware.isLogin;
+  const result = await UserService.getUserInfo(req.user._id);
+  const userId = middleware.getUserIdLocal();
+  const user = await UserService.getUserInfo(userId);
+  if (result.status == 200) {
+    let user_data = result.data.user_data;
+    console.log(user_data);
+
+    res.render("layout.ejs", {
+      title: "Order Detail",
+      bodyFile: "./customer/order-detail",
+      activePage: "order detail",
+      product: products,
+      isLogin: isLogin,
+      user: user_data,
+    });
+  }
+});
+
 // handle error if append to url
 app.use((error, req, res, next) => {
   if (error instanceof multer.MulterError) {
