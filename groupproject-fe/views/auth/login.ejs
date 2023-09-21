@@ -1,0 +1,68 @@
+<!-- RMIT University Vietnam 
+Course: COSC2430 Web Programming 
+Semester: 2023B
+Assessment: Assignment 2 
+Authors:  Tran Mai Nhung - s3879954          
+          Tran Nguyen Ha Khanh - s3877707          
+          Nguyen Vinh Gia Bao - s3986287          
+          Ton That Huu Luan - s3958304          
+          Ho Van Khoa - s3997024 
+Acknowledgement:  -->
+<section class="bg-gray-900 pb-10">
+  <div class="flex justify-center md:justify-start w-full p-10"> <a href="/"><span
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 p-10 "><i
+          class="fa-solid fa-house mr-1"></i>Home</span></a>
+  </div>
+  <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <a href="#" class="flex items-center mb-6 text-2xl font-semiboldtext-white">
+      <img class="w-40 mr-2" src="img/1.png" alt="logo">
+    </a>
+    <div class="w-full bg-gray-800 border-gray-700 rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0">
+      <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+        <h1 class="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl">
+          Sign in to your account
+        </h1>
+        <form class="space-y-4 md:space-y-6" action="/login" method="post">
+          <div>
+            <label for="username" class="block mb-2 text-sm font-medium text-white">Your
+              username</label>
+            <input type="text" name="username" id="username"
+              class="border sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              placeholder="userName123" required="">
+          </div>
+          <div>
+            <label for="password" class="block mb-2 text-sm font-medium text-white">Password</label>
+            <input type="password" name="password" id="password" placeholder="••••••••"
+              class="border sm:text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              required="">
+          </div>
+          <button type="submit"
+            class="w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-primary-600 hover:bg-primary-700 focus:ring-primary-800">Sign
+            in</button>
+          <div>
+            <p class="text-sm font-light text-gray-400">
+              Want to start buying our products?
+            </p>
+            <a href="./signup-customer" class="font-medium text-blue-500 hover:underline">Sign
+              up
+              for a customer
+              account</a>
+          </div>
+          <div>
+            <p class="text-sm font-light text-gray-400">
+              Want to start selling products?
+            </p><a href="./signup-vendor" class="font-medium text-blue-500 hover:underline">Sign
+              up for a vendor
+              account</a>
+          </div>
+          <div>
+            <p class="text-sm font-light text-gray-400">
+              Ready to deliver items? </p><a href="./signup-shipper"
+              class="font-medium text-blue-500 hover:underline">Sign up for a shipper
+              account</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

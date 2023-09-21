@@ -1,0 +1,53 @@
+<!-- RMIT University Vietnam 
+Course: COSC2430 Web Programming 
+Semester: 2023B
+Assessment: Assignment 2 
+Authors:  Tran Mai Nhung - s3879954          
+          Tran Nguyen Ha Khanh - s3877707          
+          Nguyen Vinh Gia Bao - s3986287          
+          Ton That Huu Luan - s3958304          
+          Ho Van Khoa - s3997024 
+Acknowledgement:  -->
+<!-- <div id="alert-border-5" class="flex items-center p-4 border-t-4 border-gray-300 bg-gray-50 dark:bg-gray-800 dark:border-gray-600" role="alert">
+    <i class="fa-solid fa-circle-info"></i>
+  <div class="ml-3 text-sm font-medium text-gray-800 dark:text-gray-300">
+    A simple dark alert with an Give it a click if you like.
+  </div>
+  <button type="button" id="btn-alert-border-5" class="ml-auto -mx-1.5 -my-1.5 bg-gray-50 text-gray-500 rounded-lg focus:ring-2 focus:ring-gray-400 p-1.5 hover:bg-gray-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white" data-dismiss-target="#alert-border-5" aria-label="Close">
+    <span class="sr-only">Dismiss</span>
+    <i class="fa-solid fa-x"></i>
+  </button>
+</div> -->
+<div id="alert-border-5" class="bg-red-900 text-center py-4 lg:px-4 fixed bottom-0 left-0 right-0">
+  <div class="p-3 bg-red-800 items-center text-red-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
+    <span class="flex rounded-full bg-red-500 uppercase px-3 py-2 text-xs font-bold mr-3">Login Failed</span>
+    <span class="font-semibold mr-2 text-left flex-auto">Please check your credentials and try again</span>
+    <button type="button" id="btn-alert-border-5" data-dismiss="#alert-border-5"
+      class="bg-red-600 hover:bg-red-700 text-white rounded p-2 ml-2">Dismiss</button>
+  </div>
+</div>
+
+<!-- <div class="bg-indigo-900 text-center py-4 lg:px-4">
+  <div class="p-3 bg-indigo-800 items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
+    <span class="flex rounded-full bg-indigo-500 uppercase px-3 py-2 text-xs font-bold mr-3">Login Successfully</span>
+    <span class="font-semibold mr-2 text-left flex-auto">Congratulations, you have successfully logged in!</span>
+    <svg class="fill-current opacity-75 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+      <path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z" />
+    </svg>
+  </div>
+</div> -->
+<script type="module">
+  import { Dismiss } from 'flowbite';
+
+  const $targetEl = document.getElementById('alert-border-5');
+
+  // Show snackbar on page load
+  $targetEl.classList.remove('hidden');
+  $targetEl.classList.add('fixed');
+
+  // Hide the snackbar after 3 seconds
+  setTimeout(() => {
+    $targetEl.classList.add('hidden');
+    $targetEl.classList.remove('fixed');
+  }, 3000);
+</script>

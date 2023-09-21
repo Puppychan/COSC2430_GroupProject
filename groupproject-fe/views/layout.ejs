@@ -1,8 +1,32 @@
+<!-- RMIT University Vietnam 
+Course: COSC2430 Web Programming 
+Semester: 2023B
+Assessment: Assignment 2 
+Authors:  Tran Mai Nhung - s3879954          
+          Tran Nguyen Ha Khanh - s3877707          
+          Nguyen Vinh Gia Bao - s3986287          
+          Ton That Huu Luan - s3958304          
+          Ho Van Khoa - s3997024 
+Acknowledgement:  -->
+
 <html lang="en">
 
 <head>
-    <%- include ('./partials/head') %>
-        <title><%= title %></title>
+  <%- include ('./partials/head') %>
+    <title>
+      <%= title %> | 1080p Technology
+    </title>
 </head>
+
+<body class="bg-gray-900 text-white font-sans flex flex-col h-screen justify-between">
+  <%- include ('./partials/nav') %>
+    <!-- Pass bodyFile as filename -->
+    <div class="flex-grow">
+      <%- include(bodyFile) %>
+    </div>
+    <%- include ('./partials/footer') %>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+      <script src="/javascript/script.js"></script>
+</body>
 
 </html>

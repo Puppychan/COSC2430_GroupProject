@@ -1,0 +1,83 @@
+<!-- RMIT University Vietnam 
+Course: COSC2430 Web Programming 
+Semester: 2023B
+Assessment: Assignment 2 
+Authors:  Tran Mai Nhung - s3879954          
+          Tran Nguyen Ha Khanh - s3877707          
+          Nguyen Vinh Gia Bao - s3986287          
+          Ton That Huu Luan - s3958304          
+          Ho Van Khoa - s3997024 
+Acknowledgement:  -->
+<section class="header relative">
+  <img
+    src="https://images.unsplash.com/photo-1530319067432-f2a729c03db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1389&q=80"
+    alt="" class="object-cover object-center mt-2 w-full h-[520px]">
+  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+</section>
+<section class="flex flex-col w-full lg:flex-row my-5 gap-10 px-5">
+  <!-- Filter Sidebar -->
+  <aside class="hidden md:max-lg:block lg:block w-full lg:w-1/4 bg-gray-900 lg:mt-20 md:max-lg:center-and-half">
+    <h2 class="mb-4 text-xl font-bold text-white">Filter Products</h2>
+
+    <form action="<%= navigatePage('product-list', null) %>" method="get">
+      <!-- Price Range Filter -->
+      <div class="mb-4">
+        <h3 class="mb-2 text-lg font-semibold text-gray-400">Price Range</h3>
+        <input type="hidden" name="page" value="<%= pageInfo.page %>">
+        <input type="hidden" name="name" value="<%= pageInfo.search %>">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-gray-300">Min Price: </span>
+          <span id="min-price-label" class="text-gray-300">0</span>
+        </div>
+        <input type="range" id="min-price" name="minp" min="0" max="50000000" value="0"
+          class="appearance-none bg-white w-full h-2 mb-2 rounded-lg [&::-webkit-slider-thumb]:bg-blue-500 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4  [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-lg"
+          step="100000">
+
+        <div class="flex items-center justify-between mb-2">
+          <span class="dark:text-gray-300">Max Price: </span>
+          <span id="max-price-label" class="dark:text-gray-300">50000000</span>
+        </div>
+        <input type="range" id="max-price" name="maxp" min="0" max="50000000" value="50000000"
+          class="appearance-none bg-white w-full h-2 rounded-lg [&::-webkit-slider-thumb]:bg-blue-500 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4  [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-lg"
+          step="100000">
+      </div>
+
+      <!-- Filter Button -->
+      <button type="submit" class="w-full py-2 font-bold text-white bg-blue-800">Apply Filters</button>
+      <input type="reset" id="reset-filters" class="w-full py-2 mt-2 font-bold text-white bg-blue-800"
+        value="Reset Filters">
+    </form>
+  </aside>
+  <div class="flex flex-col justify-center w-full lg:w-3/4">
+    <!-- Bao -->
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 
+      items-center justify-items-center 
+      gap-x-7 gap-y-10 
+      mt-2 mb-5 mx-auto md:max-w-2xl lg:max-w-full lg:mx-0">
+      <h2 class="col-span-full text-center text-4xl mb-4 md:text-5xl font-bold md:mb-8">
+        <%= title %>
+      </h2>
+      <% products.forEach(function(product){ %>
+        <%- include('./product-card.ejs', {product, userRole}) %>
+          <% }); %>
+    </section>
+    <nav aria-label="Page navigation example" class="flex justify-center mt-6 w-full">
+      <ul class="inline-flex -space-x-px text-sm">
+        <li>
+          <a href="<%= navigatePage(" product-list", null, {...pageInfo, page: pageInfo.page - 1}) %>" class="flex
+            items-center
+            justify-center w-32 h-12 leading-tight border text-base font-bold rounded-l-lg bg-gray-100 border-gray-700
+            text-neutral-600 hover:bg-gray-700 hover:text-white" <%= pageInfo.page==0 ? "disabled" : "" %>>Previous</a>
+        </li>
+        <li>
+          <a href="<%= navigatePage(" product-list", null, {...pageInfo, page: pageInfo.page + 1}) %>" class="flex
+            items-center
+            justify-center w-32 h-12 leading-tight border text-base font-bold rounded-r-lg bg-gray-100 border-gray-700
+            text-neutral-600 hover:bg-gray-700 hover:text-white" <%= pageInfo.page==pageInfo.totalPage ? "disabled" : ""
+              %>>Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+</section>
