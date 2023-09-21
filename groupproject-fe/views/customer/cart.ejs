@@ -42,10 +42,10 @@
                       </div>
                     </div>
                     <div class="absolute top-5 right-5 flex sm:bottom-0 sm:top-auto">
-                      <form action="/product-delete" method="post">
-                        <button type="button"
-                          class="removeButton flex rounded p-2 text-center text-white transition-all duration-200 ease-in-out focus:shadow hover:text-blue-400"
-                          onclick="removeItem(this)">
+                      <form action="/cart-delete" method="post">
+                        <input type="hidden" name="id" value="<%= product._id %>">
+                        <button type="submit"
+                          class="removeButton flex rounded p-2 text-center text-white transition-all duration-200 ease-in-out focus:shadow hover:text-blue-400">
                           <i class="fa-solid fa-trash fa-xl"></i>
                         </button>
                       </form>

@@ -615,9 +615,18 @@ app.get("/cart", middleware.verifyUser, async (req, res) => {
 
 // Add Product to Cart
 app.post('/cart', middleware.verifyUser, async (req, res) => {
-  const id = req.body.id;
   console.log("Add to cart", req.body)
   const result = await CartService.addProductToCart(req.user._id, req.body.id, req.body.quantity);
+  if (result.status == 200) {
+    res.redirect('/cart');
+  } else {
+    console.log(result);
+  }
+});
+
+// Delete Product from Cart
+app.post('/cart-delete', middleware.verifyUser, async (req, res) => {
+  const result = await CartService.deleteProductInCart(req.user._id, req.body.id);
   if (result.status == 200) {
     res.redirect('/cart');
   } else {
