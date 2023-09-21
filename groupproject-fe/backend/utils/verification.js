@@ -18,7 +18,7 @@ const checkPassword = (password, passwordHash) => {
 
 
 const newToken = user => {
-  return jwt.sign({id: user._id}, JWT.jwt, {
+  return jwt.sign({ id: user._id }, JWT.jwt, {
     expiresIn: JWT.jwtExp,
   })
 }
@@ -31,4 +31,4 @@ const verifyToken = token =>
     })
   })
 
-module.exports = {checkPassword, newToken, verifyToken}
+module.exports = { checkPassword, newToken, verifyToken }

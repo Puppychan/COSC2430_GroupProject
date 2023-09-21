@@ -58,7 +58,7 @@
             </p>
             <h4 class="text-red-600 line-clamp-1 font-semibold mt-0">
               <span>
-                <%= new Intl.NumberFormat('de-DE', { style: 'currency' , currency: 'VND' }).format(product.price) %>
+                <%= formatCurrency(product.price) %>
               </span>
               <span class="<%= product.stock > 0 ? 'text-green-600' : 'text-red-600' %> font-semibold">
                 - <%= product.stock> 0 ? product.stock + ' In Stock' : 'Out of Stock' %>

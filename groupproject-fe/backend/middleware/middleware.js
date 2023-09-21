@@ -6,6 +6,7 @@ const HttpStatus = require('../utils/commonHttpStatus')
 // Local storage keys
 const TOKEN_KEY = '1080P_TOKEN'
 const USERID_KEY = '1080P_USERID'
+const USERROLE_KEY = '1080P_USERROLE'
 
 if (typeof localStorage === "undefined" || localStorage === null) {
   var LocalStorage = require('node-localstorage').LocalStorage;
@@ -16,8 +17,8 @@ const setToken = token => {
   localStorage.setItem(TOKEN_KEY, token)
 }
 
-const setUserIdLocal = (userid) => {
-  localStorage.setItem(USERID_KEY, userid);
+const setUserRoleLocal = (userRole) => {
+  localStorage.setItem(USERROLE_KEY, userRole);
 }
 
 const getToken = () => {
@@ -25,9 +26,9 @@ const getToken = () => {
   return token
 }
 
-const getUserIdLocal = () => {
-  let userId = localStorage.getItem(USERID_KEY);
-  return userId;
+const getUserRoleLocal = () => {
+  let userRole = localStorage.getItem(USERROLE_KEY);
+  return userRole;
 }
 
 const isLogin = () => {
@@ -109,8 +110,8 @@ module.exports = {
   verifyAction,
   setToken,
   getToken,
-  getUserIdLocal,
-  setUserIdLocal,
+  setUserRoleLocal,
+  getUserRoleLocal,
   isLogin,
   logout
 }

@@ -6,7 +6,7 @@ const {
   Shipper,
   Cart,
 } = require("../db/models/modelCollection");
-const { checkPassword, newToken } = require("../utils/verification");
+const { checkPassword, newToken, convertTokenToId } = require("../utils/verification");
 const { sendResponse } = require("../middleware/middleware");
 const HttpStatus = require("../utils/commonHttpStatus");
 
@@ -106,6 +106,7 @@ const login = async (username, password) => {
       let token = newToken(user);
       return sendResponse(HttpStatus.OK_STATUS, "Login successfully", {
         token,
+        role: user.role,
         id: user._id
       });
     }
