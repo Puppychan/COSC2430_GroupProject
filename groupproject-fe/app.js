@@ -98,7 +98,7 @@ app.get("/viewAll", async function (req, res) {
 
       res.render("layout.ejs", {
         title: "Explore All Products",
-        bodyFile: "./category/viewAll",
+        bodyFile: "./product/productList",
         products: products,
         pageInfo: pageInfo,
         userRole: isLogin ? userRole : null,
