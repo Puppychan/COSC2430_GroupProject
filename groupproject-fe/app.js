@@ -24,7 +24,8 @@ const { navigatePage, formatCurrency } = require("./common/helperFuncs");
 const middleware = require("./backend/middleware/middleware");
 const productMulter = require("./backend/db/defineMulter");
 const { Product } = require("./backend/db/models/modelCollection");
-const { products } = require("./public/javascript/products")
+const { products } = require("./public/javascript/products");
+const dummyOrders = require("./public/javascript/order");
 
 require("dotenv").config();
 const app = express();
@@ -596,6 +597,7 @@ app.get("/shipper-dashboard", function (req, res) {
       isLogin: isLogin,
       activePage: "shipper-dashboard",
       userRole: isLogin ? userRole : null,
+      orders: dummyOrders,
     });
   } catch (err) {
     console.log(err);
@@ -646,22 +648,29 @@ app.get("/cart", middleware.verifyUser, async (req, res) => {
 });
 
 app.get("/order-detail", middleware.verifyUser, async function (req, res) {
-  const isLogin = middleware.isLogin;
-  const result = await UserService.getUserInfo(req.user._id);
-  const userId = middleware.getUserIdLocal();
-  const user = await UserService.getUserInfo(userId);
-  if (result.status == 200) {
-    let user_data = result.data.user_data;
-    console.log(user_data);
+  try {
+    const isLogin = middleware.isLogin;
+    const userRole = middleware.getUserRoleLocal();
 
-    res.render("layout.ejs", {
-      title: "Order Detail",
-      bodyFile: "./customer/order-detail",
-      activePage: "order detail",
-      product: products,
-      isLogin: isLogin,
-      user: user_data,
-    });
+    const user = await UserService.getUserInfo(req.user._id);
+    if (user.status == HttpStatus.OK_STATUS) {
+      let user_data = result.data.user_data;
+      console.log(user_data);
+
+      res.render("layout.ejs", {
+        title: "Order Detail",
+        bodyFile: "./customer/order-detail",
+        activePage: "order detail",
+        product: products,
+        isLogin: isLogin,
+        userRole: isLogin ? userRole : null,
+        user: user_data,
+      });
+    } else {
+      console.log(user);
+    }
+  } catch (err) {
+    console.log(err);
   }
 });
 
