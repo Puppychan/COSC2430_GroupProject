@@ -8,12 +8,12 @@
 //          Ton That Huu Luan - s3958304
 //          Ho Van Khoa - s3997024
 // Acknowledgement: 
-const { Cart, Product } = require('../db/models/modelCollection')
+const { Cart } = require('../db/models/modelCollection')
 const { sendResponse } = require("../routes/middleware");
 
 const getCart = async (req, res) => {
   try {
-    const cart = await Cart.findOne({customer: req.user._id}).populate('items.product');
+    const cart = await Cart.findOne({ customer: req.user._id }).populate('items.product');
     sendResponse(res, 200, 'ok', cart);
   } catch (err) {
     console.log(err)
@@ -23,8 +23,8 @@ const getCart = async (req, res) => {
 
 const addProductToCart = async (req, res) => {
   try {
-    const {product, quantity} = req.body
-    let cart = await Cart.findOne({customer: req.user._id});
+    const { product, quantity } = req.body
+    let cart = await Cart.findOne({ customer: req.user._id });
     let exist = false
     for (let i = 0; i < cart.items.length; i++) {
       if (cart.items[i].product == product) {
@@ -60,12 +60,12 @@ const deleteProductInCart = async (req, res) => {
 
 const emptyCart = async (customerid) => {
   try {
-    let cart = await Cart.findOneAndUpdate({customer: customerid}, {items: []}, {new: true});
+    let cart = await Cart.findOneAndUpdate({ customer: customerid }, { items: [] }, { new: true });
     return cart;
 
   } catch (err) {
-    throw(err)
+    throw (err)
   }
 }
 
-module.exports = {addProductToCart, deleteProductInCart, getCart, emptyCart}
+module.exports = { addProductToCart, deleteProductInCart, getCart, emptyCart }
