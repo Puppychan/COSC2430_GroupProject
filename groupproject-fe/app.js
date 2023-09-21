@@ -629,6 +629,26 @@ app.get("/cart", middleware.verifyUser, async (req, res) => {
   }
 });
 
+app.get("/order-detail", middleware.verifyUser, async function (req, res) {
+  const isLogin = middleware.isLogin;
+  const result = await UserService.getUserInfo(req.user._id);
+  const userId = middleware.getUserIdLocal();
+  const user = await UserService.getUserInfo(userId);
+  if (result.status == 200) {
+    let user_data = result.data.user_data;
+    console.log(user_data);
+
+    res.render("layout.ejs", {
+      title: "Order Detail",
+      bodyFile: "./customer/order-detail",
+      activePage: "order detail",
+      product: products,
+      isLogin: isLogin,
+      user: user_data,
+    });
+  }
+});
+
 // Add Product to Cart
 app.post('/cart', middleware.verifyUser, async (req, res) => {
   try {
@@ -710,6 +730,7 @@ app.get('/order-history', middleware.verifyUser, async (req, res) => {
     console.log(err);
   }
 });
+
 // handle error if append to url
 app.use((error, req, res, next) => {
   if (error instanceof multer.MulterError) {
