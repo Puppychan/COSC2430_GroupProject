@@ -1,0 +1,117 @@
+<!-- <select class="">
+    <option value="" disabled selected>Choose your Distribution Hub</option>
+    <option value="00000001db42a4ac30ff65d2">Ha Noi</option>
+    <option value="00000001db42a4ac30ff65d1">Ho Chi Minh City</option>
+    <option value="00000001db42a4ac30ff65d3">Da Nang</option>
+</select> -->
+
+<div class="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32">
+    <div class="py-24 mt-16 flex items-start">
+        <div class="w-[500px] px-4 py-6  bg-gray-800">
+            <h3 class="text-xl dark:text-white font-semibold text-gray-800">Shipping Information</h3>
+            <div class="flex flex-col md:flex-row xl:flex-col justify-start">
+                <div class="flex flex-col justify-start items-start">
+                 
+
+                    <div class=" w-full space-x-4 py-8 border-b border-gray-200">
+                    
+                        
+                        <p class="text-2xl dark:text-white font-semibold leading-4 text-gray-800 text-center">Hahahah<p>
+                           
+                        
+                    </div>
+                    
+                    
+                    <div class="flex justify-center text-gray-800 dark:text-white md:justify-start items-center space-x-4 py-4 border-b border-gray-200 w-full">
+                        <img class="dark:hidden" src="https://tuk-cdn.s3.amazonaws.com/can-uploader/order-summary-3-svg1.svg" alt="email">
+                        <img class="hidden dark:block" src="https://tuk-cdn.s3.amazonaws.com/can-uploader/order-summary-3-svg1dark.svg" alt="email">
+                        
+<div class="w-[500px] px-4 py-6  bg-gray-800">
+    <select class="text-black" data-te-select-init>
+        <option class="text-black" value="" disabled selected>Choose your Distribution Hub</option>
+        <option class="text-black" value="00000001db42a4ac30ff65d2">Ha Noi</option>
+        <option class="text-black" value="00000001db42a4ac30ff65d1">Ho Chi Minh City</option>
+        <option class="text-black" value="00000001db42a4ac30ff65d3">Da Nang</option>
+    </select>
+</div>
+
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-6 md:mt-0 pl-5">
+                    <div class="flex justify-center md:justify-start xl:flex-col flex-col md:space-x-6 lg:space-x-8 xl:space-x-0 space-y-4 xl:space-y-12 md:space-y-0 md:flex-row items-center md:items-start">
+                        <div class="hidden">
+                            <p></p>
+                        </div>
+                        <div class="flex justify-center md:justify-start items-center md:items-start flex-col space-y-4 xl:mt-8">
+                            <p class="text-[22px] dark:text-white font-semibold leading-4 text-center md:text-left text-gray-800">Shipping Address</p>
+                            <p class="w-52 lg:w-full dark:text-gray-300 xl:w-48 text-center md:text-left text-md leading-5 text-gray-600">1Nguyen Van Linh</p>
+                        </div>
+                        <div class="flex justify-center md:justify-start items-center md:items-start flex-col space-y-4">
+                            <p class="text-xl dark:text-white font-semibold leading-4 text-center md:text-left text-gray-800">Billing Address</p>
+                            <p class="w-48 lg:w-full dark:text-gray-300 xl:w-48 text-center md:text-left text-md leading-5 text-gray-600">Nguyen Van Linh</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <divdiv class="py-20">
+
+
+        <p class="text-3xl font-medium">Order Summary</p>
+        <p class="text-lg text-gray-400">Check your items before finish your order</p>
+
+
+        <div class="mt-8 space-y-3 rounded-2xl border-[3px] border-gray-600 px-2 py-20 sm:px-11">
+            <div class="flow-root">
+                <ul class="-my-8">
+                    <% product.forEach(product=> {%>
+                        <li
+                            class="flex flex-col space-y-1 border-solid border-0 border-w-700 bg-gray-800 rounded-xl py-1 text-left sm:flex-row sm:space-x-5 sm:space-y-0 mb-7 p-4">
+                            <div class="shrink-0 py-3.5 pl-4 justify-center flex">
+                                <img class="h-20 w-20 max-w-full rounded-lg object-cover mt-1 "
+                                    src="<%= product.image %>" alt="" />
+                            </div>
+
+                            <div class="relative flex flex-1 flex-col justify-between p-4">
+                                <div class="sm:col-gap-5 sm:grid sm:grid-cols-2">
+                                    <div class="lg:pr-0 sm:pr-5">
+                                        <p class=" text-white-900 flex items-center">
+                                        <div class="text-lg font-semibold line-clamp-2">
+                                            <%= product.name %>
+                                        </div>
+
+
+                                        </p>
+
+                                    </div>
+                                    <div
+                                        class="mt-4 pt-4 flex items-end justify-between sm:mt-0 sm:items-start sm:justify-end">
+                                        <p
+                                            class="shrink-0 w-20 text-xl font-semibold text-white-900 sm:order-2 sm:ml-8 sm:text-right">
+                                            <%= product.price %>
+                                        </p>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </li>
+                        <% }); %>
+                </ul>
+            </div>
+        </div>
+</div>
+</div>
+
+
+
+
+
+
+</div>

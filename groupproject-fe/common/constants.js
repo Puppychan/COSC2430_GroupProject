@@ -12,7 +12,7 @@ const CHANGE_PASSWORD_ROUTE = `${USER_ROUTE}/change-password`;
 
 
 // Environment constants
-const PORT = process.env.FRONT_PORT || 3001;
+const PORT = process.env.PORT || 3001;
 
 module.exports = {
     BACKEND_URL,

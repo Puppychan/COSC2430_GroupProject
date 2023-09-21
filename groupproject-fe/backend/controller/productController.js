@@ -79,6 +79,18 @@ const getProductById = async (req, res) => {
     }
 }
 
+const getProductByObjectId = async (req, res) => {
+    try {
+        const renderedProduct = await Product.findById(req);
+        if (!renderedProduct) {
+            return null
+        }
+        return renderedProduct;
+    } catch (err) {
+        throw err;
+    }
+}
+
 const createProduct = async (req, res) => {
     let newProduct;
     try {
@@ -159,5 +171,6 @@ module.exports = {
     createProduct,
     updateProduct,
     deleteProductById,
-    deleteProductListId
+    deleteProductListId,
+    getProductByObjectId
 }

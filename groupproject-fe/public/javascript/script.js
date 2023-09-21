@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     searchBtn.addEventListener('click', () => {
         // display search bar with animation
-        if(searchBar.classList.contains('hidden')){
+        if (searchBar.classList.contains('hidden')) {
             searchBar.classList.remove('hidden');
             searchBar.classList.remove('opacity-0');
             searchBar.classList.add('opacity-100');
@@ -95,7 +95,7 @@ function increaseValue() {
 function decreaseValue() {
     var value = parseInt(document.getElementById('number').value, 10);
     value = isNaN(value) ? 1 : value;
-    if(value > 1) {
+    if (value > 1) {
         value--;
     }
     document.getElementById('number').value = value;
