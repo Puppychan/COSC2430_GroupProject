@@ -47,6 +47,10 @@ const navigatePage = (type, id = -1, page) => {
 
 }
 
+const formatCurrency = (number) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
+}; 
 module.exports = {
     navigatePage,
+    formatCurrency
 };

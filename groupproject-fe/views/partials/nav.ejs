@@ -10,7 +10,7 @@
         </button>
         <% if (isLogin) { %>
           <a href="<%= navigatePage(" my-account") %>"><i class="fa-solid fa-user fa-2xl"></i></a>
-          <% if (user?.user?.role==='customer' ) { %>
+          <% if (userRole==='customer' ) { %>
             <a href="<%= navigatePage(" cart") %>"><i class="fa-solid fa-cart-shopping fa-2xl"></i></a>
             <% } %>
               <% } else { %>
@@ -28,14 +28,14 @@
       <div class="hidden flex-grow justify-center items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
         <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-2 lg:space-y-0 space-y-4 lg:mt-0">
           <% if (isLogin) { %>
-            <% if (user?.user?.role==='customer' ) { %>
+            <% if (userRole==='customer' ) { %>
               <li>
                 <a href="<%= navigatePage(" product-list", null, 1) %>" class="block py-2 px-4 mr-6 rounded
                   <%= activePage==='products' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400' %>"
                     <%=activePage==='products' ? 'aria-current="page"' : '' %>">VIEW ALL PRODUCTS
                 </a>
               </li>
-              <% } else if (user?.user?.role==='vendor' ) { %>
+              <% } else if (userRole==='vendor' ) { %>
                 <li>
                   <a href="/vendor-dashboard"
                     class="block py-2 px-4 mr-6 rounded <%= activePage === 'dashboard' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400' %>"
@@ -46,7 +46,7 @@
                     class="block py-2 px-4 mr-6 rounded <%= activePage === 'products' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400' %>"
                     <%=activePage==='products' ? 'aria-current="page"' : '' %>">ADD NEW PRODUCT</a>
                 </li>
-                <% } else if (user?.user?.role==='shipper' ) { %>
+                <% } else if (userRole==='shipper' ) { %>
                   <li>
                     <a href="/shipper-dashboard"
                       class="block py-2 px-4 mr-6 rounded <%= activePage === 'dashboard' ? 'bg-primary-700 text-white' : 'bg-transparent text-gray-400' %>"

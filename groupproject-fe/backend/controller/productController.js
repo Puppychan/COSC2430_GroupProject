@@ -66,6 +66,18 @@ const getProducts = async (req, res) => {
     }
 }
 
+const getRandomProducts = (req, res) => {
+    try {
+        const limit = 8;
+        const agg = [
+            { $sample: { size: limit } }
+        ];
+        return Product.aggregate(agg);
+    } catch (err) {
+        throw err;
+    }
+}
+
 const getProductById = async (req, res) => {
     try {
         const renderedProduct = await Product.findById(req.params.id);
@@ -168,6 +180,7 @@ const deleteProductListId = async (req, res) => {
 module.exports = {
     getProducts,
     getProductById,
+    getRandomProducts,
     createProduct,
     updateProduct,
     deleteProductById,

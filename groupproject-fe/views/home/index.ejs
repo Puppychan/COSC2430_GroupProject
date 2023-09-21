@@ -39,7 +39,7 @@
                         <%= product.category %>
                     </p>
                     <h4 class="text-red-600 line-clamp-1 font-semibold mt-0">
-                        <%= product.price %> ₫
+                        <%= formatCurrency(product.price) %>
                             <span class="<%= product.stock > 0 ? 'text-green-600' : 'text-red-600' %> font-semibold">
                                 - <%= product.stock> 0 ? product.stock + ' In Stock' : 'Out of Stock' %>
                             </span>
@@ -52,7 +52,7 @@
                     title="View Products">
                     <a href="<%= navigatePage(" product", product._id) %>"> Details →</a>
                 </div>
-                <% if (user?.user?.role=='customer' ) { %>
+                <% if (userRole=='customer' ) { %>
                     <div class="absolute bottom-5 right-4 text-blue-600" title="Add To Cart">
                         <i class="fa-solid fa-cart-plus fa-xl"></i>
                     </div>
