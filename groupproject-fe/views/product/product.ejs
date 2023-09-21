@@ -23,7 +23,7 @@
       <% if (user?.user?.role==='customer' ) { %>
         <div class="flex items-center justify-center md:justify-start gap-4">
           <form action="/cart" method="post" class="flex flex-col items-center md:items-start justify-center w-full">
-            <input type="hidden" name="id" value="<%= product.id %>">
+            <input type="hidden" name="id" value="<%= product._id %>">
             <input type="hidden" name="name" value="<%= product.name %>">
             <input type="hidden" name="price" value="<%= product.price %>">
             <div class="w-32 mb-8 flex flex-col items-center md:items-start gap-1">

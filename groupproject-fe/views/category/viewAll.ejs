@@ -41,7 +41,9 @@
     <!-- Bao -->
     <section
       class="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-5 items-center justify-items-center gap-y-10 mt-2 mb-5 mx-auto md:max-w-xl lg:max-w-full lg:mx-0">
-      <h2 class="col-span-full text-center text-4xl mb-4 md:text-5xl font-bold md:mb-8">Trending Products</h2>
+      <h2 class="col-span-full text-center text-4xl mb-4 md:text-5xl font-bold md:mb-8">
+        <%= title %>
+      </h2>
       <% products.forEach(function(product){ %>
         <div class="bg-gray-100 shadow-sm shadow-slate-500 rounded-lg w-full md:max-w-sm flex flex-col relative pb-7">
           <a href="<%= navigatePage(" product", product._id) %>">
