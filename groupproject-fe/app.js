@@ -609,9 +609,10 @@ app.get("/cart", middleware.verifyUser, async (req, res) => {
   try {
     const isLogin = middleware.isLogin();
     const userRole = middleware.getUserRoleLocal();
+    const user = await UserService.getUserInfo(req.user._id);
 
     const result = await CartService.getCart(req.user._id);
-    if (result.status == HttpStatus.OK_STATUS) {
+    if (result.status == HttpStatus.OK_STATUS && user.status == HttpStatus.OK_STATUS) {
       const cartItems = await result.data.cart.items.map(async (item) => {
         const product = await ProductService.getProductByObjectId(item.product);
         if (product.status == HttpStatus.OK_STATUS) {
