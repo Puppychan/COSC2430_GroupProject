@@ -7,12 +7,14 @@ const users = [
     password: "User123@",
     role: "customer"
   },
+  
   {
     _id: new ObjectId('00000001db42a4ac30ff65c2'),
     username: "customer02",
     password: "User123@",
     role: "customer"
   },
+
   {
     _id: new ObjectId('00000001db42a4ac30ff65a1'),
     username: "vendor01",
