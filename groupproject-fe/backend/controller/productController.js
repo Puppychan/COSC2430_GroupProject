@@ -9,7 +9,8 @@ const getProducts = async (req, res) => {
         const maxPrice = parseFloat(req.query.maxp);
         const minPrice = parseFloat(req.query.minp);
         // get pagination
-        const currentPage = req.query.page ?? 1;
+        // if page is undefined -> default page = 1
+        const currentPage = (req.query.page == 'undefined' || !req.query.page) ? 1 : req.query.page;
         const limit = 15;
         const skipValue = (currentPage - 1) * limit;
         let totalItems = 0; // total count of products
@@ -17,7 +18,7 @@ const getProducts = async (req, res) => {
         // aggregate pipeline
         const matchStage = {};
         // if params exist -> search
-        if (searchName) {
+        if (searchName && searchName != undefined && searchName != "" && searchName != null) {
             // filter product by name containing, insensitive case
             matchStage.name = { $regex: '.*' + searchName + '.*', $options: 'i' };
         }
@@ -44,21 +45,25 @@ const getProducts = async (req, res) => {
         results = await Product.aggregate(agg);
         // send response
         totalItems = results[0].totalRecords;
-        console.log("Data: ", results[0].data, "Total: ", totalItems);
         // if no product
         if (totalItems == 0) return {
             data: [],
             page: 1,
             offset: 0,
-            totalPage: 1
+            totalPage: 1,
+            minPrice: minPrice,
+            maxPrice: maxPrice,
+            search: searchName
         };
         // if have product
         else return {
             data: results[0].data,
             page: currentPage,
             offset: skipValue + 1,
-            totalPage: Math.ceil(totalItems / limit)
-
+            totalPage: Math.ceil(totalItems / limit),
+            minPrice: minPrice,
+            maxPrice: maxPrice,
+            search: searchName
         }
     } catch (err) {
         throw err;

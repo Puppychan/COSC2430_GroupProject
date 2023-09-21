@@ -88,7 +88,11 @@ app.get("/viewAll", async function (req, res) {
       page: parseInt(results?.data?.page),
       offset: results?.data?.offset,
       totalPage: parseInt(results?.data?.totalPage),
+      minPrice: results?.data?.minPrice,
+      maxPrice: results?.data?.maxPrice,
+      search: results?.data?.search,
     };
+
 
     if (results.status == HttpStatus.OK_STATUS) {  // get user id after login
 
@@ -172,7 +176,7 @@ app.get("/my-account", middleware.verifyUser,  async (req, res) => {
           activePage: "my-account",
           isLogin: isLogin,
           userRole: userRole,
-          user: result,
+          user: result.data.user_data,
         });
       } else {
         console.log(result);
