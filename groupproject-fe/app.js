@@ -157,7 +157,7 @@ app.get("/logout", async (req, res) => {
 });
 
 // My Account route
-app.get("/my-account", middleware.verifyUser,  async (req, res) => {
+app.get("/my-account", middleware.verifyUser, async (req, res) => {
   try {
     const isLogin = middleware.isLogin();
     const userRole = middleware.getUserRoleLocal();
@@ -576,7 +576,7 @@ app.get("/shipper-dashboard", function (req, res) {
     const userRole = middleware.getUserRoleLocal();
     res.render("layout.ejs", {
       title: "Shipper Dashboard",
-      bodyFile: "./shipper/dashboard",
+      bodyFile: "./orders/dashboard",
       isLogin: isLogin,
       activePage: "shipper-dashboard",
       userRole: isLogin ? userRole : null,
@@ -687,12 +687,29 @@ app.get("/order", middleware.verifyUser, async function (req, res) {
       product: products,
       isLogin: isLogin,
       userRole: isLogin ? userRole : null,
+      user: user,
     });
   } catch (err) {
     console.log(err);
   }
 });
+// Get Order History
+app.get('/order-history', middleware.verifyUser, async (req, res) => {
+  try {
+    const isLogin = middleware.isLogin();
+    const userRole = middleware.getUserRoleLocal();
 
+    res.render('layout.ejs', {
+      title: 'Order History',
+      bodyFile: './orders/dashboard',
+      activePage: 'order-history',
+      isLogin: isLogin,
+      userRole: isLogin ? userRole : null,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
 // handle error if append to url
 app.use((error, req, res, next) => {
   if (error instanceof multer.MulterError) {
