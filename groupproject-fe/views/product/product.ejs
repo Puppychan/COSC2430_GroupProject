@@ -20,7 +20,7 @@
           <%= product.description %>
         </p>
       </div>
-      <% if (user?.user?.role==='customer' ) { %>
+      <% if (userRole ==='customer' ) { %>
         <div class="flex items-center justify-center md:justify-start gap-4">
           <form action="/cart" method="post" class="flex flex-col items-center md:items-start justify-center w-full">
             <input type="hidden" name="id" value="<%= product._id %>">

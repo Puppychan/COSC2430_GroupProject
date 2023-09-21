@@ -113,7 +113,6 @@ const createProduct = async (req, res) => {
     try {
         // convert image to base64
         const imageContent = convertImageToBin(req);
-
         // get image attribute and the rest attributes
         const { vendor, name, price, stock, description, image } = req.body;
 

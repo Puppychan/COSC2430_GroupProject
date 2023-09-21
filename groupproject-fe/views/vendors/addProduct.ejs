@@ -3,10 +3,10 @@
         <h1 class="text-center font-bold text-3xl my-4">
             <%= title %>
         </h1>
-        <form action="<%= navigatePage('product-add') %>" method="post">
+        <form action="<%= navigatePage('product-add') %>" method="post" enctype="multipart/form-data">
             <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                 <div class="sm:col-span-2">
-                    <input type="text" name="vendor" id="vendor" value="<%= user?.user?._id %>" hidden>
+                    <input type="text" name="vendor" id="vendor" value="<%= userId %>" hidden>
                 </div>
                 <div class="sm:col-span-2">
                     <%- include('../partials/input',{

@@ -429,6 +429,7 @@ app.get("/new-product", middleware.verifyUser, async function (req, res) {
       activePage: "products",
       isLogin: isLogin,
       userRole: isLogin ? userRole : null,
+      userId: req.user._id,
     });
   } catch (err) {
     console.log(err);
@@ -454,6 +455,7 @@ app.post("/new-product", middleware.verifyUser, productMulter.single('image'), a
         activePage: "updateProduct",
         product: newProduct.data,
         userRole: isLogin ? userRole : null,
+        userId: req.user._id,
       });
     } else {
       console.log("Bug", newProduct);
