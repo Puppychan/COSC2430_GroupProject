@@ -628,10 +628,10 @@ app.get("/cart", middleware.verifyUser, async (req, res) => {
     const userRole = middleware.getUserRoleLocal();
     // render cart
     const result = await CartService.getCart(req.user._id);
-
+    let cart = { items: [], totalPrice: 0 };
     // if have login and get cart successfully
     if (result.status == HttpStatus.OK_STATUS) {
-      const cart = result.data.cart[0];
+      cart = result.data.cart.length ? result.data.cart[0] : cart;
       res.render("layout.ejs", {
         title: "Shopping Cart",
         bodyFile: "./customer/cart",
@@ -655,14 +655,14 @@ app.get("/order-detail", middleware.verifyUser, async function (req, res) {
 
     const user = await UserService.getUserInfo(req.user._id);
     if (user.status == HttpStatus.OK_STATUS) {
-      let user_data = result.data.user_data;
+      let user_data = user.data.user_data;
       console.log(user_data);
 
       res.render("layout.ejs", {
         title: "Order Detail",
         bodyFile: "./customer/order-detail",
         activePage: "order detail",
-        product: products,
+        product: products, 
         isLogin: isLogin,
         userRole: isLogin ? userRole : null,
         user: user_data,
@@ -674,6 +674,7 @@ app.get("/order-detail", middleware.verifyUser, async function (req, res) {
     console.log(err);
   }
 });
+
 
 // Add Product to Cart
 app.post('/cart', middleware.verifyUser, async (req, res) => {
@@ -721,11 +722,12 @@ app.post('/cart-delete', middleware.verifyUser, async (req, res) => {
 // Place Order route
 app.post("/order", middleware.verifyUser, async (req, res) => {
   try {
-    const result = await OrderService.placeOrder(req.user._id);
+    const hub = req.body.hubid;
+    const result = await OrderService.placeOrder(req.user._id, hub);
+
     if (result.status == HttpStatus.OK_STATUS) {
       let order = result.data.order;
       console.log(order);
-
     } else {
       console.log(result);
     }
@@ -739,15 +741,29 @@ app.get("/order", middleware.verifyUser, async function (req, res) {
     const isLogin = middleware.isLogin();
     const userRole = middleware.getUserRoleLocal();
     const user = await UserService.getUserInfo(req.user._id);
+    const result = await CartService.getCart(req.user._id);
+    let cart = { items: [], totalPrice: 0 };
+    let totalPrice = 0;
 
+    if (result.status === HttpStatus.OK_STATUS) {
+      cart = result.data.cart.length ? result.data.cart[0] : cart;
+    }    
+    
+    if (cart.items.length > 0) {
+      totalPrice = cart.items.reduce((acc, item) => {
+        return acc + (item.product.price * item.quantity);
+      }, 0);
+    }    
+     
     res.render("layout.ejs", {
       title: "Order Summary",
       bodyFile: "./customer/order",
       activePage: "order",
-      product: products,
+      cart: cart,
       isLogin: isLogin,
       userRole: isLogin ? userRole : null,
       user: user,
+      totalPrice: totalPrice,
     });
   } catch (err) {
     console.log(err);

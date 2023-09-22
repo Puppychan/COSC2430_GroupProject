@@ -17,50 +17,60 @@ flex justify-center">
     <h1 class="text-3xl font-semibold text-white-900 text-center">Your Cart</h1>
     <section class="cart-content">
       <section class="mt-5 flow-root">
-        <ul class="my-8">
-          <% cart.items.forEach((item)=> {%>
-          <li class="flex flex-col space-y-3 md:flex-row md:space-x-5 md:space-y-0
+        <% if (cart.items.length> 0) { %>
+
+          <ul class="my-8">
+            <% cart.items.forEach((item)=> {%>
+              <li class="flex flex-col space-y-3 md:flex-row md:space-x-5 md:space-y-0
           border-solid border-2 border-slate-500 rounded-xl text-left
           mb-8 px-4 py-1">
-            <div class="shrink-0 py-3.5 pl-4 justify-center flex">
-              <img class="h-28 w-28 max-w-full rounded-lg object-cover mt-1 " src="<%= item.product.image %>" alt="" />
-            </div>
-            <div class="relative flex flex-1 flex-col justify-between p-4">
-              <div class="md:col-gap-5 md:grid md:grid-cols-2">
-                <div class="lg:pr-0 md:pr-5">
-                  <p class="text-2xl font-semibold text-white-900 pb-1.5">
-                    <%= item.product.name %>
-                  </p>
-                  <p class="mx-0 mt-1 mb-0 text-sm text-gray-400 line-clamp-3">
-                    <%= item.product.description %>
-                  </p>
+                <div class="shrink-0 py-3.5 pl-4 justify-center flex">
+                  <img class="h-28 w-28 max-w-full rounded-lg object-cover mt-1 " src="<%= item.product.image %>"
+                    alt="" />
                 </div>
-                <div class="mt-4 pt-4 flex items-end justify-between md:items-start md:justify-end md:gap-4 md:mt-0">
-                  <p class="shrink-0 text-xl font-semibold text-white-900 md:order-2 md:text-right">
-                    <%= formatCurrency(item.product.price * item.quantity) %>
-                  </p>
-                  <div class="md:order-1 md:px1">
-                    <form class="mx-auto flex lg:h-8 md:h-6 items-stretch text-black" action="<%= navigatePage('cart-update') %>" method="post">
-                      <input type="text" name="id" value="<%= item.product._id %>" hidden>
-                      <button type="submit" data-action="decrement" class="font-semibold flex items-center justify-center rounded-l-md bg-stone-300 px-3 transition hover:bg-stone-600 hover:text-white">-</button>
-                      <input type="number" class="border-stone-400 border-y-0 focus:outline-none text-center w-10 bg-stone-200 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" name="quantity" value="<%= item.quantity %>" min="1">
-                      <button type="submit" data-action="increment" class="font-semibold flex items-center justify-center rounded-r-md bg-stone-300 px-3 transition hover:bg-stone-600 hover:text-white">+</button>
+                <div class="relative flex flex-1 flex-col justify-between p-4">
+                  <div class="md:col-gap-5 md:grid md:grid-cols-2">
+                    <div class="lg:pr-0 md:pr-5">
+                      <p class="text-2xl font-semibold text-white-900 pb-1.5">
+                        <%= item.product.name %>
+                      </p>
+                      <p class="mx-0 mt-1 mb-0 text-sm text-gray-400 line-clamp-3">
+                        <%= item.product.description %>
+                      </p>
+                    </div>
+                    <div
+                      class="mt-4 pt-4 flex items-end justify-between md:items-start md:justify-end md:gap-4 md:mt-0">
+                      <p class="shrink-0 text-xl font-semibold text-white-900 md:order-2 md:text-right">
+                        <%= formatCurrency(item.product.price * item.quantity) %>
+                      </p>
+                      <div class="md:order-1 md:px1">
+                        <form class="mx-auto flex lg:h-8 md:h-6 items-stretch text-black"
+                          action="<%= navigatePage('cart-update') %>" method="post">
+                          <input type="text" name="id" value="<%= item.product._id %>" hidden>
+                          <button type="submit" data-action="decrement"
+                            class="font-semibold flex items-center justify-center rounded-l-md bg-stone-300 px-3 transition hover:bg-stone-600 hover:text-white">-</button>
+                          <input type="number"
+                            class="border-stone-400 border-y-0 focus:outline-none text-center w-10 bg-stone-200 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            name="quantity" value="<%= item.quantity %>" min="1">
+                          <button type="submit" data-action="increment"
+                            class="font-semibold flex items-center justify-center rounded-r-md bg-stone-300 px-3 transition hover:bg-stone-600 hover:text-white">+</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="absolute top-5 right-5 flex md:bottom-0 md:top-auto">
+                    <form action="<%= navigatePage('cart-delete') %>" method="post">
+                      <input type="hidden" name="id" value="<%= item.product._id %>">
+                      <button type="submit"
+                        class="removeButton flex rounded p-2 text-center text-white transition-all duration-200 ease-in-out focus:shadow hover:text-blue-400">
+                        <i class="fa-solid fa-trash fa-xl"></i>
+                      </button>
                     </form>
                   </div>
                 </div>
-              </div>
-              <div class="absolute top-5 right-5 flex md:bottom-0 md:top-auto">
-                <form action="<%= navigatePage('cart-delete') %>" method="post">
-                  <input type="hidden" name="id" value="<%= item.product._id %>">
-                  <button type="submit" class="removeButton flex rounded p-2 text-center text-white transition-all duration-200 ease-in-out focus:shadow hover:text-blue-400">
-                    <i class="fa-solid fa-trash fa-xl"></i>
-                  </button>
-                </form>
-              </div>
-            </div>
-          </li>
-          <% }); %>
-        </ul>
+              </li>
+              <% }); %>
+          </ul>
       </section>
       <section class="mt-7 flex items-center md:justify-end md:gap-4 justify-between">
         <p class="md:text-xl text-2xl font-normal text-white-900 tracking-wider">Total:</p>
@@ -75,7 +85,12 @@ flex justify-center">
           Checkout
         </a>
       </section>
-    </div>
+      <% } else { %>
+        <p class="text-xl font-semibold text-white-900 text-center">Your cart is empty.</p>
+        <p class="text-md text-white-900 text-center">Looks like you haven't added any products yet. Start shopping now!
+        </p>
+        <% } %>
+  </div>
   </div>
 </section>
 
