@@ -35,6 +35,8 @@ const navigatePage = (type, id = -1, pageInfo) => {
             return `/cart-update`;
         case 'cart-delete':
             return `/cart-delete`;
+        case 'checkout':
+            return '/order';
         case 'new-product':
             return '/new-product';
         case 'update-product':
