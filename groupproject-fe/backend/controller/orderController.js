@@ -1,4 +1,4 @@
-const {Order, Product, Cart} = require("../db/models/modelCollection");
+const {Order, Product, Cart, Customer, Shipper} = require("../db/models/modelCollection");
 const {emptyCart} = require("./cartController");
 const {sendResponse} = require("../routes/middleware");
 
@@ -16,6 +16,35 @@ const getOrderById = async (req, res) => {
   try {
     const order = await Order.findById(req.params.orderid);
     sendResponse(res, 200, 'ok', order);
+  } catch (err) {
+    console.error(err);    
+    sendResponse(res, 500, `Error ${err}`);
+  }
+};
+
+const getOrderDetails = async (req, res) => {
+  try {
+    let order = await Order.findById(req.params.orderid)
+                          .populate('hub')
+                          .populate('customer')
+                          .populate('shipper');
+
+    if (order == null)  
+      sendResponse(res, 404, 'No order is found the with given id');
+
+    let order_details = JSON.parse(JSON.stringify(order));
+
+    let customer_details = await Customer.findOne({user: order.customer._id})
+    order_details.customer = {...order_details.customer, name: customer_details.name, address: customer_details.address};
+
+    let shipper_details = null
+    if (order.shipper != null) {
+      shipper_details = await Shipper.findOne({user: order.shipper._id})
+      order_details.shipper = {...order_details.shipper, name: shipper_details.name};
+  
+    }
+    sendResponse(res, 200, 'ok', order_details);
+   
   } catch (err) {
     console.error(err);    
     sendResponse(res, 500, `Error ${err}`);
@@ -92,6 +121,7 @@ const getActiveOrdersInHub = async (hubid) => {
 module.exports = {
   getOrderHistory,
   getOrderById,
+  getOrderDetails,
   placeOrder,
   updateOrderStatus,
   assignShipper,

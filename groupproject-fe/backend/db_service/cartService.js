@@ -5,7 +5,7 @@ const HttpStatus = require('../utils/commonHttpStatus')
 const getCart = async (customerid) => {
   try {
     const cart = await Cart.findOne({customer: customerid}).populate('items.product');
-    if (cart) return sendResponse(HttpStatus.OK_STATUS, "ok", {cart});
+    if (cart) return sendResponse(HttpStatus.OK_STATUS, "ok", cart);
 
     return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No cart is found the with given user id");
 
@@ -30,7 +30,7 @@ const addProductToCart = async (customerid, product, quantity) => {
     }
     if (!exist) cart.items.push({product: product, quantity: quantity});
     cart = await cart.save();
-    return sendResponse(HttpStatus.OK_STATUS, "Added product to cart", {cart});
+    return sendResponse(HttpStatus.OK_STATUS, "Added product to cart", cart);
 
   } catch (err) {
     return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Add product to cart failed: ${err}`);
@@ -46,7 +46,7 @@ const deleteProductInCart = async (customerid, productid) => {
       return item.product != productid
     })
     cart = await cart.save()
-    return sendResponse(HttpStatus.OK_STATUS, "Removed product from cart", {cart});
+    return sendResponse(HttpStatus.OK_STATUS, "Removed product from cart", cart);
 
   } catch (err) {
     return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Remove product failed: ${err}`);

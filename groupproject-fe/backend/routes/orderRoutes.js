@@ -14,7 +14,7 @@ router
 
 router.post('/update-status/:orderid', order.updateOrderStatus)
 router.post('/assign-shipper/:orderid', order.assignShipper)
-router.get("/:orderid", order.getOrderById);
+router.get("/:orderid", order.getOrderDetails);
 
 
 
