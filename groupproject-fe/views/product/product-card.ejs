@@ -10,8 +10,7 @@ Authors:  Tran Mai Nhung - s3879954
 Acknowledgement:  -->
 <div class="bg-gray-100 shadow-gray-700 shadow-lg rounded-lg w-full md:max-w-sm flex flex-col relative">
   <a href="<%= navigatePage(" product", product._id) %>" class="overflow-hidden rounded-t-lg ">
-    <img src="<%= product.image %>" alt="<%= product.name %> Image"
-      class="w-full h-56 md:h-52 object-cover hover:scale-150 transition duration-1000">
+    <img src="<%= product.image %>" alt="<%= product.name %> Image" class="w-full h-56 md:h-52 object-cover hover:scale-150 transition duration-1000">
   </a>
   <div class="px-3 pt-3 pb-5 flex flex-col gap-2 h-auto flex-grow">
     <h3 class="text-lg font-bold line-clamp-1 text-gray-800">
@@ -20,20 +19,25 @@ Acknowledgement:  -->
     <p class="text-sm text-gray-500 line-clamp-1 mt-0">
       <%= product.category %>
     </p>
-    <h4 class="text-red-600 line-clamp-1 font-semibold mt-0">
+    <h4 class="text-rose-600 line-clamp-1 font-semibold mt-0">
       <%= formatCurrency(product.price) %>
-        <span class="<%= product.stock > 0 ? 'text-green-600' : 'text-red-600' %> font-semibold">
-          - <%= product.stock> 0 ? product.stock + ' In Stock' : 'Out of Stock' %>
-        </span>
+      <span class="<%= product.stock > 0 ? 'text-emerald-600' : 'text-rose-600' %> font-semibold">
+        - <%= product.stock> 0 ? product.stock + ' In Stock' : 'Out of Stock' %>
+      </span>
     </h4>
     <p class="text-sm text-gray-800 mb-10 line-clamp-1 md:line-clamp-2">
       <%= product.description %>
     </p>
   </div>
-  <div class="absolute bottom-4 left-4 tracking-wide
-  text-blue-600 hover:text-blue-800 hover:scale-105 hover:tracking-normal
-  transition duration-300
-  cursor-pointer" title="View Products">
-    <a href="<%= navigatePage(" product", product._id) %>"> Details →</span></a>
+  <div class="absolute bottom-4 left-4 tracking-wide transform hover:scale-105 transition ease-in-out duration-300">
+    <a href="<%= navigatePage(" product", product._id) %>" class="text-sky-600 hover:text-sky-800 cursor-pointer" title="View Products">Details →</a>
   </div>
+  
+  <% if (typeof type !== 'undefined' && type == 'vendor') { %>
+    <div class="absolute bottom-7 right-6 transform hover:scale-105 transition ease-in-out duration-300">
+      <a href="<%= navigatePage('product-update', product._id) %>" class="text-sky-600 hover:text-sky-800">
+        <i class="fas fa-edit fa-lg"></i>
+      </a>
+    </div>
+  <% } %>
 </div>

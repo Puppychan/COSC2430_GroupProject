@@ -27,6 +27,8 @@ const navigatePage = (type, id = -1, pageInfo) => {
             return '/new-product';
         case 'product-delete':
             return `/delete-product/${id}`;
+        case 'vendor-product-list':
+            return `/vendor-dashboard?page=${pageInfo?.page}`;
         case 'cart':
             return '/cart';
         case 'new-product':

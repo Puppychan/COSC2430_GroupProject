@@ -95,18 +95,17 @@ app.get("/viewAll", async function (req, res) {
 
     // get products
     const results = await ProductService.getProducts(req);
-    const products = results?.data?.data;
-    const pageInfo = {
-      page: parseInt(results?.data?.page),
-      offset: results?.data?.offset,
-      totalPage: parseInt(results?.data?.totalPage),
-      minPrice: results?.data?.minPrice,
-      maxPrice: results?.data?.maxPrice,
-      search: results?.data?.search,
-    };
 
-
-    if (results.status == HttpStatus.OK_STATUS) {  // get user id after login
+    if (results.status == HttpStatus.OK_STATUS) {  // rendered products successfully
+      const products = results?.data?.data;
+      const pageInfo = {
+        page: parseInt(results?.data?.page),
+        offset: results?.data?.offset,
+        totalPage: parseInt(results?.data?.totalPage),
+        minPrice: results?.data?.minPrice,
+        maxPrice: results?.data?.maxPrice,
+        search: results?.data?.search,
+      };
 
       res.render("layout.ejs", {
         title: "Explore All Products",
@@ -438,7 +437,7 @@ app.get("/new-product", middleware.verifyUser, async function (req, res) {
     res.render("layout.ejs", {
       title: "New Product",
       bodyFile: "./vendors/addProduct",
-      activePage: "products",
+      activePage: "add-product",
       isLogin: isLogin,
       userRole: isLogin ? userRole : null,
       userId: req.user._id,
@@ -569,19 +568,33 @@ app.post("/delete-product/:id", middleware.verifyUser, async function (req, res)
 
 
 // Vendor Dashboard route
-app.get("/vendor-dashboard", function (req, res) {
+app.get("/vendor-dashboard", middleware.verifyUser, async function (req, res) {
   try {
     const isLogin = middleware.isLogin();
     const userRole = middleware.getUserRoleLocal();
+    const productResults = await ProductService.getProductsByVendorId(req);
 
-    res.render("layout.ejs", {
-      title: "Vendor Dashboard",
-      bodyFile: "./vendors/viewProducts",
-      activePage: "vendor-dashboard",
-      isLogin: isLogin,
-      userRole: isLogin ? userRole : null,
-      products: products,
-    });
+    console.log("Product results", productResults);
+
+    if (productResults.status == HttpStatus.OK_STATUS) {
+      const pageInfo = {
+        page: parseInt(productResults?.data?.page),
+        offset: productResults?.data?.offset,
+        totalPage: parseInt(productResults?.data?.totalPage),
+      };
+
+      res.render("layout.ejs", {
+        title: "Vendor Dashboard",
+        bodyFile: "./vendors/viewProducts",
+        activePage: "vendor-dashboard",
+        isLogin: isLogin,
+        userRole: isLogin ? userRole : null,
+        products: productResults.data.data,
+        pageInfo: pageInfo,
+      });
+    } else {
+      console.log(productResults);
+    }
   } catch (err) {
     console.log(err);
   }
@@ -800,6 +813,6 @@ app.use((error, req, res, next) => {
 
 // Start the server
 app.listen(PORT, function () {
-    console.log(`Server started on port ${PORT}`);
+  console.log(`Server started on port ${PORT}`);
 });
 

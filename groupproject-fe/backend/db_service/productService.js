@@ -33,6 +33,16 @@ const getRandomProducts = async (req) => {
         return sendResponse(err.code ?? HttpStatus.INTERNAL_SERVER_ERROR_STATUS, err.message ?? `Get products failed`);
     }
 };
+const getProductsByVendorId = async (req) => {
+    try {
+        const productList = await productController.getProductsByVendor(req);
+        return sendResponse(HttpStatus.OK_STATUS, `Get products successfully`, productList);
+    }
+    catch (err) {
+        console.log(err);
+        return sendResponse(err.code ?? HttpStatus.INTERNAL_SERVER_ERROR_STATUS, err.message ?? `Get products failed`);
+    }
+};
 
 const getProductById = async (req) => {
     try {
@@ -95,4 +105,4 @@ const deleteProduct = async (req) => {
         return sendResponse(err.code ?? HttpStatus.INTERNAL_SERVER_ERROR_STATUS, err.message ?? `Delete products failed`);
     }
 }
-module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductByObjectId, getRandomProducts };
+module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductByObjectId, getRandomProducts, getProductsByVendorId };
