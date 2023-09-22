@@ -8,79 +8,73 @@ Authors:  Tran Mai Nhung - s3879954
           Ton That Huu Luan - s3958304          
           Ho Van Khoa - s3997024 
 Acknowledgement:  -->
-<section class="dark-bg-gray-100 py-12 sm:py-16 lg:py-20">
-  <div class="mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="container mx-auto mt-8 max-w-4xl md:mt-12 ">
-      <div class="bg-gray-800 border-gray-700 rounded-xl">
-        <div class="flex items-center justify-center p-8">
-          <h1 class="text-3xl font-semibold text-white-900">Your Cart</h1>
-        </div>
-        <div class="px-4 py-6 sm:px-8 sm:py-10">
-          <div class="flow-root">
-            <ul class="-my-8">
-              <% cart.items.forEach((product)=> {%>
-                <li
-                  class="flex flex-col space-y-3 border-solid border-2 border-slate-500 rounded-xl py-1 text-left sm:flex-row sm:space-x-5 sm:space-y-0 mb-6 p-4">
-                  <div class="shrink-0 py-3.5 pl-4 justify-center flex">
-                    <img class="h-28 w-28 max-w-full rounded-lg object-cover mt-1 " src="<%= product.image %>" alt="" />
-                  </div>
-                  <div class="relative flex flex-1 flex-col justify-between p-4">
-                    <div class="sm:col-gap-5 sm:grid sm:grid-cols-2">
-                      <div class="lg:pr-0 sm:pr-5">
-                        <p class="text-2xl font-semibold text-white-900 pb-1.5">
-                          <%= product.name %>
-                        </p>
-                        <p class="mx-0 mt-1 mb-0 text-sm text-gray-400 line-clamp-3">
-                          <%= product.description %>
-                        </p>
-                      </div>
-                      <div class="mt-4 pt-4 flex items-end justify-between sm:mt-0 sm:items-start sm:justify-end">
-                        <p class="shrink-0 w-20 text-xl font-semibold text-white-900 sm:order-2 sm:ml-8 sm:text-right">
-                          <%= product.price %>
-                        </p>
-                        <div class="sm:order-1 sm:px1">
-                          <div class="mx-auto flex lg:h-8 sm:h-6 items-stretch text-black">
-                            <button data-action="decrement"
-                              class="font-semibold flex items-center justify-center rounded-l-md bg-stone-300 px-3 transition hover:bg-stone-600 hover:text-white">-</button>
-                            <input type="number"
-                              class="focus:outline-none text-center w-10 bg-stone-200 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                              name="quantity" value="1" min="1">
-                            <button data-action="increment"
-                              class="font-semibold flex items-center justify-center rounded-r-md bg-stone-300 px-3 transition hover:bg-stone-600 hover:text-white">+</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="absolute top-5 right-5 flex sm:bottom-0 sm:top-auto">
-                      <form action="/cart-delete" method="post">
-                        <input type="hidden" name="id" value="<%= product._id %>">
-                        <button type="submit"
-                          class="removeButton flex rounded p-2 text-center text-white transition-all duration-200 ease-in-out focus:shadow hover:text-blue-400">
-                          <i class="fa-solid fa-trash fa-xl"></i>
-                        </button>
-                      </form>
-                    </div>
-                  </div>
-                </li>
-                <% }); %>
-            </ul>
-          </div>
-          <div class="mt-6 flex items-center justify-between">
-            <p class="text-2xl font-bold text-white-900 mt-8">Total</p>
-            <p class="text-2xl font-semibold text-white-900">
-              <%= cart.total %><span class="text-xs font-normal text-white-400">VND</span>
-            </p>
-          </div>
-          <div class="mt-6 text-center">
-            <div class="p-10">
-              <a href="/order" type="button"
-                class="p-10   inline-flex w-full items-center justify-center rounded-md px-6 py-4 text-lg font-semibold text-white bg-blue-500 hover:bg-blue-600">
-                Checkout
-              </a>
+<section class="dark-bg-gray-100 py-12 md:py-16 lg:py-20 px-4 md:px-6 lg:px-8
+flex justify-center">
+  <!-- px-4 py-6 md:px-8 md:py-10 -->
+  <div class="bg-gray-800 border-gray-700 rounded-2xl shadow-md 
+  max-w-4xl sm:px-12 sm:py-14 p-8
+  flex flex-col items-center">
+    <h1 class="text-3xl font-semibold text-white-900 text-center">Your Cart</h1>
+    <section class="cart-content">
+      <section class="mt-5 flow-root">
+        <ul class="my-8">
+          <% cart.items.forEach((item)=> {%>
+          <li class="flex flex-col space-y-3 md:flex-row md:space-x-5 md:space-y-0
+          border-solid border-2 border-slate-500 rounded-xl text-left
+          mb-8 px-4 py-1">
+            <div class="shrink-0 py-3.5 pl-4 justify-center flex">
+              <img class="h-28 w-28 max-w-full rounded-lg object-cover mt-1 " src="<%= item.product.image %>" alt="" />
             </div>
-          </div>
-        </div>
-      </div>
+            <div class="relative flex flex-1 flex-col justify-between p-4">
+              <div class="md:col-gap-5 md:grid md:grid-cols-2">
+                <div class="lg:pr-0 md:pr-5">
+                  <p class="text-2xl font-semibold text-white-900 pb-1.5">
+                    <%= item.product.name %>
+                  </p>
+                  <p class="mx-0 mt-1 mb-0 text-sm text-gray-400 line-clamp-3">
+                    <%= item.product.description %>
+                  </p>
+                </div>
+                <div class="mt-4 pt-4 flex items-end justify-between md:items-start md:justify-end md:gap-4 md:mt-0">
+                  <p class="shrink-0 text-xl font-semibold text-white-900 md:order-2 md:text-right">
+                    <%= formatCurrency(item.product.price * item.quantity) %>
+                  </p>
+                  <div class="md:order-1 md:px1">
+                    <form class="mx-auto flex lg:h-8 md:h-6 items-stretch text-black" action="<%= navigatePage('cart-update') %>" method="post">
+                      <input type="text" name="id" value="<%= item.product._id %>" hidden>
+                      <button type="submit" data-action="decrement" class="font-semibold flex items-center justify-center rounded-l-md bg-stone-300 px-3 transition hover:bg-stone-600 hover:text-white">-</button>
+                      <input type="number" class="border-stone-400 border-y-0 focus:outline-none text-center w-10 bg-stone-200 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" name="quantity" value="<%= item.quantity %>" min="1">
+                      <button type="submit" data-action="increment" class="font-semibold flex items-center justify-center rounded-r-md bg-stone-300 px-3 transition hover:bg-stone-600 hover:text-white">+</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="absolute top-5 right-5 flex md:bottom-0 md:top-auto">
+                <form action="<%= navigatePage('cart-delete') %>" method="post">
+                  <input type="hidden" name="id" value="<%= item.product._id %>">
+                  <button type="submit" class="removeButton flex rounded p-2 text-center text-white transition-all duration-200 ease-in-out focus:shadow hover:text-blue-400">
+                    <i class="fa-solid fa-trash fa-xl"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </li>
+          <% }); %>
+        </ul>
+      </section>
+      <section class="mt-7 flex items-center md:justify-end md:gap-4 justify-between">
+        <p class="md:text-xl text-2xl font-normal text-white-900 tracking-wider">Total:</p>
+        <p class="text-2xl font-semibold text-white-900">
+          <%= formatCurrency(cart.totalPrice) %>
+        </p>
+      </section>
+      <section class="mt-4 text-center flex justify-end">
+        <a href="/order" type="button" class="px-12 py-3 
+        inline-flex md:w-auto w-full items-center justify-center rounded-xl 
+        text-lg font-semibold text-white bg-blue-500 hover:bg-blue-600">
+          Checkout
+        </a>
+      </section>
     </div>
   </div>
 </section>

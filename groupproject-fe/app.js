@@ -574,8 +574,6 @@ app.get("/vendor-dashboard", middleware.verifyUser, async function (req, res) {
     const userRole = middleware.getUserRoleLocal();
     const productResults = await ProductService.getProductsByVendorId(req);
 
-    console.log("Product results", productResults);
-
     if (productResults.status == HttpStatus.OK_STATUS) {
       const pageInfo = {
         page: parseInt(productResults?.data?.page),
@@ -628,36 +626,19 @@ app.get("/cart", middleware.verifyUser, async (req, res) => {
   try {
     const isLogin = middleware.isLogin();
     const userRole = middleware.getUserRoleLocal();
-    const user = await UserService.getUserInfo(req.user._id);
-
+    // render cart
     const result = await CartService.getCart(req.user._id);
-    if (result.status == HttpStatus.OK_STATUS && user.status == HttpStatus.OK_STATUS) {
-      const cartItems = await result.data.cart.items.map(async (item) => {
-        const product = await ProductService.getProductByObjectId(item.product);
-        if (product.status == HttpStatus.OK_STATUS) {
-          return {
-            product: product.data,
-            quantity: item.quantity,
-          }
-        } else {
-          console.log(product);
-        }
-      });
-      console.log("Cart items", cartItems);
-      let cart = {
-        _id: result.data.cart._id,
-        customer: user,
-        items: cartItems,
-      };
-      console.log(cart);
-      // console.log("Cart products", cart.items[0].product.name);
+
+    // if have login and get cart successfully
+    if (result.status == HttpStatus.OK_STATUS) {
+      const cart = result.data.cart[0];
       res.render("layout.ejs", {
         title: "Shopping Cart",
         bodyFile: "./customer/cart",
         activePage: "cart",
         isLogin: isLogin,
         userRole: isLogin ? userRole : null,
-        cart,
+        cart: cart,
       });
     } else {
       console.log(result);
@@ -699,6 +680,20 @@ app.post('/cart', middleware.verifyUser, async (req, res) => {
   try {
     console.log("Add to cart", req.body)
     const result = await CartService.addProductToCart(req.user._id, req.body.id, req.body.quantity);
+    if (result.status == HttpStatus.OK_STATUS) {
+      res.redirect('/cart');
+    } else {
+      console.log(result);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// Update Product Quantity in Cart
+app.post('/cart-update', middleware.verifyUser, async (req, res) => {
+  try {
+    const result = await CartService.updateProductInCart(req.user._id, req.body.id, req.body.quantity);
     if (result.status == HttpStatus.OK_STATUS) {
       res.redirect('/cart');
     } else {

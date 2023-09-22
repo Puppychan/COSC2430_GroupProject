@@ -31,6 +31,10 @@ const navigatePage = (type, id = -1, pageInfo) => {
             return `/vendor-dashboard?page=${pageInfo?.page}`;
         case 'cart':
             return '/cart';
+        case 'cart-update':
+            return `/cart-update`;
+        case 'cart-delete':
+            return `/cart-delete`;
         case 'new-product':
             return '/new-product';
         case 'update-product':
