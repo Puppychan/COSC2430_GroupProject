@@ -1,4 +1,4 @@
-const {Order, Product, Cart} = require("../db/models/modelCollection");
+const {Order, Product, Cart, Customer, Shipper} = require("../db/models/modelCollection");
 const {emptyCart} = require("./cartService");
 const {sendResponse} = require('../middleware/middleware');
 const HttpStatus = require('../utils/commonHttpStatus')
@@ -32,8 +32,8 @@ const placeOrder = async (customerid, hubid) => {
 
 const getOrderHistory = async (customerid) => {
   try {
-    const orders = await Order.find({ customer: customerid });
-    return sendResponse(HttpStatus.OK_STATUS, "ok", { orders });
+    const orders = await Order.find({customer: customerid});
+    return sendResponse(HttpStatus.OK_STATUS, "ok", orders);
   } catch (err) {
     return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Get order history failed: ${err}`);
   }
@@ -51,7 +51,7 @@ const assignShipper = async (orderid, shipperid) => {
       { new: true }
     );
 
-    if (order) return sendResponse(HttpStatus.OK_STATUS, "Assigned shipper successfully", { order });
+    if (order) return sendResponse(HttpStatus.OK_STATUS, "Assigned shipper successfully", order);
 
     return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No order is found the with given id");
 
@@ -63,15 +63,14 @@ const assignShipper = async (orderid, shipperid) => {
 const updateOrderStatus = async (orderid, status) => {
   try {
     const order = await Order.findOneAndUpdate(
-      { _id: orderid },
-      {
-        $set:
-          { status: status }
-      },
-      { new: true }
-    );
-    if (order) return sendResponse(HttpStatus.OK_STATUS, "Update status successfully", { order });
-
+        {_id: orderid}, 
+        { $set: 
+          {status : status}
+        },
+        {new: true}
+      );
+    if (order) return sendResponse(HttpStatus.OK_STATUS, "Update status successfully", order);
+    
     return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No order is found the with given id");
 
   } catch (err) {
@@ -82,12 +81,41 @@ const updateOrderStatus = async (orderid, status) => {
 const getOrderById = async (orderid) => {
   try {
     const order = await Order.findById(orderid);
-    if (order) return sendResponse(HttpStatus.OK_STATUS, "ok", { order });
-    return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No order is found the with given id");
+    sendResponse(HttpStatus.OK_STATUS, "ok", order);
   } catch (err) {
     return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Get order failed: ${err}`);
   }
 };
+
+const getOrderDetails = async (orderid) => {
+  try {
+    let order = await Order.findById(orderid)
+                          .populate('hub')
+                          .populate('customer')
+                          .populate('shipper');
+
+    if (order == null)  
+      return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No order is found the with given id");
+
+    let order_details = JSON.parse(JSON.stringify(order));
+
+    let customer_details = await Customer.findOne({user: order.customer._id})
+    order_details.customer = {...order_details.customer, name: customer_details.name, address: customer_details.address};
+
+    let shipper_details = null
+    if (order.shipper != null) {
+      shipper_details = await Shipper.findOne({user: order.shipper._id})
+      order_details.shipper = {...order_details.shipper, name: shipper_details.name};
+  
+    }
+
+    return sendResponse(HttpStatus.OK_STATUS, "ok", order_details);
+   
+  } catch (err) {
+    return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Get order details failed: ${err}`);
+  }
+};
+
 
 const getActiveOrdersInHub = async (hubid) => {
   try {
@@ -101,6 +129,7 @@ const getActiveOrdersInHub = async (hubid) => {
 module.exports = {
   getOrderHistory,
   getOrderById,
+  getOrderDetails,
   placeOrder,
   updateOrderStatus,
   assignShipper,

@@ -9,7 +9,6 @@
 //          Ho Van Khoa - s3997024
 // Acknowledgement: 
 const mongoose = require('mongoose');
-const Product = require('./Product');
 
 const cartItemSchema = new mongoose.Schema(
   {
