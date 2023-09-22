@@ -739,15 +739,17 @@ app.get("/order", middleware.verifyUser, async function (req, res) {
     const isLogin = middleware.isLogin();
     const userRole = middleware.getUserRoleLocal();
     const user = await UserService.getUserInfo(req.user._id);
+    const cartResult = await CartService.getCart(req.user._id);
+    console.log("Userr", user);
 
     res.render("layout.ejs", {
       title: "Order Summary",
       bodyFile: "./customer/order",
       activePage: "order",
-      product: products,
+      cart: cartResult.data.cart[0],
       isLogin: isLogin,
       userRole: isLogin ? userRole : null,
-      user: user,
+      user: user.data.user_data,
     });
   } catch (err) {
     console.log(err);
