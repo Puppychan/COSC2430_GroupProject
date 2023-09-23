@@ -93,6 +93,18 @@ const updateProduct = async (req) => {
         return sendResponse(err.code ?? HttpStatus.INTERNAL_SERVER_ERROR_STATUS, err.message ?? `Update products failed`);
     }
 };
+const updateProductStock = async (req) => {
+    try {
+        const product = await productController.updateProductStock(req);
+        if (!product) {
+            return sendResponse(HttpStatus.NOT_FOUND_STATUS, `Product Not Found`);
+        }
+        return sendResponse(HttpStatus.OK_STATUS, `Update product successfully`, product);
+    } catch (err) {
+        console.log(err);
+        return sendResponse(err.code ?? HttpStatus.INTERNAL_SERVER_ERROR_STATUS, err.message ?? `Update products failed`);
+    }
+};
 const deleteProduct = async (req) => {
     try {
         const product = await productController.deleteProductById(req);
@@ -105,4 +117,4 @@ const deleteProduct = async (req) => {
         return sendResponse(err.code ?? HttpStatus.INTERNAL_SERVER_ERROR_STATUS, err.message ?? `Delete products failed`);
     }
 }
-module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductByObjectId, getRandomProducts, getProductsByVendorId };
+module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductByObjectId, getRandomProducts, getProductsByVendorId, updateProductStock };
