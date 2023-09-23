@@ -223,7 +223,7 @@ app.get("/change-password", middleware.verifyUser, async (req, res) => {
     const isLogin = middleware.isLogin();
     const userRole = middleware.getUserRoleLocal();
     const result = await UserService.getUserInfo(req.user._id);
-    if (result.status == HttpStatus) {
+    if (result.status == HttpStatus.OK_STATUS) {
       let user_data = result.data.user_data;
       res.render("layout.ejs", {
         title: "Change Password",
