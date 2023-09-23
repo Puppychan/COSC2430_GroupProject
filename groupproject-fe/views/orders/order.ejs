@@ -9,41 +9,50 @@ Authors:  Tran Mai Nhung - s3879954
           Ho Van Khoa - s3997024 
 Acknowledgement:  -->
 <div class="text-center pt-24 pb-0">
-  <p class="lg:text-5xl text-3xl font-medium">Order Summary</p>
-  <p class="lg:text-xl mt-4 text-xl text-gray-400">Check your items before finish your order</p>
+  <p class="lg:text-5xl text-3xl font-medium"><%= headerTitle %></p>
+  <% if (typeof headerDescription !== 'undefined') { %>
+    <p class="lg:text-xl mt-4 text-xl text-gray-400"><%= headerDescription %></p>
+  <% } %>
+  <% if (typeof backOrderHistory !== 'undefined' && backOrderHistory) { %>
+   <a href="<%= navigatePage('order-history') %>" class="inline-block mt-5 px-4 py-2 rounded-md text-white bg-sky-500 hover:bg-sky-700 active:bg-sky-800 focus:outline-none text-lg">Back to Order History</a>
+  <% } %>
 </div>
 <section class="px-5 sm:px-10 lg:px-12 xl:px-32 lg:flex lg:flex-row justify-center gap-10 xl:gap-20">
-  <div class="py-24 lg:py-48 justify-items-center text-lg ">
-    <% if (userRole==="customer" ) { %>
-    <div class="w-[90vw] md:w-[60vw] lg:w-[400px] px-10 lg:px-5 py-10 lg:py-6 mx-auto bg-gray-800 
-        mb:flex rounded-xl shadow-inner shadow-2 ">
+  <section class="py-24 lg:py-48 justify-items-center text-lg ">
+    <div class="relative w-[90vw] md:w-[60vw] lg:w-[400px] px-10 lg:px-5 py-10 lg:py-6 mx-auto bg-gray-800 
+    mb:flex rounded-xl shadow-inner shadow-2 ">
       <h3 class="text-2xl dark:text-white font-semibold text-gray-800 text-center ">Shipping Information
       </h3>
       <section class="mt-6 md:mt-8
-          grid grid-cols-2 w-full gap-y-4 xl:gap-y-12 md:justify-start md:gap-x-6 lg:gap-x-3
-          items-center justify-start self-center
-          md:px-2 py-10 border-y-2 border-gray-600
-            ">
-        <header class="col-start-1 row-start-1 text-xl dark:text-white font-semibold text-center md:text-left text-gray-800">
-          Name
-        </header>
-        <p class="col-start-1 row-start-2 md:row-start-1 md:col-start-2 w-full dark:text-gray-300 text-center md:text-left text-md text-gray-600">
-          <%= user?.name %>
-        </p>
+      flex flex-col w-full gap-y-6 xl:gap-y-8 md:justify-start
+      items-center justify-start self-center
+      md:px-2 py-10 border-y-2 border-gray-600
+        ">
+        <div class="flex flex-col items-center md:items-start gap-2 w-full">
+          <header class="text-xl dark:text-white font-semibold text-center md:text-left text-gray-800">
+            Name
+          </header>
+          <p class="w-full dark:text-gray-300 text-center md:text-left text-md text-gray-600">
+            <%= customer?.name %>
+          </p>
+        </div>
 
-        <header class="col-start-2 row-start-1 md:row-start-2 md:col-start-1 text-xl dark:text-white font-semibold text-center md:text-left text-gray-800">
-          Shipping Address
-        </header>
-        <p class="col-start-2 row-start-2 w-full line-clamp-2 dark:text-gray-300 text-center md:text-left text-md text-gray-600">
-          <%= user?.address %>
-        </p>
+        <div class="flex flex-col gap-2 items-center md:items-start w-full">
+          <header class="text-xl dark:text-white font-semibold text-center md:text-left text-gray-800">
+            Shipping Address
+          </header>
+          <p class="w-full line-clamp-2 dark:text-gray-300 text-center md:text-left text-md text-gray-600">
+            <%= customer?.address %>
+          </p>
+        </div>
       </section>
       <div class="flex items-center justify-between mt-14 mb-12">
         <p class="text-2xl font-bold text-white-900 ">Total</p>
         <p class="text-xl font-semibold text-white-900 ">
-          <%= formatCurrency(cart.totalPrice) %>
+          <%= formatCurrency(cart.totalPrice ?? cart.total_price) %>
         </p>
       </div>
+      <% if (typeof chooseHubs !== 'undefined' && chooseHubs) { %>
       <form action="<%= navigatePage("place-order") %>" method="post">
         <div class="shipper-info role-info" id="hub">
           <div class="inputBox flex flex-col">
@@ -61,17 +70,35 @@ Acknowledgement:  -->
             </select>
           </div>
         </div>
-        <input type="text" name="_id" value="<%= user?._id %>" class="hidden">
+        <input type="text" name="_id" value="<%= customer?._id %>" class="hidden">
         <div class="mt-12 flex justify-center">
           <button type="submit" class="inline-flex items-center justify-center w-full rounded-lg px-6 py-3 text-lg font-semibold text-white bg-blue-500 hover:bg-blue-600">
             Place Order
           </button>
         </div>
       </form>
+      <% } %>
+      <% if (typeof updateState !== 'undefined' && updateState) { %>
+      <div class="md:absolute left-0 top-[100%] pt-5 w-full flex flex-col md:flex-row items-center justify-between">
+        <form action="<%= navigatePage('update-order-status') %>" method="post">
+          <input type="hidden" name="orderid" value="<%= cart.id %>">
+          <input type="hidden" name="status" value="delivered">
+          <button href="/order" type="submit" class="inline-flex items-center justify-center rounded-lg px-6 py-4 text-lg font-semibold text-white bg-emerald-600 hover:bg-emerald-700">
+            Mark As Complete
+          </button>
+        </form>
+        <form action="<%= navigatePage('update-order-status') %>" method="post">
+          <input type="hidden" name="orderid" value="<%= cart.id %>">
+          <input type="hidden" name="status" value="canceled">
+          <button class="inline-flex items-center justify-center rounded-lg px-6 py-4 text-lg font-semibold text-white bg-rose-600 hover:bg-rose-700">
+            Mark As Cancel
+          </button>
+        </form>
+      </div>
+      <% } %>
     </div>
-    <% } %>
-  </div>
-  <div class="lg:py-20 py-10 flex items-center justify-center xl:max-w-2xl">
+  </section>
+  <section class="lg:py-20 py-10 flex items-center justify-center xl:max-w-2xl">
     <div class="space-y-3 rounded-2xl border-[3px] border-gray-600 py-20 px-0.5 sm:px-2 lg:px-8 xl:px-11 w-full md:w-auto">
       <div class="flow-root">
         <ul class="-my-8 max-h-[70vh] overflow-y-scroll">
@@ -99,5 +126,5 @@ Acknowledgement:  -->
         </ul>
       </div>
     </div>
-  </div>
-</section>
+    </div>
+  </section>
