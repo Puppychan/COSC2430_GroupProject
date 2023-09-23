@@ -37,6 +37,8 @@ const navigatePage = (type, id = -1, pageInfo) => {
             return `/cart-delete`;
         case 'checkout':
             return '/order';
+        case 'place-order':
+            return '/order';
         case 'new-product':
             return '/new-product';
         case 'update-product':

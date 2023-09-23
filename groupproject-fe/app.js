@@ -18,6 +18,7 @@ const CartService = require("./backend/db_service/cartService");
 const OrderService = require("./backend/db_service/orderService");
 const HttpStatus = require('./backend/utils/commonHttpStatus')
 const multer = require('multer');
+const HubService = require("./backend/db_service/hubService");
 
 const { PORT, BACKEND_URL } = require("./common/constants");
 const { navigatePage, formatCurrency } = require("./common/helperFuncs");
@@ -628,10 +629,10 @@ app.get("/cart", middleware.verifyUser, async (req, res) => {
     const userRole = middleware.getUserRoleLocal();
     // render cart
     const result = await CartService.getCart(req.user._id);
-
+    let cart = { items: [], totalPrice: 0 };
     // if have login and get cart successfully
     if (result.status == HttpStatus.OK_STATUS) {
-      const cart = result.data.cart[0];
+      cart = result.data.cart.length ? result.data.cart[0] : cart;
       res.render("layout.ejs", {
         title: "Shopping Cart",
         bodyFile: "./customer/cart",
@@ -655,7 +656,7 @@ app.get("/order-detail", middleware.verifyUser, async function (req, res) {
 
     const user = await UserService.getUserInfo(req.user._id);
     if (user.status == HttpStatus.OK_STATUS) {
-      let user_data = result.data.user_data;
+      let user_data = user.data.user_data;
       console.log(user_data);
 
       res.render("layout.ejs", {
@@ -674,6 +675,7 @@ app.get("/order-detail", middleware.verifyUser, async function (req, res) {
     console.log(err);
   }
 });
+
 
 // Add Product to Cart
 app.post('/cart', middleware.verifyUser, async (req, res) => {
@@ -721,11 +723,13 @@ app.post('/cart-delete', middleware.verifyUser, async (req, res) => {
 // Place Order route
 app.post("/order", middleware.verifyUser, async (req, res) => {
   try {
-    const result = await OrderService.placeOrder(req.user._id);
+    const hub = req.body.hubid;
+    const result = await OrderService.placeOrder(req.user._id, hub);
+    console.log("Place order", result.data);
     if (result.status == HttpStatus.OK_STATUS) {
       let order = result.data.order;
       console.log(order);
-
+      res.redirect("/order-detail/" + order._id);
     } else {
       console.log(result);
     }
@@ -738,19 +742,30 @@ app.get("/order", middleware.verifyUser, async function (req, res) {
   try {
     const isLogin = middleware.isLogin();
     const userRole = middleware.getUserRoleLocal();
-    const user = await UserService.getUserInfo(req.user._id);
-    const cartResult = await CartService.getCart(req.user._id);
-    console.log("Userr", user);
+    // const user = await UserService.getUserInfo(req.user._id);
+    // const hubs = await HubService.getHubs();
+    // const cartResult = await CartService.getCart(req.user._id);
+    const [user, hubs, cartResult] = await Promise.all([
+      UserService.getUserInfo(req.user._id),
+      HubService.getHubs(),
+      CartService.getCart(req.user._id)
+    ]);
 
-    res.render("layout.ejs", {
-      title: "Order Summary",
-      bodyFile: "./customer/order",
-      activePage: "order",
-      cart: cartResult.data.cart[0],
-      isLogin: isLogin,
-      userRole: isLogin ? userRole : null,
-      user: user.data.user_data,
-    });
+    console.log("Order summary", cartResult.data.cart[0], hubs.data);
+    if (cartResult.status == HttpStatus.OK_STATUS && cartResult?.data?.cart[0] && user.status == HttpStatus.OK_STATUS && hubs.status == HttpStatus.OK_STATUS) {
+      res.render("layout.ejs", {
+        title: "Order Summary",
+        bodyFile: "./customer/order",
+        activePage: "order",
+        cart: cartResult.data.cart[0],
+        isLogin: isLogin,
+        userRole: isLogin ? userRole : null,
+        user: user.data.user_data,
+        hubs: hubs.data,
+      });
+    } else {
+      console.log(cartResult);
+    }
   } catch (err) {
     console.log(err);
   }
@@ -774,24 +789,33 @@ app.get('/order-history', middleware.verifyUser, async (req, res) => {
 });
 
 // Order Detail route
-app.get("/order-detail", middleware.verifyUser, async function (req, res) {
-  const isLogin = middleware.isLogin;
-  const result = await UserService.getUserInfo(req.user._id);
-  const userId = middleware.getUserIdLocal();
-  const user = await UserService.getUserInfo(userId);
-  if (result.status == 200) {
-    let user_data = result.data.user_data;
-    console.log(user_data);
+app.get("/order-detail/:id", middleware.verifyUser, async function (req, res) {
+  try {
+    const orderid = req.params.id;
+    const isLogin = middleware.isLogin();
+    const userRole = middleware.getUserRoleLocal();
+    const orderDetails = await OrderService.getOrderDetails(orderid);
+    console.log("Order detail", orderDetails.data);
+    if (orderDetails.status == HttpStatus.OK_STATUS) {
 
-    res.render("layout.ejs", {
-      title: "Order Detail",
-      bodyFile: "./customer/order-detail",
-      activePage: "order detail",
-      product: products,
-      isLogin: isLogin,
-      user: user_data,
-    });
+      res.render("layout.ejs", {
+        title: "Order Detail",
+        bodyFile: "./customer/order-detail",
+        activePage: "order detail",
+        product: products,
+        isLogin: isLogin,
+        userRole: isLogin ? userRole : null,
+        order: orderDetails.data,
+        // user: user_data,
+      });
+    }
+    else {
+      console.log(result);
+    }
+  } catch (err) {
+    console.log(err);
   }
+
 });
 // handle error if append to url
 app.use((error, req, res, next) => {

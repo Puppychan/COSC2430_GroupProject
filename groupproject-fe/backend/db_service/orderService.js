@@ -6,19 +6,45 @@ const HttpStatus = require('../utils/commonHttpStatus')
 
 const placeOrder = async (customerid, hubid) => {
   try {
-    let cart = await Cart.findOne({customer: customerid});
-    if (cart == null) return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No cart is found the with given user id");
+    // let cart = await Cart.findOne({customer: customerid});
+    // if (cart == null) return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No cart is found the with given user id");
 
-    let items_final = []
-    let total_price = 0;
-    for (item of cart.items) {
-      let product = await Product.findById(item.product);
-      if (product) {
-        items_final.push({ product: product, quantity: item.quantity });
-        total_price += product.price * item.quantity;
+    // let items_final = []
+    // let total_price = 0;
+    // for (item of cart.items) {
+    //   let product = await Product.findById(item.product);
+    //   if (product) {
+    //     items_final.push({ product: product, quantity: item.quantity });
+    //     total_price += product.price * item.quantity;
+    //   }
+    // }
+    // const order = await Order.create({customer: customerid, items: items_final, total_price: total_price, hub: hubid, status: 'active'})
+    const cart = await Cart.aggregate([
+      { $match: { customer: customerid } }, 
+      { $unwind: '$items' },
+      {  // Lookup product by id
+        $lookup: {
+          from: 'products', 
+          localField: 'items.product', 
+          foreignField: '_id', 
+          as: 'items.product' 
+        }
+      },
+      { $unwind: '$items.product' }, // Unwind the product array
+      { // Group by cart id
+        $group: {
+          _id: '$_id',
+          items: { // Push items into array
+            $push: {
+              product: '$items.product',
+              quantity: '$items.quantity'
+            }
+          },
+          totalPrice: { $sum: { $multiply: ['$items.product.price', '$items.quantity'] } }, // Calculate total price
+        }
       }
-    }
-    const order = await Order.create({customer: customerid, items: items_final, total_price: total_price, hub: hubid, status: 'active'})
+    ]);
+    const order = await Order.create({customer: customerid, items: cart.items, total_price: cart.totalPrice, hub: hubid, status: 'active'})
     cart = await emptyCart(customerid);
 
     return sendResponse(HttpStatus.OK_STATUS, "Placed order successfully", {order, cart});
