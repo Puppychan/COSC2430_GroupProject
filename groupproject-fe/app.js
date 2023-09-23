@@ -932,7 +932,7 @@ app.get("/order", middleware.verifyUser, async function (req, res) {
         headerDescription: "Check your items before finish your order",
         cart: cartResult.data.cart[0],
         customer: user.data.user_data,
-        getHubs: true,
+        chooseHubs: true,
         hubs: hubs.data,
 
       });
