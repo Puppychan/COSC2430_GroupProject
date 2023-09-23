@@ -8,39 +8,34 @@ Authors:  Tran Mai Nhung - s3879954
           Ton That Huu Luan - s3958304          
           Ho Van Khoa - s3997024 
 Acknowledgement:  -->
-<div class="flex justify-center">
-    <section
-        class="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 items-center justify-items-center gap-y-10 mt-2 mb-5 mx-auto md:max-w-xl lg:max-w-full lg:mx-0">
-        <h1 class="col-span-full text-center text-4xl my-4 md:text-5xl font-bold md:mb-8">
-            <%= title %>
-        </h1>
-        <% products.forEach(function(product){ %>
-            <div class="bg-gray-100 shadow-sm rounded-lg w-3/4 md:max-w-sm flex flex-col relative">
-                <img src="<%= product.image %>" alt="<%= product.name %>" class="w-full h-48 object-cover rounded-t-lg">
-                <div class="p-3 flex flex-col gap-2 h-auto flex-grow">
-                    <h3 class="text-lg font-bold line-clamp-1 text-gray-800">
-                        <%= product.name %>
-                    </h3>
-                    <p class="text-sm text-gray-500 line-clamp-1 mt-0">
-                        <%= product.category %>
-                    </p>
-                    <h4 class="text-red-600 line-clamp-1 font-semibold mt-0">
-                        <%= product.price %>₫
-                            <span class="<%= product.stock > 0 ? 'text-green-600' : 'text-red-600' %> font-semibold">
-                                - <%= product.stock> 0 ? product.stock + ' In Stock' : 'Out of Stock' %>
-                            </span>
-                    </h4>
-                    <p class="text-sm text-gray-800 mb-10 line-clamp-1 md:line-clamp-2">
-                        <%= product.description %>
-                    </p>
-                </div>
-                <div class="absolute bottom-4 left-4 text-blue-600 hover:text-blue-800 cursor-pointer">
-                    <a href="/detail"> Details →</a>
-                </div>
-                <div class="absolute bottom-7 right-6 text-blue-600">
-                    <a href="/update-product/<%= product._id %>"><i class="fa-solid fa-pen-to-square fa-xl"></i></a>
-                </div>
-            </div>
-            <% }); %>
-    </section>
+<div class="flex justify-center items-center flex-col py-24">
+  <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 
+  items-center justify-items-center 
+  gap-x-10 gap-y-14 
+  mt-2 mb-5
+  md:max-w-2xl lg:max-w-full w-10/12 sm:w-9/12 md:w-5/6">
+    <h1 class="col-span-full text-center text-4xl my-4 md:text-5xl font-bold md:mb-8">
+      <%= title %>
+    </h1>
+    <% products.forEach(function(product){ %>
+    <%- include('../product/product-card', {product, type: "vendor"}) %>
+    <% }); %>
+  </section>
+  <nav aria-label="Page navigation example" class="flex justify-center my-6 w-full">
+    <ul class="inline-flex -space-x-px text-sm">
+      <li>
+        <a href="<%= navigatePage("vendor-product-list", null, {...pageInfo, page: pageInfo.page - 1}) %>" class="flex
+              items-center
+              justify-center w-32 h-12 leading-tight border text-base font-bold rounded-l-lg bg-gray-100 border-gray-700
+              text-neutral-600 hover:bg-gray-700 hover:text-white" <%= pageInfo.page==0 ? "disabled" : "" %>>Previous</a>
+      </li>
+      <li>
+        <a href="<%= navigatePage("vendor-product-list", null, {...pageInfo, page: pageInfo.page + 1}) %>" class="flex
+              items-center
+              justify-center w-32 h-12 leading-tight border text-base font-bold rounded-r-lg bg-gray-100 border-gray-700
+              text-neutral-600 hover:bg-gray-700 hover:text-white" <%= pageInfo.page==pageInfo.totalPage ? "disabled" : ""
+                %>>Next</a>
+      </li>
+    </ul>
+  </nav>
 </div>

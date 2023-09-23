@@ -14,7 +14,6 @@ const HttpStatus = require('../utils/commonHttpStatus')
 
 // Local storage keys
 const TOKEN_KEY = '1080P_TOKEN'
-const USERID_KEY = '1080P_USERID'
 const USERROLE_KEY = '1080P_USERROLE'
 
 if (typeof localStorage === "undefined" || localStorage === null) {
@@ -68,6 +67,33 @@ const sendResponse2 = (res, status, message) => {
   });
 };
 
+const sendInvalidResponse = (res, err) => {
+  let status = err.status ?? HttpStatus.BAD_REQUEST_STATUS;
+  let message = err.message ?? `Bad Request`;
+  return res.status(status).render('err-layout', {
+    title: 'Error',
+    bodyFile: 'others/error',
+    error: {
+      status: status,
+      message: message,
+      data: null,  // You can pass additional data here if needed
+    },
+  });
+};
+const sendThrowErrorResponse = (res, err) => {
+  let status = err.code ?? HttpStatus.INTERNAL_SERVER_ERROR_STATUS;
+  let message = err.message ?? `Internal Server Error`;
+  return res.status(status).render('err-layout', {
+    title: 'Error',
+    bodyFile: 'others/error',
+    error: {
+      status: status,
+      message: message,
+      data: null,  // You can pass additional data here if needed
+    },
+  });
+};
+
 const runAsyncWrapper = (callback) => {
   return function (req, res, next) {
     callback(req, res, next)
@@ -79,7 +105,8 @@ const verifyUser = async (req, res, next) => {
   try {
     let token = getToken()
     if (token == null || token === undefined) {
-      return sendResponse2(res, HttpStatus.UNAUTHORIZED_STATUS, 'You are not authorized');
+      // return sendResponse2(res, HttpStatus.UNAUTHORIZED_STATUS, 'You are not authorized');
+      res.redirect('/login');
     }
 
     const payload = await verifyToken(token)
@@ -115,6 +142,8 @@ module.exports = {
   runAsyncWrapper,
   sendResponse,
   sendResponse2,
+  sendInvalidResponse,
+  sendThrowErrorResponse,
   verifyUser,
   verifyAction,
   setToken,

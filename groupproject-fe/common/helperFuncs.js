@@ -27,8 +27,24 @@ const navigatePage = (type, id = -1, pageInfo) => {
             return '/new-product';
         case 'product-delete':
             return `/delete-product/${id}`;
+        case 'vendor-product-list':
+            return `/vendor-dashboard?page=${pageInfo?.page}`;
         case 'cart':
             return '/cart';
+        case 'cart-update':
+            return `/cart-update`;
+        case 'cart-delete':
+            return `/cart-delete`;
+        case 'checkout':
+            return '/order';
+        case 'place-order':
+            return '/order/place';
+        case 'order-detail':
+            return `/order-detail/${id}`;
+        case 'update-order-status':
+            return `/order/update`;
+        case 'order-history':
+            return '/order-history';
         case 'new-product':
             return '/new-product';
         case 'update-product':
@@ -62,7 +78,11 @@ const navigatePage = (type, id = -1, pageInfo) => {
 const formatCurrency = (number) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
 };
+const formatDate = (date) => {
+    return new Intl.DateTimeFormat('en-VN', { dateStyle: 'medium' }).format(date);
+};
 module.exports = {
     navigatePage,
-    formatCurrency
+    formatCurrency,
+    formatDate
 };

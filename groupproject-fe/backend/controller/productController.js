@@ -11,11 +11,11 @@
 const Product = require('../db/models/shopping/Product');
 const { convertImageToBin } = require('../utils/imageToBin');
 
-const getProducts = async (req, res) => {
+const getProducts = async (req) => {
     try {
         let results;
         // get params
-        const searchName = req.query.name;
+        const searchName = req.query.name == 'undefined' ? '' : req.query.name;
         const maxPrice = parseFloat(req.query.maxp);
         const minPrice = parseFloat(req.query.minp);
         // get pagination
@@ -39,6 +39,7 @@ const getProducts = async (req, res) => {
         }
 
         const agg = [
+            // onyly if matchStage is not empty
             { $match: matchStage },
             {
                 $facet: {
@@ -52,8 +53,9 @@ const getProducts = async (req, res) => {
                 }
             }
         ];
+
         results = await Product.aggregate(agg);
-        // send response
+        // get total count of products
         totalItems = results[0].totalRecords;
         // if no product
         if (totalItems == 0) return {
@@ -81,7 +83,7 @@ const getProducts = async (req, res) => {
     }
 }
 
-const getRandomProducts = (req, res) => {
+const getRandomProducts = (req) => {
     try {
         const limit = 6;
         const agg = [
@@ -92,8 +94,51 @@ const getRandomProducts = (req, res) => {
         throw err;
     }
 }
+const getProductsByVendor = async (req) => {
+    try {
+        // if page is undefined -> default page = 1
+        const currentPage = (req.query.page == 'undefined' || !req.query.page) ? 1 : req.query.page;
+        const limit = 15;
+        const skipValue = (currentPage - 1) * limit;
 
-const getProductById = async (req, res) => {
+        const agg = [
+            // onyly if matchStage is not empty
+            { $match: { vendor: req.user._id } },
+            {
+                $facet: {
+                    totalRecords: [
+                        { $count: "total" }
+                    ],
+                    data: [
+                        { $skip: skipValue },
+                        { $limit: limit }
+                    ]
+                }
+            }
+        ];
+        const results = await Product.aggregate(agg);
+        // get total count of products
+        const totalItems = results[0].totalRecords;
+        // if no product
+        if (totalItems == 0) return {
+            data: [],
+            page: 1,
+            totalPage: 1,
+            offset: 0,
+        };
+        // if have product
+        else return {
+            data: results[0].data,
+            page: currentPage,
+            offset: skipValue + 1,
+            totalPage: Math.ceil(totalItems / limit),
+        }
+    } catch (err) {
+        throw err;
+    }
+}
+
+const getProductById = async (req) => {
     try {
         const renderedProduct = await Product.findById(req.params.id);
         if (!renderedProduct) {
@@ -106,7 +151,7 @@ const getProductById = async (req, res) => {
     }
 }
 
-const getProductByObjectId = async (req, res) => {
+const getProductByObjectId = async (req) => {
     try {
         const renderedProduct = await Product.findById(req);
         if (!renderedProduct) {
@@ -118,7 +163,7 @@ const getProductByObjectId = async (req, res) => {
     }
 }
 
-const createProduct = async (req, res) => {
+const createProduct = async (req) => {
     let newProduct;
     try {
         // convert image to base64
@@ -138,8 +183,8 @@ const createProduct = async (req, res) => {
         throw err;
     }
 }
-// TODO
-const updateProduct = async (req, res) => {
+
+const updateProduct = async (req) => {
     try {
         // update product by id
         // get image attribute and the rest attributes
@@ -165,7 +210,7 @@ const updateProduct = async (req, res) => {
     }
 }
 
-const deleteProductById = async (req, res) => {
+const deleteProductById = async (req) => {
     try {
         const deleteProduct = await Product.findByIdAndDelete(req.params.id);
         // if delete product not found
@@ -180,7 +225,7 @@ const deleteProductById = async (req, res) => {
         throw err;
     }
 }
-const deleteProductListId = async (req, res) => {
+const deleteProductListId = async (req) => {
     try {
         const idsToDelete = req.body.ids;
         const deleteProducts = await Product.deleteMany({ _id: { $in: idsToDelete } });
@@ -199,5 +244,6 @@ module.exports = {
     updateProduct,
     deleteProductById,
     deleteProductListId,
-    getProductByObjectId
+    getProductByObjectId,
+    getProductsByVendor
 }

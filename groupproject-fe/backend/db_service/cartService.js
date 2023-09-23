@@ -14,8 +14,33 @@ const HttpStatus = require('../utils/commonHttpStatus')
 
 const getCart = async (customerid) => {
   try {
-    const cart = await Cart.findOne({customer: customerid}).populate('items.product');
-    if (cart) return sendResponse(HttpStatus.OK_STATUS, "ok", {cart});
+    // const cart = await Cart.findOne({customer: customerid}).populate('items.product');
+    const cart = await Cart.aggregate([
+      { $match: { customer: customerid } }, 
+      { $unwind: '$items' },
+      {  // Lookup product by id
+        $lookup: {
+          from: 'products', 
+          localField: 'items.product', 
+          foreignField: '_id', 
+          as: 'items.product' 
+        }
+      },
+      { $unwind: '$items.product' }, // Unwind the product array
+      { // Group by cart id
+        $group: {
+          _id: '$_id',
+          items: { // Push items into array
+            $push: {
+              product: '$items.product',
+              quantity: '$items.quantity'
+            }
+          },
+          totalPrice: { $sum: { $multiply: ['$items.product.price', '$items.quantity'] } }, // Calculate total price
+        }
+      }
+    ]);
+    if (cart) return sendResponse(HttpStatus.OK_STATUS, "ok", { cart });
 
     return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No cart is found the with given user id");
 
@@ -47,9 +72,37 @@ const addProductToCart = async (customerid, product, quantity) => {
   }
 }
 
+const updateProductInCart = async (customerid, productid, quantity) => {
+  try {
+    let cart = await Cart.findOne({ customer: customerid });
+    if (cart == null) return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No cart is found the with given user id");
+    
+    let exist = false;
+    for (let i = 0; i < cart.items.length; i++) {
+      if (cart.items[i].product == productid) {
+        // if quantity is 0, remove the product from cart
+        if (quantity == 0) {
+          cart.items.splice(i, 1);
+          exist = true;
+          break;
+        }
+        cart.items[i].quantity = quantity;
+        exist = true;
+        break;
+      }
+    }
+    if (!exist) return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No product is found the with given product id");
+    cart = await cart.save()
+    return sendResponse(HttpStatus.OK_STATUS, "Updated product in cart", { cart });
+
+  } catch (err) {
+    return sendResponse(HttpStatus.INTERNAL_SERVER_ERROR_STATUS, `Update product failed: ${err}`);
+  }
+}
+
 const deleteProductInCart = async (customerid, productid) => {
   try {
-    let cart = await Cart.findOne({ customerid });
+    let cart = await Cart.findOne({ customer: customerid });
     if (cart == null) return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No cart is found the with given user id");
 
     cart.items = cart.items.filter(function (item) {
@@ -67,12 +120,12 @@ const deleteProductInCart = async (customerid, productid) => {
 // call emptyCart after placing order
 const emptyCart = async (customerid) => {
   try {
-    let cart = await Cart.findOneAndUpdate({customer: customerid}, {items: []}, {new: true});
+    let cart = await Cart.findOneAndUpdate({ customer: customerid }, { items: [] }, { new: true });
     return cart;
 
   } catch (err) {
-    throw(err)
+    throw (err)
   }
 }
 
-module.exports = {addProductToCart, deleteProductInCart, getCart, emptyCart}
+module.exports = { addProductToCart, deleteProductInCart, getCart, emptyCart, updateProductInCart }

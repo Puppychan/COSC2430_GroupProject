@@ -10,15 +10,13 @@
 // Acknowledgement: 
 
 const Hub = require('../db/models/shopping/Hub');
-const { sendResponse } = require('../routes/middleware');
 
-const getHubs = async (req, res) => {
+const getHubs = async (req) => {
     try {
         const hub = await Hub.find();
-        sendResponse(res, 200, `ok`, hub);
+        return hub;
     } catch (err) {
-        console.log(err)
-        sendResponse(res, 500, `Error ${err}`);
+        throw err
     }
 }
 
