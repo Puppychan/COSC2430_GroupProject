@@ -9,9 +9,15 @@ Authors:  Tran Mai Nhung - s3879954
           Ho Van Khoa - s3997024 
 Acknowledgement:  -->
 <section class="flex items-center justify-center">
-  <div class="py-14 px-10 lg:px-20 my-20 
+  <div class="py-14 px-10 lg:px-20 my-20
+  flex flex-col items-center justify-center 
   w-10/12 md:w-3/4 lg:w-4/6 lg:max-w-3xl
   rounded-3xl bg-gray-800 border-gray-700 border shadow-md">
+    <% if (userRole == 'customer') { %>
+    <a href="<%= navigatePage('order-history') %>" class="lg:self-end inline-block mt-5 px-4 py-2 rounded-lg border-2 text-white bg-transparent border-blue-700 hover:bg-blue-700 active:bg-blue-800 focus:outline-none text-lg">
+      <i class="fa-solid fa-clipboard"></i> Tracking Orders
+    </a>
+    <% } %>
     <h1 class="text-center font-bold text-3xl my-4">My Profile</h1>
     <div class="flex items-center justify-center w-full">
       <form action="/my-account" class="m-0 w-full" method="post" enctype="multipart/form-data">
@@ -94,7 +100,7 @@ Acknowledgement:  -->
         </div>
         <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-5
         transition duration-300 hover:scale-105">Save
-            changes</button>
+          changes</button>
         <div class="mt-3 flex flex-col md:flex-row justify-between items-end gap-3">
           <a href="/change-password" class="order-last md:order-1">
             <button type="button" class="focus:outline-none text-white border border-rose-600 hover:bg-rose-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">Change
@@ -107,4 +113,5 @@ Acknowledgement:  -->
         </div>
       </form>
     </div>
+  </div>
 </section>
