@@ -35,8 +35,8 @@ items-center justify-items-center gap-6 lg:gap-10 px-6 sm:px-12 lg:px-24 mx-auto
     </div>
 
     <h4 class="text-gray-700 font-semibold">Total Price: <%= formatCurrency(order.total_price) %></h4>
-    <p class="text-sm text-gray-600"><strong>Created At:</strong> <%= order.createdAt %></p>
-    <div class="text-blue-500 hover:text-blue-700 cursor-pointer"><a href="/order-detail">Details →</a></div>
+    <p class="text-sm text-gray-600"><strong>Created At:</strong> <%= formatDate(order.createAt) %></p>
+    <div class="text-blue-500 hover:text-blue-700 cursor-pointer"><a href="<%= navigatePage('order-detail', order._id) %>">Details →</a></div>
   </div>
   <% }) %>
 </section>

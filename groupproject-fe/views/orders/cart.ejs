@@ -19,7 +19,7 @@ flex justify-center">
       <section class="mt-5 flow-root">
         <% if (cart.items.length> 0) { %>
 
-          <ul class="my-8">
+          <ul class="my-8 overflow-y-scroll max-h-[65vh]">
             <% cart.items.forEach((item)=> {%>
               <li class="flex flex-col space-y-3 md:flex-row md:space-x-5 md:space-y-0
           border-solid border-2 border-slate-500 rounded-xl text-left
@@ -79,7 +79,7 @@ flex justify-center">
         </p>
       </section>
       <section class="mt-4 text-center flex justify-end">
-        <a href="/order" type="button" class="px-12 py-3 
+        <a href="<%= navigatePage('checkout') %>" type="button" class="px-12 py-3 
         inline-flex md:w-auto w-full items-center justify-center rounded-xl 
         text-lg font-semibold text-white bg-blue-500 hover:bg-blue-600">
           Checkout

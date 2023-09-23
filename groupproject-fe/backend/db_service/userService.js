@@ -126,7 +126,7 @@ const login = async (username, password) => {
       });
     }
     return sendResponse(
-      HttpStatus.BAD_REQUEST_STATUS,
+      HttpStatus.UNAUTHORIZED_STATUS,
       "Login failed. Wrong password"
     );
   } catch (err) {
