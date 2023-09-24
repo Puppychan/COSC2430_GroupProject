@@ -9,21 +9,27 @@ Authors:  Tran Mai Nhung - s3879954
           Ho Van Khoa - s3997024 
 Acknowledgement:  -->
 <div class="text-center pt-24 pb-0">
-  <p class="lg:text-5xl text-3xl font-medium"><%= headerTitle %></p>
-  <% if (typeof headerDescription !== 'undefined') { %>
-    <p class="lg:text-xl mt-4 text-xl text-gray-400"><%= headerDescription %></p>
-  <% } %>
-  <% if (typeof backOrderHistory !== 'undefined' && backOrderHistory) { %>
-   <a href="<%= navigatePage('order-history') %>" class="inline-block mt-5 px-4 py-2 rounded-md text-white bg-sky-500 hover:bg-sky-700 active:bg-sky-800 focus:outline-none text-lg">Back to Order History</a>
-  <% } %>
+  <p class="lg:text-5xl text-3xl font-medium">
+    <%= headerTitle %>
+  </p>
+  <% if (typeof headerDescription !=='undefined' ) { %>
+    <p class="lg:text-xl mt-4 text-xl text-gray-400">
+      <%= headerDescription %>
+    </p>
+    <% } %>
+      <% if (typeof backOrderHistory !=='undefined' && backOrderHistory) { %>
+        <a href="<%= navigatePage('order-history') %>"
+          class="inline-block mt-5 px-4 py-2 rounded-md text-white bg-sky-500 hover:bg-sky-700 active:bg-sky-800 focus:outline-none text-lg">Back
+          to Order History</a>
+        <% } %>
 </div>
-<section class="px-5 sm:px-10 lg:px-12 xl:px-32 lg:flex lg:flex-row justify-center gap-10 xl:gap-20">
+<div class="px-5 sm:px-10 lg:px-12 xl:px-32 lg:flex lg:flex-row justify-center gap-10 xl:gap-20">
   <section class="py-24 lg:py-48 justify-items-center text-lg ">
     <div class="relative w-[90vw] md:w-[60vw] lg:w-[400px] px-10 lg:px-5 py-10 lg:py-6 mx-auto bg-gray-800 
     mb:flex rounded-xl shadow-inner shadow-2 ">
       <h3 class="text-2xl dark:text-white font-semibold text-gray-800 text-center ">Shipping Information
       </h3>
-      <section class="mt-6 md:mt-8
+      <div class="mt-6 md:mt-8
       flex flex-col w-full gap-y-6 xl:gap-y-8 md:justify-start
       items-center justify-start self-center
       md:px-2 py-10 border-y-2 border-gray-600
@@ -45,86 +51,109 @@ Acknowledgement:  -->
             <%= customer?.address %>
           </p>
         </div>
-      </section>
-      <div class="flex items-center justify-between mt-14 mb-12">
-        <p class="text-2xl font-bold text-white-900 ">Total</p>
-        <p class="text-xl font-semibold text-white-900 ">
-          <%= formatCurrency(cart.totalPrice ?? cart.total_price) %>
-        </p>
       </div>
-      <% if (typeof chooseHubs !== 'undefined' && chooseHubs) { %>
-      <form action="<%= navigatePage("place-order") %>" method="post">
-        <div class="shipper-info role-info" id="hub">
-          <div class="inputBox flex flex-col">
-            <label for="hubid" class="block mb-2 text-xl font-medium text-gray-900 dark:text-white mb:text-center">Distribution
-              Hub</label>
-            <select required class="bg-gray-50 border border-gray-300 text-gray-900
+      <% if (typeof displayStatus !=='undefined' && displayStatus) { %>
+        <div class="flex justify-between items-center py-2 px-4 mt-6 mb-6 rounded-md 
+        <%= cart.status === 'active' ? 'bg-green-500' : cart.status === 'delivered' ? 'bg-blue-500' : 'bg-red-500' %>">
+          <span class="text-white font-semibold">
+            <%= cart.status.charAt(0).toUpperCase() + cart.status.slice(1) %>
+          </span>
+        </div>
+        <% } %>
+          <div class="flex items-center justify-between mt-14 mb-12">
+            <p class="text-2xl font-bold text-white-900 ">Total</p>
+            <p class="text-xl font-semibold text-white-900 ">
+              <%= formatCurrency(cart.totalPrice ?? cart.total_price) %>
+            </p>
+          </div>
+          <% if (typeof chooseHubs !=='undefined' && chooseHubs) { %>
+            <form action="<%= navigatePage(" place-order") %>" method="post">
+              <div class="shipper-info role-info" id="hub">
+                <div class="inputBox flex flex-col">
+                  <label for="hubid"
+                    class="block mb-2 text-xl font-medium text-gray-900 dark:text-white mb:text-center">Distribution
+                    Hub</label>
+                  <select required class="bg-gray-50 border border-gray-300 text-gray-900
                                     sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
                                     w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                    dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="hub" name="hubid">
-              <option value="" disabled selected>Choose your Distribution Hub</option>
-              <% hubs.forEach(hub => { %>
-              <option value="<%= hub._id %>"><%= hub.name %></option>
+                                    dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="hubid"
+                    name="hubid">
+                    <option value="" disabled selected>Choose your Distribution Hub</option>
+                    <% hubs.forEach(hub=> { %>
+                      <option value="<%= hub._id %>">
+                        <%= hub.name %>
+                      </option>
 
-              <% }) %>
-            </select>
-          </div>
-        </div>
-        <input type="text" name="_id" value="<%= customer?._id %>" class="hidden">
-        <div class="mt-12 flex justify-center">
-          <button type="submit" class="inline-flex items-center justify-center w-full rounded-lg px-6 py-3 text-lg font-semibold text-white bg-blue-500 hover:bg-blue-600">
-            Place Order
-          </button>
-        </div>
-      </form>
-      <% } %>
-      <% if (typeof updateState !== 'undefined' && updateState) { %>
-      <div class="md:absolute left-0 top-[100%] pt-5 w-full flex flex-col md:flex-row items-center justify-between">
-        <form action="<%= navigatePage('update-order-status') %>" method="post">
-          <input type="hidden" name="orderid" value="<%= cart.id %>">
-          <input type="hidden" name="status" value="delivered">
-          <button href="/order" type="submit" class="inline-flex items-center justify-center rounded-lg px-6 py-4 text-lg font-semibold text-white bg-emerald-600 hover:bg-emerald-700">
-            Mark As Complete
-          </button>
-        </form>
-        <form action="<%= navigatePage('update-order-status') %>" method="post">
-          <input type="hidden" name="orderid" value="<%= cart.id %>">
-          <input type="hidden" name="status" value="canceled">
-          <button class="inline-flex items-center justify-center rounded-lg px-6 py-4 text-lg font-semibold text-white bg-rose-600 hover:bg-rose-700">
-            Mark As Cancel
-          </button>
-        </form>
-      </div>
-      <% } %>
+                      <% }) %>
+                  </select>
+                </div>
+              </div>
+              <input type="text" name="_id" value="<%= customer?._id %>" class="hidden">
+              <div class="mt-12 flex justify-center">
+                <button type="submit"
+                  class="inline-flex items-center justify-center w-full rounded-lg px-6 py-3 text-lg font-semibold text-white bg-blue-500 hover:bg-blue-600">
+                  Place Order
+                </button>
+              </div>
+            </form>
+            <% } %>
+              <% if (typeof updateState !=='undefined' && updateState) { %>
+                <div
+                  class="md:absolute left-0 top-[100%] pt-5 w-full flex flex-col md:flex-row items-center justify-between">
+                  <form action="<%= navigatePage('update-order-status') %>" method="post">
+                    <input type="hidden" name="orderid" value="<%= cart._id %>">
+                    <input type="hidden" name="status" value="delivered">
+                    <button type="submit"
+                      class="inline-flex items-center justify-center rounded-lg px-6 py-4 text-lg font-semibold text-white bg-emerald-600 hover:bg-emerald-700">
+                      Mark As Complete
+                    </button>
+                  </form>
+                  <form action="<%= navigatePage('update-order-status') %>" method="post">
+                    <input type="hidden" name="orderid" value="<%= cart._id %>">
+                    <input type="hidden" name="status" value="canceled">
+                    <button
+                      class="inline-flex items-center justify-center rounded-lg px-6 py-4 text-lg font-semibold text-white bg-rose-600 hover:bg-rose-700">
+                      Mark As Cancel
+                    </button>
+                  </form>
+                </div>
+                <% } %>
     </div>
   </section>
-  <section class="lg:py-20 py-10 flex items-center justify-center xl:max-w-2xl">
-    <div class="space-y-3 rounded-2xl border-[3px] border-gray-600 py-20 px-0.5 sm:px-2 lg:px-8 xl:px-11 w-full md:w-auto">
+  <div class="lg:py-20 py-10 flex items-center justify-center xl:max-w-2xl">
+    <div
+      class="space-y-3 rounded-2xl border-[3px] border-gray-600 py-20 px-0.5 sm:px-2 lg:px-8 xl:px-11 w-full md:w-auto">
       <div class="flow-root">
         <ul class="-my-8 max-h-[70vh] overflow-y-scroll">
           <% cart.items.forEach(item=> {%>
-          <li class="flex flex-col space-y-1 border-solid border-0 border-w-700 bg-gray-800 rounded-xl py-1 text-left sm:flex-row sm:space-x-5 sm:space-y-0 mb-7 p-4">
-            <div class="shrink-0 py-3.5 justify-center flex">
-              <img class="w-full h-44 sm:w-28 sm:h-28 md:h-20 md:w-20 max-w-full rounded-lg object-cover mt-1 " src="<%= item.product.image %>" alt="" />
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-x-3 items-center grow gap-y-2 md:gap-y-">
-              <div class="col-start-1 col-span-2 row-start-1 text-white-900 
-                  text-lg font-semibold self-end">
-                <p class="line-clamp-2 w-full"><%= item.product.name %></p>
-
+            <li
+              class="flex flex-col space-y-1 border-solid border-0 border-w-700 bg-gray-800 rounded-xl py-1 text-left sm:flex-row sm:space-x-5 sm:space-y-0 mb-7 p-4">
+              <div class="shrink-0 py-3.5 justify-center flex">
+                <img class="w-full h-44 sm:w-28 sm:h-28 md:h-20 md:w-20 max-w-full rounded-lg object-cover mt-1 "
+                  src="<%= item.product.image %>" alt="" />
               </div>
-              <p class="col-start-1 row-start-2 col-span-2 text-sm text-gray-500 line-clamp-2 self-start">
-                Quantity: <%= item.quantity %>
-              </p>
-              <p class="col-start-1 md:col-start-3 col-span-2 row-span-2 text-lg md:text-xl font-semibold text-white-900 text-right w-full line-clamp-1">
-                <%= formatCurrency(item.product.price) %>
-              </p>
-            </div>
-          </li>
-          <% }); %>
+
+              <div class="grid grid-cols-1 md:grid-cols-4 gap-x-3 items-center grow gap-y-2 md:gap-y-">
+                <div class="col-start-1 col-span-2 row-start-1 text-white-900 
+                  text-lg font-semibold self-end">
+                  <p class="line-clamp-2 w-full">
+                    <%= item.product.name %>
+                  </p>
+
+                </div>
+                <p class="col-start-1 row-start-2 col-span-2 text-sm text-gray-500 line-clamp-2 self-start">
+                  Quantity: <%= item.quantity %>
+                </p>
+                <p
+                  class="col-start-1 md:col-start-3 col-span-2 row-span-2 text-lg md:text-xl font-semibold text-white-900 text-right w-full line-clamp-1">
+                  <%= formatCurrency(item.product.price) %>
+                </p>
+              </div>
+            </li>
+            <% }); %>
         </ul>
       </div>
     </div>
-    </div>
-  </section>
+
+  </div>
+</div>

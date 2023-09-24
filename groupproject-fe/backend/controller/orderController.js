@@ -10,7 +10,8 @@
 // Acknowledgement: 
 const { Order, Product, Cart } = require("../db/models/modelCollection");
 const {emptyCart} = require("./cartController");
-const { sendResponse } = require("../routes/middleware");
+const {sendResponse} = require("../routes/middleware");
+const {checkStock, updateStock} = require('../db_service/productService')
 
 const getOrderHistory = async (req, res) => {
   try {
@@ -69,10 +70,14 @@ const placeOrder = async (req, res) => {
     let items_final = []
     let total_price = 0;
     for (item of cart.items) {
-      let product = await Product.findById(item.product);
-      if (product) {
-        items_final.push({ product: product, quantity: item.quantity });
-        total_price += product.price * item.quantity;
+      let enoughStock = await checkStock(item.product, item.quantity);
+      if (!enoughStock) sendResponse(res, 403, "Product's stock is not enough");
+      else {
+        let product = await Product.findById(item.product);
+        items_final.push({product: product, quantity: item.quantity});
+        total_price += product.price*item.quantity;
+  
+        let updatedProduct = await updateStock(item.product, item.quantity*(-1));
       }
     }
     const order = await Order.create({customer: customerid, items: items_final, total_price: total_price, hub: hub, status: 'active'})
@@ -107,14 +112,23 @@ const updateOrderStatus = async (req, res) => {
   try {
     const { status } = req.body;
     const order = await Order.findOneAndUpdate(
-      { _id: req.params.orderid },
-      {
-        $set:
-          { status: status }
-      },
-      { new: true }
-    );
-    sendResponse(res, 200, 'ok', order);
+        {_id: req.params.orderid}, 
+        { $set: 
+          {status : status}
+        },
+        {new: true}
+      );
+
+    if (order) {
+      // increase product stock when order is canceled
+      if (status == "canceled") {
+        for (item of order.items) {
+          await updateStock(item.product._id, item.quantity);
+        }
+      }
+      sendResponse(res, 200, 'ok', order);
+    }
+    else sendResponse(res, 404, ' No order is found the with given id');
   } catch (err) {
     console.error(err);
     sendResponse(res, 500, `Error ${err}`);

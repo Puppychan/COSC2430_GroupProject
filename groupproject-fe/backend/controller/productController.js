@@ -94,6 +94,7 @@ const getRandomProducts = (req) => {
         throw err;
     }
 }
+
 const getProductsByVendor = async (req) => {
     try {
         // if page is undefined -> default page = 1
@@ -210,6 +211,27 @@ const updateProduct = async (req) => {
     }
 }
 
+const updateProductStock = async (req) => {
+    try {
+        // update product by id
+        const { stock } = req.body;
+        // update product
+        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {
+            stock: stock,
+        });
+        // if update product not found
+        if (!updatedProduct) {
+            return null;
+        }
+        // if found and succesfully updated
+        else {
+            return updatedProduct;
+        }
+    } catch (err) {
+        throw err;
+    }
+}
+
 const deleteProductById = async (req) => {
     try {
         const deleteProduct = await Product.findByIdAndDelete(req.params.id);
@@ -245,5 +267,6 @@ module.exports = {
     deleteProductById,
     deleteProductListId,
     getProductByObjectId,
+    updateProductStock,
     getProductsByVendor
 }
