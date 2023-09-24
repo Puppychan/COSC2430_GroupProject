@@ -10,6 +10,8 @@
 // Acknowledgement: 
 const { Cart } = require('../db/models/modelCollection')
 const { sendResponse } = require("../routes/middleware");
+const {checkStock} = require('../db_service/productService')
+
 
 const getCart = async (req, res) => {
   try {
@@ -23,19 +25,24 @@ const getCart = async (req, res) => {
 
 const addProductToCart = async (req, res) => {
   try {
-    const { product, quantity } = req.body
-    let cart = await Cart.findOne({ customer: req.user._id });
-    let exist = false
-    for (let i = 0; i < cart.items.length; i++) {
-      if (cart.items[i].product == product) {
-        cart.items[i].quantity += quantity;
-        exist = true
-        break;
+    const {product, quantity} = req.body
+    let enoughStock = await checkStock(product, quantity);
+    if (!enoughStock) sendResponse(res, 400, "Product's stock is not enough");
+    else {
+      let cart = await Cart.findOne({customer: req.user._id});
+      let exist = false
+      for (let i=0; i<cart.items.length; i++) {
+        if (cart.items[i].product == product) {
+          cart.items[i].quantity += quantity;
+          exist = true
+          break;
+        }
       }
+      if (!exist) cart.items.push({product: product, quantity: quantity})
+      cart = await cart.save()
+      sendResponse(res, 200, 'added product to cart', cart);
     }
-    if (!exist) cart.items.push({ product: product, quantity: quantity })
-    cart = await cart.save()
-    sendResponse(res, 200, 'added product to cart', cart);
+    
   } catch (err) {
     console.log(err)
     sendResponse(res, 500, `Error ${err}`);
