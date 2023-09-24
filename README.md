@@ -19,13 +19,11 @@
       </ul>
     </li>
     <li><a href="#features">Features</a></li>
-    <li><a href="#usage">Usage</a></li>
     <li>
       <a href="#credits">Credits</a>
       <ul>
         <li><a href="#contributors">Contributors</a></li>
         <li><a href="#third-party-attributions">Third-party Attributions</a></li>
-        <li><a href="#tutorial-links">Tutorial Links</a></li>
         <li><a href="#other-acknowledgements">Other Acknowledgements</a></li>
       </ul>
     </li>
@@ -57,32 +55,23 @@ The scope of this web application is based on a full-stack implementation that i
 
 - Clone this project on Github ()[]
 - Open Project
-- Create `.env` file inside `root`:
-  ```
-FRONT_PORT=3001
-MONGODB_URI = "mongodb+srv://s3877707:cosc2430group@groupwebprogramming.fnigakp.mongodb.net/test?retryWrites=true&w=majority"
-  ```
-- Run `npm install` to install the package.json
-- Run `npm start` to start running the project
-- Open [http://localhost:3000/](http://localhost:3000/)
-### For Frontend
-- From `root`, run `cd groupproject-fe`
-- Run `npm install` to install all dependencies
-- Run `npm run buildcss` to import css file from tailwind
-- Run `npm run start` to start the website
+- Create `.env` file inside `grouproject-fe` directory with the following information:
+```
+MONGODB_URI = "" # MongoDB URI
+``` 
+- Open two seperate terminals
+- Run `cd groupproject-fe` for both terminals (if terminal is still in root directory)
+- Run `npm install` in either terminals
+- Run `npm run buildcss` in the first terminal
+- Run `npm run start` in the second terminal
+- Wait for server to say `MongoDB connection SUCCESS`
+- Open [http://localhost:3001/](http://localhost:3001/)
 ## Features
 
-If your project has a lot of features, list them here.
-
-## Usage
-
-Provide instructions and examples for use. Include screenshots as needed.
-
-To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
-
-    ```md
-    ![alt text](assets/images/screenshot.png)
-    ```
+- Robust Authentication System
+- Dynamic Page Rendering
+- Role Specific Pages
+- Streamlined Ordering System
 
 ## Credits
 
@@ -98,14 +87,10 @@ To add a screenshot, create an `assets/images` folder in your repository and upl
 
 ### Third-party Attributions
 
-If you used any third-party assets that require attribution, list the creators with links to their primary web presence in this section.
-
-### Tutorial Links
-
-If you followed tutorials, include links to those here as well.
+[Flowbite](https://flowbite.com)
 
 ### Other Acknowledgements
-
+[ChatGPT](https://chat.openai.com/) for generating footer pages
 ## Contact
 
 - Tran Mai Nhung - s3879943:
