@@ -50,7 +50,7 @@ Acknowledgement:  -->
               <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
             </div>
           </div>
-          <div class="customer-info role-info" id="name-field">
+          <div class="customer-info role-info" id="customer-name-field">
             <div class="inputBox">
               <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
                 Address</label>
@@ -62,37 +62,37 @@ Acknowledgement:  -->
             </div>
           </div>
           <% } else if (user?.user?.role==="vendor" ) {%>
-          <div class="vendor-info role-info" id="business-info">
+          <div class="vendor-info role-info" id="vendor-info">
             <div class="inputBox">
               <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
                 Business Name</label>
               <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600
                                               sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
                                               w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                              dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="name" name="name" minlength="5" value="<%= user?.name %>">
+                                              dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="busname" name="name" minlength="5" value="<%= user?.name %>">
               <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
             </div>
           </div>
-          <div class="vendor-info role-info" id="business-info">
+          <div class="vendor-info role-info" id="address-info">
             <div class="inputBox">
               <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
                 Business Address</label>
               <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600
                                               sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
                                               w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                              dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="address" name="address" minlength="5" value="<%= user?.address %>">
+                                              dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="bus-address" name="address" minlength="5" value="<%= user?.address %>">
               <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
             </div>
           </div>
           <% } else if (user?.user?.role==="shipper" ) {%>
-          <div class="vendor-info role-info" id="business-info">
+          <div class="vendor-info role-info" id="shipper-info">
             <div class="inputBox">
               <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
                 Name</label>
               <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 invalid:border-red-500 invalid:text-red-600
                                                   sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block
                                                   w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                                  dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="name" name="name" minlength="5" value="<%= user?.name %>">
+                                                  dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="shippername" name="name" minlength="5" value="<%= user?.name %>">
               <p class="text-xs pt-2 text-gray-400">Must be at least 5 characters</p>
             </div>
           </div>
@@ -102,13 +102,11 @@ Acknowledgement:  -->
         transition duration-300 hover:scale-105">Save
           changes</button>
         <div class="mt-3 flex flex-col md:flex-row justify-between items-end gap-3">
-          <a href="/change-password" class="order-last md:order-1">
-            <button type="button" class="focus:outline-none text-white border border-rose-600 hover:bg-rose-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">Change
-              password</button>
+          <a href="/change-password" class="order-last md:order-1 focus:outline-none text-white border border-rose-600 hover:bg-rose-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5" >Change password
           </a>
           <span class="order-first md:order-2">
-            <a href="/logout"> <button type="button" class="focus:outline-none text-white bg-rose-700 hover:bg-rose-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:ring-red-900
-            transition duration-300 hover:scale-105">Logout</button></a>
+            <a href="/logout" class="focus:outline-none text-white bg-rose-700 hover:bg-rose-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-rose-600 dark:hover:bg-rose-700 dark:focus:ring-red-900
+            transition duration-300 hover:scale-105">Logout</a>
           </span>
         </div>
       </form>
