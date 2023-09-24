@@ -892,8 +892,8 @@ app.post("/order/update", middleware.verifyUser, async (req, res) => {
     const result = await OrderService.updateOrderStatus(orderid, status);
     // if update successfully
     if (result.status == HttpStatus.OK_STATUS) {
-      // redirect to order detail page
-      res.redirect("/order-detail/" + orderid);
+      // redirect to shipper dashboard 
+      res.redirect("/shipper-dashboard");
     } else {
       // if update failed
       middleware.sendInvalidResponse(res, result);
@@ -993,6 +993,7 @@ app.get('/order-history', middleware.verifyUser, async (req, res) => {
 // Order Detail route
 app.get("/order-detail/:id", middleware.verifyUser, async function (req, res) {
   try {
+    const orderStatus = req.query.orderStatus;
     // get order id from request params
     const orderid = req.params.id;
     // verify if is login
@@ -1000,6 +1001,7 @@ app.get("/order-detail/:id", middleware.verifyUser, async function (req, res) {
     const userRole = middleware.getUserRoleLocal();
     // get order details
     const orderDetails = await OrderService.getOrderDetails(orderid);
+    console.log(orderDetails.data);
     // if get order details successfully
     if (orderDetails.status == HttpStatus.OK_STATUS) {
       // render order detail page
@@ -1015,6 +1017,7 @@ app.get("/order-detail/:id", middleware.verifyUser, async function (req, res) {
         cart: orderDetails.data,
         customer: orderDetails.data.customer,
         updateState: userRole == "shipper" && true,
+        displayStatus: true,
         // updateState: true,
       });
     }

@@ -11,10 +11,10 @@ Acknowledgement:  -->
 <div class="text-center pt-24 pb-0">
   <p class="lg:text-5xl text-3xl font-medium"><%= headerTitle %></p>
   <% if (typeof headerDescription !== 'undefined') { %>
-    <p class="lg:text-xl mt-4 text-xl text-gray-400"><%= headerDescription %></p>
+  <p class="lg:text-xl mt-4 text-xl text-gray-400"><%= headerDescription %></p>
   <% } %>
   <% if (typeof backOrderHistory !== 'undefined' && backOrderHistory) { %>
-   <a href="<%= navigatePage('order-history') %>" class="inline-block mt-5 px-4 py-2 rounded-md text-white bg-sky-500 hover:bg-sky-700 active:bg-sky-800 focus:outline-none text-lg">Back to Order History</a>
+  <a href="<%= navigatePage('order-history') %>" class="inline-block mt-5 px-4 py-2 rounded-md text-white bg-sky-500 hover:bg-sky-700 active:bg-sky-800 focus:outline-none text-lg">Back to Order History</a>
   <% } %>
 </div>
 <section class="px-5 sm:px-10 lg:px-12 xl:px-32 lg:flex lg:flex-row justify-center gap-10 xl:gap-20">
@@ -46,12 +46,20 @@ Acknowledgement:  -->
           </p>
         </div>
       </section>
-      <div class="flex items-center justify-between mt-14 mb-12">
+      <% if (typeof displayStatus !== 'undefined' && displayStatus) { %>
+        <section class="flex justify-between items-center py-2 px-4 mt-6 mb-6 rounded-md 
+        <%= cart.status === 'active' ? 'bg-green-500' : cart.status === 'delivered' ? 'bg-blue-500' : 'bg-red-500' %>">
+          <span class="text-white font-semibold">
+            <%= cart.status.charAt(0).toUpperCase() + cart.status.slice(1) %>
+          </span>
+        </section>
+      <% } %>
+      <section class="flex items-center justify-between mt-14 mb-12">
         <p class="text-2xl font-bold text-white-900 ">Total</p>
         <p class="text-xl font-semibold text-white-900 ">
           <%= formatCurrency(cart.totalPrice ?? cart.total_price) %>
         </p>
-      </div>
+      </section>
       <% if (typeof chooseHubs !== 'undefined' && chooseHubs) { %>
       <form action="<%= navigatePage("place-order") %>" method="post">
         <div class="shipper-info role-info" id="hub">
@@ -79,22 +87,22 @@ Acknowledgement:  -->
       </form>
       <% } %>
       <% if (typeof updateState !== 'undefined' && updateState) { %>
-      <div class="md:absolute left-0 top-[100%] pt-5 w-full flex flex-col md:flex-row items-center justify-between">
+      <section class="md:absolute left-0 top-[100%] pt-5 w-full flex flex-col md:flex-row items-center justify-between">
         <form action="<%= navigatePage('update-order-status') %>" method="post">
-          <input type="hidden" name="orderid" value="<%= cart.id %>">
+          <input type="hidden" name="orderid" value="<%= cart._id %>">
           <input type="hidden" name="status" value="delivered">
-          <button href="/order" type="submit" class="inline-flex items-center justify-center rounded-lg px-6 py-4 text-lg font-semibold text-white bg-emerald-600 hover:bg-emerald-700">
+          <button type="submit" class="inline-flex items-center justify-center rounded-lg px-6 py-4 text-lg font-semibold text-white bg-emerald-600 hover:bg-emerald-700">
             Mark As Complete
           </button>
         </form>
         <form action="<%= navigatePage('update-order-status') %>" method="post">
-          <input type="hidden" name="orderid" value="<%= cart.id %>">
+          <input type="hidden" name="orderid" value="<%= cart._id %>">
           <input type="hidden" name="status" value="canceled">
           <button class="inline-flex items-center justify-center rounded-lg px-6 py-4 text-lg font-semibold text-white bg-rose-600 hover:bg-rose-700">
             Mark As Cancel
           </button>
         </form>
-      </div>
+      </section>
       <% } %>
     </div>
   </section>
