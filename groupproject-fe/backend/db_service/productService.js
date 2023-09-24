@@ -9,8 +9,35 @@
 //          Ho Van Khoa - s3997024
 // Acknowledgement: 
 const productController = require("../controller/productController");
+const {Product} = require('../db/models/modelCollection')
+
 const HttpStatus = require("../utils/commonHttpStatus");
 const { sendResponse } = require("../middleware/middleware");
+
+const checkStock = async (productid, quantity) => {
+    try {
+        let product = await Product.findById(productid);
+        
+        if (product == null) throw new Error("No product found with given id");
+
+        if (product.stock < quantity) return false;
+        return true;
+    }
+    catch (err) {
+        throw(err)
+    }
+}
+
+const updateStock = async (productid, quantity) => {
+    try {
+        let product = await Product.findOneAndUpdate({_id: productid}, { $inc: { stock: quantity}}, {new: true});
+        if (product == null) throw new Error("No product found with given id");
+        return product;
+    }
+    catch (err) {
+        throw(err)
+    }
+}
 
 const getProducts = async (req) => {
     try {
@@ -117,4 +144,4 @@ const deleteProduct = async (req) => {
         return sendResponse(err.code ?? HttpStatus.INTERNAL_SERVER_ERROR_STATUS, err.message ?? `Delete products failed`);
     }
 }
-module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductByObjectId, getRandomProducts, getProductsByVendorId, updateProductStock };
+module.exports = { checkStock, updateStock, getProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductByObjectId, getRandomProducts };

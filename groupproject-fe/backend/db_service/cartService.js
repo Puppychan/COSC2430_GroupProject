@@ -10,6 +10,7 @@
 // Acknowledgement: 
 const { Cart } = require('../db/models/modelCollection')
 const { sendResponse } = require('../middleware/middleware');
+const {checkStock} = require('./productService')
 const HttpStatus = require('../utils/commonHttpStatus')
 
 const getCart = async (customerid) => {
@@ -49,21 +50,24 @@ const getCart = async (customerid) => {
   }
 }
 
-const addProductToCart = async (customerid, product, quantity) => {
+const addProductToCart = async (customerid, productid, quantity) => {
   try {
-    let cart = await Cart.findOne({ customer: customerid });
+    let enoughStock = await checkStock(productid, quantity);
+    if (!enoughStock) return sendResponse(HttpStatus.FORBIDDEN_STATUS, "Product's stock is not enough");
+
+    let cart = await Cart.findOne({customer: customerid});
 
     if (cart == null) return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No cart is found the with given user id");
 
     let exist = false
-    for (let i = 0; i < cart.items.length; i++) {
-      if (cart.items[i].product == product) {
+    for (let i=0; i<cart.items.length; i++) {
+      if (cart.items[i].product == productid) {
         cart.items[i].quantity += quantity;
         exist = true
         break;
       }
     }
-    if (!exist) cart.items.push({ product: product, quantity: quantity });
+    if (!exist) cart.items.push({product: productid, quantity: quantity});
     cart = await cart.save();
     return sendResponse(HttpStatus.OK_STATUS, "Added product to cart", { cart });
 

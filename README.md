@@ -19,13 +19,11 @@
       </ul>
     </li>
     <li><a href="#features">Features</a></li>
-    <li><a href="#usage">Usage</a></li>
     <li>
       <a href="#credits">Credits</a>
       <ul>
         <li><a href="#contributors">Contributors</a></li>
         <li><a href="#third-party-attributions">Third-party Attributions</a></li>
-        <li><a href="#tutorial-links">Tutorial Links</a></li>
         <li><a href="#other-acknowledgements">Other Acknowledgements</a></li>
       </ul>
     </li>
@@ -35,12 +33,10 @@
 
 ## Description
 
-Provide a <b>short</b> description explaining the what, why, and how of your project. Use the following questions as a guide:
+1080p Technology was established to enhance the shopping experience for tech-savvy enthusiasts. We aim to provide a wide range of products from the latest smartphones, relevant accessories, and all technology-related things. 
 
-- What was your motivation?
-- Why did you build this project? (Note: the answer is not "Because it was a homework assignment.")
-- What problem does it solve?
-- What did you learn?
+The scope of this web application is based on a full-stack implementation that includes MongoDB, Express, EJS, and NodeJS. This comprehensive technological stack was used to build a fully functional e-commerce site that allows users to buy and sell a wide range of tech products. With a modern, aesthetically beautiful website built to provide convenience and accessibility, the user experience was a top priority. A responsive design and a live search bar, which allows visitors to search for specific items or filter things depending on price range, are notable features. Vendors can list, change, or delete product listings, creating a more dynamic marketplace environment. Furthermore, the platform extends its capability to delivery drivers, allowing them to track ongoing orders that need to be fulfilled.
+
 
 ## Build With
 ### Backend
@@ -50,7 +46,7 @@ Provide a <b>short</b> description explaining the what, why, and how of your pro
 
 ### Frontend
 - EJS - Embedded Java Script substituting HTML
-![](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white) or ![](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+ ![](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 #### Others
 ![](https://img.shields.io/badge/Font_Awesome-339AF0?style=for-the-badge&logo=fontawesome&logoColor=white)
 
@@ -59,32 +55,23 @@ Provide a <b>short</b> description explaining the what, why, and how of your pro
 
 - Clone this project on Github ()[]
 - Open Project
-- Create `.env` file inside `root`:
-  ```
-  CONNECTED_URI = "" # MongoDB URI
-  PORT = 3000 # Port to run the server on
-  ```
-- Run `npm install` to install the package.json
-- Run `npm start` to start running the project
-- Open [http://localhost:3000/](http://localhost:3000/)
-### For Frontend
-- From `root`, run `cd groupproject-fe`
-- Run `npm install` to install all dependencies
-- Run `npm run buildcss` to import css file from tailwind
-- Run `npm run start` to start the website
+- Create `.env` file inside `grouproject-fe` directory with the following information:
+```
+MONGODB_URI = "" # MongoDB URI
+``` 
+- Open two seperate terminals
+- Run `cd groupproject-fe` for both terminals (if terminal is still in root directory)
+- Run `npm install` in either terminals
+- Run `npm run buildcss` in the first terminal
+- Run `npm run start` in the second terminal
+- Wait for server to say `MongoDB connection SUCCESS`
+- Open [http://localhost:3001/](http://localhost:3001/)
 ## Features
 
-If your project has a lot of features, list them here.
-
-## Usage
-
-Provide instructions and examples for use. Include screenshots as needed.
-
-To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
-
-    ```md
-    ![alt text](assets/images/screenshot.png)
-    ```
+- Robust Authentication System
+- Dynamic Page Rendering
+- Role Specific Pages
+- Streamlined Ordering System
 
 ## Credits
 
@@ -100,14 +87,10 @@ To add a screenshot, create an `assets/images` folder in your repository and upl
 
 ### Third-party Attributions
 
-If you used any third-party assets that require attribution, list the creators with links to their primary web presence in this section.
-
-### Tutorial Links
-
-If you followed tutorials, include links to those here as well.
+[Flowbite](https://flowbite.com)
 
 ### Other Acknowledgements
-
+[ChatGPT](https://chat.openai.com/) for generating footer pages
 ## Contact
 
 - Tran Mai Nhung - s3879943:
