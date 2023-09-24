@@ -35,12 +35,10 @@
 
 ## Description
 
-Provide a <b>short</b> description explaining the what, why, and how of your project. Use the following questions as a guide:
+1080p Technology was established to enhance the shopping experience for tech-savvy enthusiasts. We aim to provide a wide range of products from the latest smartphones, relevant accessories, and all technology-related things. 
 
-- What was your motivation?
-- Why did you build this project? (Note: the answer is not "Because it was a homework assignment.")
-- What problem does it solve?
-- What did you learn?
+The scope of this web application is based on a full-stack implementation that includes MongoDB, Express, EJS, and NodeJS. This comprehensive technological stack was used to build a fully functional e-commerce site that allows users to buy and sell a wide range of tech products. With a modern, aesthetically beautiful website built to provide convenience and accessibility, the user experience was a top priority. A responsive design and a live search bar, which allows visitors to search for specific items or filter things depending on price range, are notable features. Vendors can list, change, or delete product listings, creating a more dynamic marketplace environment. Furthermore, the platform extends its capability to delivery drivers, allowing them to track ongoing orders that need to be fulfilled.
+
 
 ## Build With
 ### Backend
@@ -50,7 +48,7 @@ Provide a <b>short</b> description explaining the what, why, and how of your pro
 
 ### Frontend
 - EJS - Embedded Java Script substituting HTML
-![](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white) or ![](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+ ![](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 #### Others
 ![](https://img.shields.io/badge/Font_Awesome-339AF0?style=for-the-badge&logo=fontawesome&logoColor=white)
 
