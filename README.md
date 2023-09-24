@@ -59,8 +59,8 @@ The scope of this web application is based on a full-stack implementation that i
 - Open Project
 - Create `.env` file inside `root`:
   ```
-  CONNECTED_URI = "" # MongoDB URI
-  PORT = 3000 # Port to run the server on
+FRONT_PORT=3001
+MONGODB_URI = "mongodb+srv://s3877707:cosc2430group@groupwebprogramming.fnigakp.mongodb.net/test?retryWrites=true&w=majority"
   ```
 - Run `npm install` to install the package.json
 - Run `npm start` to start running the project
