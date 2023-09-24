@@ -1,5 +1,6 @@
 const {Order, Product, Cart, Customer, Shipper} = require("../db/models/modelCollection");
 const {emptyCart} = require("./cartService");
+const {checkStock, updateStock} = require('./productService')
 const {sendResponse} = require('../middleware/middleware');
 const HttpStatus = require('../utils/commonHttpStatus')
 
@@ -12,11 +13,16 @@ const placeOrder = async (customerid, hubid) => {
     let items_final = []
     let total_price = 0;
     for (item of cart.items) {
+      let enoughStock = await checkStock(item.product, item.quantity);
+      if (!enoughStock) return sendResponse(HttpStatus.FORBIDDEN_STATUS, "Product's stock is not enough");
+
       let product = await Product.findById(item.product);
-      if (product) {
-        items_final.push({product: product, quantity: item.quantity});
-        total_price += product.price*item.quantity;
-      }
+      items_final.push({product: product, quantity: item.quantity});
+      total_price += product.price*item.quantity;
+
+      // decrease stock
+      let updatedProduct = await updateStock(item.product, item.quantity*(-1));
+
     }
     const order = await Order.create({customer: customerid, items: items_final, total_price: total_price, hub: hubid, status: 'active'})
     cart = await emptyCart(customerid);
@@ -62,13 +68,18 @@ const assignShipper = async (orderid, shipperid) => {
 const updateOrderStatus = async (orderid, status) => {
   try {
     const order = await Order.findOneAndUpdate(
-        {_id: orderid}, 
-        { $set: 
-          {status : status}
-        },
-        {new: true}
+        {_id: orderid}, {status : status}, {new: true}
       );
-    if (order) return sendResponse(HttpStatus.OK_STATUS, "Update status successfully", order);
+
+    if (order) {
+      // increase product stock when order is canceled
+      if (status == "canceled") {
+        for (item of order.items) {
+          await updateStock(item.product._id, item.quantity);
+        }
+      }
+      return sendResponse(HttpStatus.OK_STATUS, "Update status successfully", order);
+    }
     
     return sendResponse(HttpStatus.NOT_FOUND_STATUS, "No order is found the with given id");
 
