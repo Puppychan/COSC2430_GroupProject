@@ -1,4 +1,4 @@
-# Group Project - Name
+# Group Project - 1080p Technology
 
 -- COSC2430 - Web Programming Group Project - Group 5
 
@@ -53,8 +53,8 @@ The scope of this web application is based on a full-stack implementation that i
 
 ## Installation
 
-- Clone this project on Github ()[]
-- Open Project
+- Clone this project
+- Open Project Folder
 - Create `.env` file inside `grouproject-fe` directory with the following information:
 ```
 MONGODB_URI = "" # MongoDB URI
@@ -83,7 +83,7 @@ MONGODB_URI = "" # MongoDB URI
 | Tran Nguyen Ha Khanh | s3877707   | [hakhanhne](https://github.com/hakhanhne) | %                |
 | Nguyen Vinh Gia Bao  | s3986287   | [VerstappenRB18](https://github.com/VerstappenRB18)           | %                |
 | Ton That Huu Luan    | s3958304   | [VNOsST](https://github.com/VNOsST)       | %                |
-| Ho Van Khoa          | s3997024   | [name](https://github.com/name)           | %                |
+| Ho Van Khoa          | s3997024   | [navahok164](https://github.com/navahok164)           | %                |
 
 ### Third-party Attributions
 
@@ -115,3 +115,4 @@ MONGODB_URI = "" # MongoDB URI
 
 - Ho Van Khoa - s3997024:
   - Email: s3997024@rmit.edu.vn
+  - Github profile: [navahok164](https://github.com/navahok164)
