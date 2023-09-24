@@ -79,11 +79,11 @@ MONGODB_URI = "" # MongoDB URI
 
 | Name                 | Student ID | GitHub Profile                            | Contribution (%) |
 | -------------------- | ---------- | ----------------------------------------- | ---------------- |
-| Tran Mai Nhung       | s3879954   | [Puppychan](https://github.com/Puppychan) | %                |
-| Tran Nguyen Ha Khanh | s3877707   | [hakhanhne](https://github.com/hakhanhne) | %                |
-| Nguyen Vinh Gia Bao  | s3986287   | [VerstappenRB18](https://github.com/VerstappenRB18)           | %                |
-| Ton That Huu Luan    | s3958304   | [VNOsST](https://github.com/VNOsST)       | %                |
-| Ho Van Khoa          | s3997024   | [navahok164](https://github.com/navahok164)           | %                |
+| Tran Mai Nhung       | s3879954   | [Puppychan](https://github.com/Puppychan) | 20%                |
+| Tran Nguyen Ha Khanh | s3877707   | [hakhanhne](https://github.com/hakhanhne) | 20%                |
+| Nguyen Vinh Gia Bao  | s3986287   | [VerstappenRB18](https://github.com/VerstappenRB18)           | 20%                |
+| Ton That Huu Luan    | s3958304   | [VNOsST](https://github.com/VNOsST)       | 20%                |
+| Ho Van Khoa          | s3997024   | [navahok164](https://github.com/navahok164)           | 20%                |
 
 ### Third-party Attributions
 
